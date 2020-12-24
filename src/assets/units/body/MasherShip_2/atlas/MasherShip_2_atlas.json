@@ -1,0 +1,112 @@
+{
+    "frames": [
+        {
+            "filename": "MasherShip_2_bottom_animate_left",
+            "frame": {
+                "w": 1280,
+                "h": 512,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "MasherShip_2_bottom_animate_right",
+            "frame": {
+                "w": 1280,
+                "h": 512,
+                "x": 0,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "MasherShip_2_bottom_animate",
+            "frame": {
+                "w": 1280,
+                "h": 512,
+                "x": 0,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "MasherShip_2",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "MasherShip_2_bottom",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "MasherShip_2_mask",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "MasherShip_2_mask2",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 768
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "MasherShip_2_skin_1",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

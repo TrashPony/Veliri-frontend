@@ -1,0 +1,99 @@
+{
+    "frames": [
+        {
+            "filename": "replic_fence_pillar",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_fence_border",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 512,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_gauss_gun_bottom",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 0,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_gauss_gun",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 512,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "base_place",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1024,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_antenna",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1024,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_observatory",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1024,
+                "y": 768
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

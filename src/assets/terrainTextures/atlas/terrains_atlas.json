@@ -1,0 +1,216 @@
+{
+    "frames": [
+        {
+            "filename": "brush",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "ravine_1",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 512,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "ravine_2",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 0,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "arctic_2",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 512,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "desertdunes_2",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1024,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "grass_3",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1024,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "soil_2",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 0,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "xenos_2",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 512,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "desertdunes",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1024,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "soil",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1536,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tundra_2",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1536,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tundra",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1536,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "arctic",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 0,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "grass_1",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 512,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "grass_2",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1024,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "xenos",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1536,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

@@ -1,0 +1,255 @@
+{
+    "frames": [
+        {
+            "filename": "prefabricated_plant_bottom",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "processing_plant_bottom",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 512,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_terraforming_generator_bottom",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 0,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "bottom_base",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 512,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "entry_replic_bunker_bottom",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1024,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_science_center_bottom",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1024,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "mining_installation_bottom",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 0,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_terraforming_generator",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 512,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "entry_replic_bunker",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1024,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "mining_installation",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1536,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "prefabricated_plant",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1536,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "processing_plant",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1536,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replics_base",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 0,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_base",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 512,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_base",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1024,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_science_center",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 1536,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "neutral_base_1",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 2048,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "neutral_base_2",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 2048,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "neutral_base_3",
+            "frame": {
+                "w": 512,
+                "h": 512,
+                "x": 2048,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

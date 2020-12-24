@@ -1,0 +1,853 @@
+{
+    "frames": [
+        {
+            "filename": "artillery_turret_weapon_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "artillery_turret_weapon_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 256,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "artillery_turret_weapon_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 0,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "artillery_turret_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 256,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "artillery_turret_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 512,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "artillery_turret_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 512,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "beacon_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 0,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "beacon_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 256,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "beacon_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 512,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "energy_generator_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 768,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "energy_generator_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 768,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "energy_generator_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 768,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_antenna",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 0,
+                "y": 768
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_antenna_top",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 256,
+                "y": 768
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_observatory",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 512,
+                "y": 768
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_observatory_top",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 768,
+                "y": 768
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "extractor_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1024,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "extractor_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1024,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "extractor_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1024,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "jammer_generator_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1024,
+                "y": 768
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "jammer_generator_Replics_top",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 0,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "jammer_generator_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 256,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "jammer_generator_Reverses_top",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 512,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "jammer_generator_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 768,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "jammer_generator_Explores_top",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1024,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "laser_turret_weapon_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "laser_turret_weapon_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "laser_turret_weapon_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "laser_turret_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 768
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "laser_turret_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "laser_turret_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 0,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "missile_defense_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 256,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "missile_defense_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 512,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "missile_defense_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 768,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "radar_Replics_top",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1024,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "radar_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "radar_Reverses_top",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1536,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "radar_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1536,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "radar_Explores_top",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1536,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "radar_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1536,
+                "y": 768
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "repair_station_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1536,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "repair_station_Replics_equip",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1536,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "repair_station_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 0,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "repair_station_Reverses_equip",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 256,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "repair_station_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 512,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "repair_station_Explores_equip",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 768,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_gauss_gun_weapon",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1024,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_gauss_gun",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "shield_generator_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1536,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "shield_generator_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1792,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "shield_generator_Replics_top",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1792,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "shield_generator_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1792,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "shield_generator_Reverses_top",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1792,
+                "y": 768
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "shield_generator_Explores_top",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1792,
+                "y": 1024
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "storage_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1792,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "storage_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1792,
+                "y": 1536
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "storage_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 0,
+                "y": 1792
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tank_turret_weapon_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 256,
+                "y": 1792
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tank_turret_weapon_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 512,
+                "y": 1792
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tank_turret_weapon_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 768,
+                "y": 1792
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tank_turret_Explores",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1024,
+                "y": 1792
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tank_turret_Replics",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1280,
+                "y": 1792
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tank_turret_Reverses",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1536,
+                "y": 1792
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "unknown_civilization_jammer",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1792,
+                "y": 1792
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "unknown_civilization_jammer_top",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 2048,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}
