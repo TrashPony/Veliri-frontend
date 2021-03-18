@@ -14,7 +14,7 @@
             }
         },
         {
-            "filename": "apd_medium_bottom_animate",
+            "filename": "apd_medium_bottom_animate_left",
             "frame": {
                 "w": 2560,
                 "h": 256,
@@ -27,7 +27,7 @@
             }
         },
         {
-            "filename": "apd_medium_bottom_animate_left",
+            "filename": "apd_medium_bottom_animate",
             "frame": {
                 "w": 2560,
                 "h": 256,
@@ -40,7 +40,7 @@
             }
         },
         {
-            "filename": "apd_medium_mask2",
+            "filename": "apd_medium_mask",
             "frame": {
                 "w": 256,
                 "h": 256,
@@ -53,7 +53,7 @@
             }
         },
         {
-            "filename": "apd_medium",
+            "filename": "apd_medium_mask2",
             "frame": {
                 "w": 256,
                 "h": 256,
@@ -66,7 +66,7 @@
             }
         },
         {
-            "filename": "apd_medium_bottom",
+            "filename": "apd_medium",
             "frame": {
                 "w": 256,
                 "h": 256,
@@ -79,7 +79,7 @@
             }
         },
         {
-            "filename": "apd_medium_mask",
+            "filename": "apd_medium_bottom",
             "frame": {
                 "w": 256,
                 "h": 256,

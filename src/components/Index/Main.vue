@@ -24,6 +24,8 @@
             class="danger">ВНИМАНИЕ!</span> странице весит
             <span class="danger">200мб</span> ¯\_(ツ)_/¯)
           </div>
+          <div @click="$router.push({path: `/wiki`});">wiki</div>
+
         </div>
 
         <section>
@@ -56,6 +58,11 @@ export default {
     return {
       tab: 'about_game',
       dialog: false,
+    }
+  },
+  mounted() {
+    if (this.$route.query.tab) {
+      this.tab = this.$route.query.tab;
     }
   },
   methods: {
@@ -144,7 +151,7 @@ export default {
 #mainWrapper {
   width: 1100px;
   margin: auto;
-  margin-top: 50px;
+  margin-top: 0px;
   margin-bottom: 25px;
   padding: 5px;
   padding-top: 30px;

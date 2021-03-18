@@ -90,7 +90,7 @@ export default {
       app.weapon_slots = response.data.weapons;
       app.thorium_slots = response.data.thorium;
     }).catch(function (err) {
-      console.log(err)
+      //console.log(err)
     });
   },
   computed: {

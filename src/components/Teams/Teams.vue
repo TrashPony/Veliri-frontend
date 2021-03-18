@@ -1,6 +1,6 @@
 <template>
   <div id="teams" ref="teams"
-       v-if="battleState && battleState.teams && battleState.type !== 'convoy' && battleState.type !== 'defense' && battleState.type !== 'breakthrough'">
+       v-if="false && battleState && battleState.teams && battleState.type !== 'convoy' && battleState.type !== 'defense' && battleState.type !== 'breakthrough'">
     <app-control v-bind:head="'Команда противника:'"
                  v-bind:move="true"
                  v-bind:close="false"
@@ -22,9 +22,9 @@
             <div class="member">
               <app-user-line v-bind:user="battleState.players[memberID].player"/>
             </div>
-            <div class="kills">
-              x{{ battleState.kills[memberID] }}
-            </div>
+<!--            <div class="kills">-->
+<!--              x{{ battleState.kills[memberID] }}-->
+<!--            </div>-->
           </template>
 
           <template v-for="memberID in team.players"
@@ -93,7 +93,7 @@ export default {
   right: 15px;
   top: 250px;
   height: 200px;
-  width: 200px;
+  width: 150px;
   padding: 20px 3px 3px 3px;
   border-radius: 5px;
   border: 1px solid #25a0e1;
@@ -124,11 +124,11 @@ export default {
   font-weight: bold;
   box-shadow: 0 0 2px rgba(0, 0, 0, 1);
   padding-left: 10px;
-  width: 150px;
+  width: 100%;
 }
 
 .member {
-  width: 150px;
+  width: 100%;
   border-right: 1px solid grey;
   float: left;
 }

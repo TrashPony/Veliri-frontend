@@ -46,7 +46,7 @@ function SetShadowAngle(unit, time, shadowDist) {
 
   // поворачиваем тени относительно поворота главного спрайта unit.sprite.angle
   // выставляем положение каждые 100мс
-  let rotateShadow = setInterval(function () {
+  //let rotateShadow = setInterval(function () {
 
     let shadowAngle = 45 - unit.sprite.angle;
     let connectPoints = PositionAttachSprite(shadowAngle, shadowDist);
@@ -59,12 +59,12 @@ function SetShadowAngle(unit, time, shadowDist) {
       shadowTime(slot.shadow, connectWeapons.x + slot.xAttach, connectWeapons.y + slot.yAttach);
       slot.shadow.angle = slot.sprite.angle;
     }
-  }, 10);
+  //}, 10);
 
   // когда кончается общее время данное на поворот time, останавливаем проверку положения тени
-  setTimeout(function () {
-    clearInterval(rotateShadow);
-  }, time)
+  // setTimeout(function () {
+  //   clearInterval(rotateShadow);
+  // }, time)
 }
 
 function shadowTime(sprite, newX, newY, rotateTime = 10) {

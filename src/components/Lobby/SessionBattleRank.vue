@@ -4,7 +4,7 @@
 
       <div class="userAvatarWrapper" v-bind:style="{backgroundImage:  'url(\'' + avatar + '\')'}"/>
 
-      <div>
+      <div v-if="currentUser && currentUser.battle_rank">
 
         <h3 class="userName">
           <template v-if="tag !== ''">[<span>{{ tag }}</span>]</template>
@@ -13,16 +13,32 @@
 
         <div class="state">
           <div class="Rank">
-            30
+            {{ currentUser.battle_rank.lvl }}
           </div>
 
           <div>
-            <h5>Боевой ранг {{ 1000000000 }} / {{ 2000000000 }}</h5>
+            <h5>Боевой ранг {{ currentUser.battle_rank.points }} / {{ currentUser.battle_rank.need_points_to_up }}</h5>
             <div class="RankBar">
-              <div class="RankBarInner" :style="{width: 50 + '%'}"/>
+              <div class="RankBarInner"
+                   :style="{width: (100 / (currentUser.battle_rank.need_points_to_up / currentUser.battle_rank.points)) + '%'}"/>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="exitTime" v-if="chatState && chatState.exitTime > 0"
+         title="Недавно вы получали урон или нарушили закон, поэтому ваш транспорт сможет выйти из игры только через время.">
+      <div class="time">
+        {{ TimeFormat(chatState.exitTime).minutes }}:{{ TimeFormat(chatState.exitTime).sec }}
+      </div>
+    </div>
+
+    <div class="lawTime" v-if="chatState && chatState.violator && chatState.violator.time > 0"
+         :title="'Вы нарушили закон и находитель в режиме \'' + chatState.violator.type + '\''">
+      <div class="vio">{{ chatState.violator.type.toUpperCase() }}</div>
+      <div class="time">
+        {{ TimeFormat(chatState.violator.time).minutes }}:{{ TimeFormat(chatState.violator.time).sec }}
       </div>
     </div>
   </div>
@@ -40,8 +56,15 @@ export default {
     }
   },
   created() {
-    this.getAvatar();
-    this.getCorpLogo();
+    let app = this;
+
+    let wait = setInterval(function () {
+      if (app.currentUser.user_id) {
+        app.getAvatar();
+        app.getCorpLogo();
+        clearInterval(wait);
+      }
+    }, 100)
   },
   methods: {
     getCorpLogo() {
@@ -59,8 +82,19 @@ export default {
         app.$set(app, 'avatar', response.data.avatar);
       });
     },
+    TimeFormat(time) {
+
+      if (time < 0) {
+        return '-- : --'
+      }
+
+      let minutes = Math.floor(time / 60);
+      let sec = time % 60;
+      return {minutes: (minutes % 60 < 10 ? "0" : "") + minutes, sec: (sec % 60 < 10 ? "0" : "") + sec};
+    },
   },
   computed: {
+
     currentUser() {
       return this.$store.getters.getUser
     },
@@ -73,6 +107,9 @@ export default {
     },
     corporation() {
       return this.$store.getters.getChatState.corporation;
+    },
+    chatState() {
+      return this.$store.getters.getChatState
     },
   }
 }
@@ -184,5 +221,42 @@ export default {
   width: 50%;
   box-shadow: inset 0 0 2px 1px black;
   background: #ff8100;
+}
+
+.exitTime, .lawTime {
+  position: absolute;
+  height: 35px;
+  width: 35px;
+  background-size: cover;
+  background-image: url(https://img.icons8.com/fluent/48/000000/medium-risk.png);
+  left: calc(100% + 12px);
+  top: 1px;
+  filter: drop-shadow(0px 0px 2px black);
+}
+
+.lawTime {
+  background-image: url(https://img.icons8.com/emoji/48/000000/red-triangle-pointed-up-emoji.png);
+  left: calc(100% + 55px);
+  top: 2px;
+}
+
+.exitTime .time, .lawTime .time {
+  color: yellow;
+  font-weight: 900;
+  font-size: 10px;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
+}
+
+.vio {
+  font-size: 8px;
+  line-height: 45px;
+  color: white;
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
 }
 </style>

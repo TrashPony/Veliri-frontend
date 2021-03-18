@@ -1,17 +1,20 @@
 //** т.к. нам не нужна реактивность вью для игры то у нас свой стор с блекджеком и филдами **//
 const gameStore = {
   gameInit: false,
+  gameDataInit: {
+    data: false,
+    sendRequest: false,
+  },
   mapEditor: false,
   gameReady: false,
   unitReady: false,
   reload: false,
+  mapDrawing: false,
 
   HoldAttackMouse: false,
   map: null, //** тут лежит карта с глобальной коорджинатной позициией 0:0, говорит о том что игрок живет тут **//
   maps: null,
-  mapsState: {
-
-  },
+  mapsState: {},
   // графияеские уровне для рисования статики
   FogOfWar: {
     back: null,
@@ -20,6 +23,7 @@ const gameStore = {
   StatusLayer: {
     healBoxes: {},
     bars: {},
+    barsCache: {},
   },
   bmdTerrain: null,
   flore: null,
@@ -37,11 +41,13 @@ const gameStore = {
   drones: {},
   radar_marks: {},
   boxes: {},
+  mapItems: {},
   reservoirs: {},
   bases: {},
   shields: {},
   evacuations: {},
   clouds: {},
+  lights: [],
   cacheAnimate: {},
   missionHelpersCanvas: null,
 
@@ -66,6 +72,8 @@ const gameStore = {
     objSpriteNewGeoData: null,
   },
   spawns: {},
+  violators: {},
+  violatorsUpdateTime: {},
 };
 
 export {gameStore}

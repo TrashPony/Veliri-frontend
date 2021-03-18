@@ -38,6 +38,9 @@ const getters = {
   getMissions: function (state) {
     return state.Missions
   },
+  getFullAllMissions: function (state) {
+    return state.AllFullMissions
+  },
   getBaseStatus: function (state) {
     return state.Lobby.base
   },
@@ -89,6 +92,12 @@ const getters = {
   getAvailableAmmo: function (state) {
     return state.Game.availableAmmo
   },
+  getSecureZone: function (state) {
+    return state.Game.secure_zone
+  },
+  getGlobalTarget: function (state) {
+    return state.Game.global_target
+  },
   GetColorDamage: state => percentHP => {
     if (percentHP >= 80) {
       return "#48FF28"
@@ -104,6 +113,12 @@ const getters = {
   },
   getMapEditorData: function (state) {
     return state.MapEditor
+  },
+  getDialogEditorData: function (state) {
+    return state.DialogEditor
+  },
+  getMissionEditorData: function (state) {
+    return state.MissionEditor
   },
   getGameUser: function (state) {
     return state.GameUser
@@ -141,6 +156,27 @@ const getters = {
   getHandBook: function (state) {
     return state.HandBook
   },
+  getViolators(state) {
+    return state.Chat.violators
+  },
+  getFractionStoreState(state) {
+    return state.FractionStore
+  },
+  getFractionNews(state) {
+    return state.Chat.fractionNews
+  },
+  getBaseTypeName: state => (baseType, language) => {
+    // todo затолкать это в хендбук
+
+    if (language === 'RU') {
+      if (baseType === 'base') return 'Главная база';
+      if (baseType === 'mining_installation') return 'Добывающая установка';
+      if (baseType === 'processing_plant') return 'Перерабатывающий завод';
+      if (baseType === 'prefabricated_plant') return 'Завод расходных материалов';
+    }
+
+    return "";
+  },
   getTechnologyBodyConfig: function () {
     return {
       Replics: {
@@ -148,27 +184,27 @@ const getters = {
           {
             ids: [9],
             category: "universal light",
-            pos: {x: 2, y: 2},
-            linesTo: [{x: 3, y: 2}, {x: 3, y: 1}],
+            pos: {x: 2, y: 3},
+            linesTo: [{x: 3, y: 2}, {x: 3, y: 1}, {x: 3, y: 4}],
           }, {
             ids: [8],
-            category: "engineer",
-            pos: {x: 4, y: 1},
+            category: "light miner",
+            pos: {x: 4, y: 2},
             linesTo: [],
           }, {
             ids: [10],
-            category: "light",
-            pos: {x: 4, y: 2},
-            linesTo: [{x: 5, y: 2}],
+            category: "light warrior",
+            pos: {x: 4, y: 4},
+            linesTo: [{x: 5, y: 4}],
           }, {
             ids: [12],
-            category: "medium",
-            pos: {x: 6, y: 2},
-            linesTo: [{x: 7, y: 3}],
+            category: "medium warrior",
+            pos: {x: 6, y: 4},
+            linesTo: [],
           }, {
             ids: [11],
-            category: "transport",
-            pos: {x: 8, y: 3},
+            category: "light transport",
+            pos: {x: 4, y: 1},
             linesTo: [],
           },
         ]
@@ -178,27 +214,27 @@ const getters = {
           {
             ids: [14],
             category: "universal light",
-            pos: {x: 2, y: 2},
-            linesTo: [{x: 3, y: 2}, {x: 3, y: 1}],
+            pos: {x: 2, y: 3},
+            linesTo: [{x: 3, y: 2}, {x: 3, y: 1}, {x: 3, y: 4}],
           }, {
             ids: [13],
-            category: "engineer",
-            pos: {x: 4, y: 1},
+            category: "light miner",
+            pos: {x: 4, y: 2},
             linesTo: [],
           }, {
             ids: [15],
-            category: "light",
-            pos: {x: 4, y: 2},
-            linesTo: [{x: 5, y: 2}],
+            category: "light warrior",
+            pos: {x: 4, y: 4},
+            linesTo: [{x: 5, y: 4}],
           }, {
             ids: [17],
-            category: "medium",
-            pos: {x: 6, y: 2},
-            linesTo: [{x: 7, y: 3}],
+            category: "medium warrior",
+            pos: {x: 6, y: 4},
+            linesTo: [],
           }, {
             ids: [16],
-            category: "transport",
-            pos: {x: 8, y: 3},
+            category: "light transport",
+            pos: {x: 4, y: 1},
             linesTo: [],
           },
         ]
@@ -208,27 +244,27 @@ const getters = {
           {
             ids: [19],
             category: "universal light",
-            pos: {x: 2, y: 2},
-            linesTo: [{x: 3, y: 2}, {x: 3, y: 1}],
+            pos: {x: 2, y: 3},
+            linesTo: [{x: 3, y: 2}, {x: 3, y: 1}, {x: 3, y: 4}],
           }, {
             ids: [18],
-            category: "engineer",
-            pos: {x: 4, y: 1},
+            category: "light miner",
+            pos: {x: 4, y: 2},
             linesTo: [],
           }, {
             ids: [20],
-            category: "light",
-            pos: {x: 4, y: 2},
-            linesTo: [{x: 5, y: 2}],
+            category: "light warrior",
+            pos: {x: 4, y: 4},
+            linesTo: [{x: 5, y: 4}],
           }, {
             ids: [21],
-            category: "medium",
-            pos: {x: 6, y: 2},
-            linesTo: [{x: 7, y: 3}],
+            category: "medium warrior",
+            pos: {x: 6, y: 4},
+            linesTo: [],
           }, {
             ids: [22],
-            category: "transport",
-            pos: {x: 8, y: 3},
+            category: "light transport",
+            pos: {x: 4, y: 1},
             linesTo: [],
           },
         ]

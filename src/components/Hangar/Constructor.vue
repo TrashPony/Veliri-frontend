@@ -22,8 +22,8 @@
       <app-view-m-s @click.native="openSubMenu($event, inventory.unit.body, 'body')"/>
 
       <div class="figure"></div>
-      <div class="figure" style="transform: rotate(-225deg);left: 154px;top: 67px;"></div>
-      <div class="figure" style="left: 24px;top: -11px;transform: rotate(16deg);"></div>
+      <div class="figure" style="transform: rotate(-225deg);left: 140px; top: 63px;"></div>
+      <div class="figure" style="left: 21px;top: -9px;transform: rotate(16deg);"></div>
     </div>
 
     <template v-if="inventory.unit && inventory.unit.body">
@@ -45,14 +45,14 @@
              v-if="inventory.unit.thorium_slots"
              :style="{left: 'calc(50%' + ' - ' + thoriumSlotsOffset(inventory.unit) + 'px)'}">
 
-          <app-item-cell v-for="slot in inventory.unit.thorium_slots"
+          <app-item-cell v-for="slot in thoriumSlots"
                          class="bodyThorium"
                          @click.native="removeThorium(slot)"
                          v-bind:equipProps="{type: 'thorium', data: slot}"
                          v-bind:noShowName="true"
                          v-bind:text="`<h6>${slot.count}</h6> <p class='sep'>/</p> <p>${slot.max_count}</p>`"
                          v-bind:itemSlot="{type: 'recycle', item: {name: 'enriched_thorium'}}"
-                         v-bind:size="35"/>
+                         v-bind:size="30"/>
         </div>
       </template>
 
@@ -71,7 +71,7 @@
                      @mouseover.native="setFindEquipFilter(slot)"
                      @mouseout.native="removeFindFilter()"
                      @click.native="openSubMenu($event, slot, 'equip')"
-                     v-bind:size="38"/>
+                     v-bind:size="34"/>
       <!--  2 -->
       <app-item-cell v-for="slot in inventory.unit.equip_slots"
                      v-if="slot.type_slot === 2"
@@ -87,7 +87,7 @@
                      @mouseover.native="setFindEquipFilter(slot)"
                      @mouseout.native="removeFindFilter()"
                      @click.native="openSubMenu($event, slot, 'equip')"
-                     v-bind:size="38"/>
+                     v-bind:size="34"/>
 
       <!--  3 -->
       <app-item-cell v-for="slot in inventory.unit.equip_slots"
@@ -104,7 +104,7 @@
                      @mouseover.native="setFindEquipFilter(slot)"
                      @mouseout.native="removeFindFilter()"
                      @click.native="openSubMenu($event, slot, 'equip')"
-                     v-bind:size="38"/>
+                     v-bind:size="34"/>
 
       <!--  оружие всегда на 3тем слоте -->
       <template v-for="slot in inventory.unit.weapon_slots">
@@ -120,10 +120,10 @@
           @mouseover.native="setFindWeaponFilter(slot)"
           @mouseout.native="removeFindFilter()"
           @click.native="openSubMenu($event, slot, 'weapon')"
-          v-bind:size="38"/>
+          v-bind:size="34"/>
 
         <app-item-cell
-          v-bind:style="{ left: getPos(280 - (slot.number_slot - 1) * 20, 100).x + 'px', top: getPos(280 - (slot.number_slot - 1) * 20, 100).y + 'px' }"
+          v-bind:style="{ left: getPos(280 - (slot.number_slot - 1) * 20, 90).x + 'px', top: getPos(280 - (slot.number_slot - 1) * 20, 90).y + 'px' }"
           class="bodyAmmo"
           v-bind:fine="slot.ammo ? inventory.fine[slot.ammo.name] : false"
           v-bind:textFine="slot.ammo ? inventory.fine[slot.ammo.name] ? 'Не хватает навыка' : '' : ''"
@@ -133,7 +133,7 @@
           @mouseover.native="setFindAmmoFilter(slot)"
           @mouseout.native="removeFindFilter()"
           @click.native="openSubMenu($event, slot, 'ammo')"
-          v-bind:size="30"/>
+          v-bind:size="20"/>
 
       </template>
     </template>
@@ -171,14 +171,15 @@ export default {
         event: "EquipsRepair"
       }));
     },
-    getPos(angle, dist = 125) {
+    getPos(angle, dist = 110) {
+      let ConstructorBackGroundSize = 283;
       return {
-        x: (dist * Math.cos(angle * Math.PI / 180)) + (333 / 2 - 50 / 2),
-        y: (dist * Math.sin(angle * Math.PI / 180)) + (333 / 2 - 50 / 2),
+        x: (dist * Math.cos(angle * Math.PI / 180)) + (ConstructorBackGroundSize / 2 - 40 / 2),
+        y: (dist * Math.sin(angle * Math.PI / 180)) + (ConstructorBackGroundSize / 2 - 40 / 2),
       };
     },
     thoriumSlotsOffset(unit) {
-      return (41 - 41 / 2) * unit.thorium_slots.length
+      return (35 - 35 / 2) * unit.thorium_slots.length
     },
     removeFindFilter() {
       this.$store.commit({
@@ -271,6 +272,19 @@ export default {
     currentUser() {
       return this.$store.getters.getUser
     },
+    thoriumSlots() {
+      let slots = [];
+
+      for (let i in this.inventory.unit.thorium_slots) {
+        slots.push(this.inventory.unit.thorium_slots[i])
+      }
+
+      return slots.sort(function (a, b) {
+        if (a.number_slot > b.number_slot) return 1;
+        if (b.number_slot > a.number_slot) return -1;
+        return 0;
+      });
+    }
   },
 
   components: {
@@ -284,9 +298,8 @@ export default {
 <style scoped>
 #ConstructorBackGround {
   border-radius: 20px;
-  display: inline-block;
-  width: 333px;
-  height: 333px;
+  width: 283px;
+  height: 283px;
   background-color: #4c4c4c;
   position: relative;
   margin-left: -3px;
@@ -325,8 +338,8 @@ export default {
   border-radius: 50%;
   padding: 5px;
   vertical-align: middle;
-  width: 318px;
-  height: 318px;
+  width: calc(100% - 14px);
+  height: calc(100% - 14px);
   margin: auto;
   left: 0;
   box-shadow: 0 0 3px 1px rgba(0, 0, 0, 1);
@@ -369,7 +382,7 @@ export default {
   z-index: 2;
   position: absolute;
   left: 100px;
-  top: 206px;
+  top: 180px;
   border-radius: 5px;
   box-shadow: inset 0 0 2px rgb(255, 255, 255);
   border: 1px solid rgba(255, 255, 255, 0.36);
@@ -401,11 +414,11 @@ export default {
 
 .figure {
   position: absolute;
-  height: 193px;
-  width: 193px;
+  height: 155px;
+  width: 155px;
   background: rgba(86, 88, 88, 0.3);
-  left: 24px;
-  top: 141px;
+  left: 19px;
+  top: 129px;
   z-index: 1;
   border-radius: 200% 50% 200% 50%;
   transform: rotate(-103deg);

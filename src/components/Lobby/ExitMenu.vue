@@ -48,7 +48,7 @@
         <div class="name_option">Топливо:</div>
         <div class="value thorium">
           <template v-if="inventory && inventory.unit && inventory.unit.body">
-            <app-item-cell v-for="slot in inventory.unit.thorium_slots"
+            <app-item-cell v-for="slot in thoriumSlots"
                            class="bodyThorium valueItem"
                            v-bind:equipProps="{type: 'thorium', data: slot}"
                            v-bind:noShowName="true"
@@ -251,6 +251,19 @@ export default {
         return this.$store.getters.getGroupSessionState;
       }
     },
+    thoriumSlots() {
+      let slots = [];
+
+      for (let i in this.inventory.unit.thorium_slots) {
+        slots.push(this.inventory.unit.thorium_slots[i])
+      }
+
+      return slots.sort(function (a, b) {
+        if (a.number_slot > b.number_slot) return 1;
+        if (b.number_slot > a.number_slot) return -1;
+        return 0;
+      });
+    }
   },
   components: {
     AppControl: Control,

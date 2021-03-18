@@ -95,13 +95,13 @@ export default {
         app.completeProductions = response.data;
 
       }).catch(function (err) {
-        console.log(err)
+        //console.log(err)
       });
 
       app.$api.get(urls.bpURL + '?id=' + item.id + "&method=id").then(function (response) {
         app.needResource = response.data[0].resources
       }).catch(function (err) {
-        console.log(err)
+        //console.log(err)
       });
 
     } else if (app.$props.type === 'recycle') {
@@ -113,13 +113,13 @@ export default {
       app.$api.get(urls.bpURL + '?id=' + id + "&type=" + app.$props.type + "&method=item").then(function (response) {
         app.blueprints = response.data
       }).catch(function (err) {
-        console.log(err)
+        //console.log(err)
       });
 
       app.$api.get(urls.getRecycleItems + '?id=' + id + "&type=" + app.$props.type).then(function (response) {
         app.recycleItems = response.data
       }).catch(function (err) {
-        console.log(err)
+        //console.log(err)
       });
     }
   },

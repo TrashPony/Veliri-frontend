@@ -19,7 +19,7 @@
         <div class="objState">
           <div class="objStateLabel">
             <span style="float: left;">HP: </span>
-            <span style="float: right;">{{ obj.dynamic_object.hp + " / " + obj.dynamic_object.max_hp }}</span>
+            <span style="float: right;" v-if="obj.dynamic_object.hp >= 0">{{ obj.dynamic_object.hp + " / " + obj.dynamic_object.max_hp }}</span>
           </div>
           <div class="objHP">
             <div class="objHPBar" :style="{width:100 / (obj.dynamic_object.max_hp / obj.dynamic_object.hp) + 'px'}"/>
@@ -77,7 +77,7 @@
                            v-if="slot && slot.item && slot.quantity > 0 && (slot.access_user_id === 0 || slot.access_user_id === currentUser.user_id)"
                            @click.native="getItem(slot.number)"
                            v-bind:itemSlot="slot"
-                           v-bind:size="25"
+                           v-bind:size="34"
                            v-bind:parent="'box:' + obj.box.id"
                            v-bind:drag="true"/>
           </div>
@@ -137,7 +137,7 @@ export default {
         event: "itemsToDst",
         source: "box:" + this.obj.box.id,
         destination: "squadInventory",
-        storage_slots: [number]
+        storage_slots: {[number]: 0}
       }));
       $('.nameItemInCell').remove();
     },
@@ -164,11 +164,17 @@ export default {
 
                 let draggable = ui.draggable;
                 if (!draggable.data("selectedItems")) return;
+
+                let slots = {}
+                for (let slotNumber of draggable.data("selectedItems").slotsNumbers) {
+                  slots[slotNumber] = 0
+                }
+
                 app.$store.getters.getWSByService('inventory').socket.send(JSON.stringify({
                   event: "itemsToDst",
                   source: draggable.data("slotData").parent,
                   destination: "box:" + app.obj.box.id,
-                  storage_slots: draggable.data("selectedItems").slotsNumbers
+                  storage_slots: slots
                 }));
               }
             });

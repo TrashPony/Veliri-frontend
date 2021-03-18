@@ -72,7 +72,7 @@ export default {
   position: absolute;
   min-height: 0;
   min-width: 150px;
-  max-width: 320px;
+  max-width: 250px;
   top: 15px;
   left: 385px;
   padding: 18px 3px 3px 3px;
@@ -96,7 +96,7 @@ export default {
   width: calc(100% - 12px);
   transition: 0.2s;
   margin-top: 3px;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 900;
   border: 1px solid rgba(37, 160, 225, 0.5);
   background: rgba(8, 138, 210, 0.5);

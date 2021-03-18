@@ -1,6 +1,6 @@
 import {gameStore} from "../store";
 import {Scene} from "../create";
-import {ClearBars, CreateMapBar} from "../interface/status_layer";
+import {ClearBars, CreateMapBar, UpdatePosBars} from "../interface/status_layer";
 
 function CreateShield(shield) {
   CreateShieldSprite(shield);
@@ -70,8 +70,13 @@ function UpdateShieldUnitPos(unit) {
       shield.border.x = unit.sprite.x;
       shield.border.y = unit.sprite.y;
 
-      CreateMapBar(unit.sprite, shield.max_hp, shield.current_hp, startOffset, 0x0070ff, Scene, 'unit', shield.uuid, 'shield', 50);
-      ClearBars('unit', unit.uuid, 'shield');
+      let needDepth = shield.radius + 15 + (unit.sprite.depth - 35)
+      if (shield.sprite.depth !== needDepth) {
+        shield.sprite.setDepth(needDepth);
+      }
+
+      UpdatePosBars(unit.sprite, shield.max_hp, shield.current_hp, startOffset, 0x0070ff, Scene, 'unit', shield.uuid, 'shield', 50);
+
       startOffset *= 2
     }
   }
@@ -87,7 +92,8 @@ function UpdateShieldObjectPos(obj) {
         shield.sprite.y = obj.objectSprite.y;
         shield.border.x = obj.objectSprite.x;
         shield.border.y = obj.objectSprite.y;
-        CreateMapBar(obj.objectSprite, shield.max_hp, shield.current_hp, 14, 0x0070ff, Scene, 'object', obj.id, 'shield', 50);
+
+        UpdatePosBars(obj.objectSprite, shield.max_hp, shield.current_hp, 14, 0x0070ff, Scene, 'object', obj.id, 'shield', 50);
       }
 
       return shield
@@ -99,23 +105,30 @@ function UpdateShield(id, update) {
   let shield = getShieldByUUID(update.uuid);
   if (shield) {
     shield.current_hp = update.hp;
+
+    if (shield.owner_type === "unit") {
+      let unit = gameStore.units[shield.owner_id]
+      if (unit) CreateMapBar(unit.sprite, shield.max_hp, shield.current_hp, 7, 0x0070ff, Scene, shield.owner_type, shield.uuid, 'shield', 50);
+    }
+
+    if (shield.owner_type === "object") {
+      let obj = gameStore.objects[shield.owner_id]
+      if (obj) CreateMapBar(obj.objectSprite, shield.max_hp, shield.current_hp, 14, 0x0070ff, Scene, shield.owner_type, shield.owner_id, 'shield', 50);
+    }
   }
 }
 
-function RemoveShield(mark) {
-  for (let i in gameStore.shields) {
-    if (gameStore.shields[i].uuid === mark.uo) {
+function RemoveShield(uuid) {
 
-      ClearBars('unit', mark.uo, 'shield');
-      ClearBars('object', mark.uo, 'shield');
+  let shield = gameStore.shields[uuid]
 
+  ClearBars('unit', uuid, 'shield');
+  ClearBars('object', uuid, 'shield');
 
-      gameStore.shields[i].border.destroy();
-      gameStore.shields[i].sprite.destroy();
+  shield.border.destroy();
+  shield.sprite.destroy();
 
-      delete gameStore.shields[i];
-    }
-  }
+  delete gameStore.shields[uuid];
 }
 
 function getShieldByUUID(uuid) {

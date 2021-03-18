@@ -39,6 +39,11 @@ import {RotateObjectEquip} from "../../game/map/structures/repair_station";
 import {logMsg} from "./log";
 import {debugMessage} from "../../game/debug/debug";
 import {addError} from "./inventory";
+import {PortalInto, PortalOut} from "../../game/portal/portal_into";
+import {DropExit} from "../../game/portal/drop_exit";
+import {GravityGunDrop, GravityGunRun, GravityGunTarget} from "../../game/equip/gravity_gun_target";
+import {GravitySquareWork} from "../../game/equip/gravity_square";
+import {ItemMove} from "../../game/map_items/map_items";
 
 export default function createGlobalPlugin(WS) {
   return store => {
@@ -46,10 +51,9 @@ export default function createGlobalPlugin(WS) {
     WS.onopen = function () {
       console.log("Connection global opened..." + this.readyState);
 
-      WS.send(JSON.stringify({
-        event: "InitGame"
-      }));
-
+      gameStore.gameDataInit.data = false;
+      gameStore.gameDataInit.sendRequest = false;
+      CreateGame();
       store.commit({
         type: 'setWSConnectState',
         service: 'global',
@@ -112,12 +116,14 @@ function GlobalRead(data, store, ws) {
         text: 'Входим на базу...'
       });
 
-      console.log(data)
       router.push('/lobby');
     }
   }
 
   if (data.event === "InitGame") {
+
+    gameStore.gameReady = false;
+    gameStore.unitReady = false;
 
     RemoveOldMap();
 
@@ -146,7 +152,7 @@ function GlobalRead(data, store, ws) {
       event: "openInventory"
     }));
 
-    CreateGame();
+    gameStore.gameDataInit.data = true;
   }
 
   if (!gameStore.gameReady) {
@@ -204,6 +210,11 @@ function GlobalRead(data, store, ws) {
         type: 'setUnitEnergy',
         energy: data.s.e,
       });
+
+      store.commit({
+        type: 'setAutoPilot',
+        auto: data.s.a,
+      });
     }
 
     if (data.state) {
@@ -239,7 +250,7 @@ function GlobalRead(data, store, ws) {
     RotateEquip(data);
   }
 
-  if (data.e === "TransportMove" || data.e === "usm" || data.e === "DroneMove" || data.e === "BoxMove") {
+  if (data.e === "TransportMove" || data.e === "usm" || data.e === "DroneMove" || data.e === "BoxMove" || data.e === "ItemMove") {
     //if (data.e === "usm") console.log(JSON.stringify(data))
     for (let msg of data.msg) {
       if (msg.e === "um") {
@@ -260,6 +271,10 @@ function GlobalRead(data, store, ws) {
       }
       if (msg.type === "box") {
         BoxMove(msg.path_unit, msg.id, msg.map_id)
+        continue
+      }
+      if (msg.type === "map_item") {
+        ItemMove(msg.path_unit, msg.id, msg.map_id)
       }
     }
   }
@@ -517,15 +532,18 @@ function GlobalRead(data, store, ws) {
   if (data.event === "OpenObject") {
     // OpenObjects(data)
     if (data.error === '') {
-      store.commit({
-        type: 'toggleWindow',
-        id: 'ObjectDialog' + data.dynamic_object.id,
-        component: 'ObjectDialog',
-        meta: {
-          id: data.dynamic_object.id
-        },
-        forceOpen: true,
-      });
+
+      if (!document.getElementById('ObjectDialog' + data.dynamic_object.id)) {
+        store.commit({
+          type: 'toggleWindow',
+          id: 'ObjectDialog' + data.dynamic_object.id,
+          component: 'ObjectDialog',
+          meta: {
+            id: data.dynamic_object.id
+          },
+          forceOpen: true,
+        });
+      }
 
       store.commit({
         type: 'addOpenObjects',
@@ -589,6 +607,49 @@ function GlobalRead(data, store, ws) {
   if (data.event === "AiMessage") {
     showMessage(data.msg)
   }
+
+  if (data.event === "portal_into") {
+    PortalInto(data);
+  }
+
+  if (data.event === "portal_out") {
+    PortalOut(data);
+  }
+
+  if (data.event === "drop_exit") {
+    DropExit(data)
+  }
+
+  if (data.e === "gravity_gun_target") {
+    GravityGunTarget(data)
+  }
+
+  if (data.e === "gravity_gun_run") {
+    GravityGunRun(data)
+  }
+
+  if (data.e === "gravity_gun_drop") {
+    GravityGunDrop(data)
+  }
+
+  if (data.e === "gravity_square_work") {
+    GravitySquareWork(data)
+  }
+
+  if (data.e === "SectorAttackDetail") {
+    store.commit({
+      type: 'setDetailSector',
+      data: data,
+    });
+  }
+
+  if (data.e === "set_global_target") {
+    store.commit({
+      type: 'setGlobalTarget',
+      global_target: {points: data.p, baseID: data.b, mapID: data.m},
+    });
+  }
+
 
   debugMessage(data)
 }

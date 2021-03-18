@@ -27,8 +27,17 @@ function preload() {
     });
   }
 
+  this.load.bitmapFont('bit_text',
+    require("../assets/bit_map_text/bit_map_text.png"),
+    require("../assets/bit_map_text/bit_map_text.xml"),
+  );
+
   const atlases = [
     {
+      key: 'items',
+      textureURL: require("../assets/items/atlas/items.png"),
+      atlasURL: require("../assets/items/atlas/items_atlas.json"),
+    }, {
       key: 'equips',
       textureURL: require("../assets/units/equip/atlas/equips.png"),
       atlasURL: require("../assets/units/equip/atlas/equips_atlas.json"),
@@ -60,6 +69,10 @@ function preload() {
       key: 'unit_wreckage',
       textureURL: require("../assets/map/objects/unit_wreckage/atlas/unit_wreckage.png"),
       atlasURL: require("../assets/map/objects/unit_wreckage/atlas/unit_wreckage_atlas.json"),
+    }, {
+      key: 'structure_wreckage',
+      textureURL: require("../assets/map/objects/structure_wreckage/atlas/structure_wreckage.png"),
+      atlasURL: require("../assets/map/objects/structure_wreckage/atlas/structure_wreckage_atlas.json"),
     }, {
       key: 'shores',
       textureURL: require("../assets/map/objects/shores/atlas/shores.png"),
@@ -180,6 +193,14 @@ function preload() {
       key: 'apd_heavy',
       textureURL: require("../assets/units/body/apd_heavy/atlas/apd_heavy.png"),
       atlasURL: require("../assets/units/body/apd_heavy/atlas/apd_heavy_atlas.json"),
+    }, {
+      key: 'apd_super_heavy_1',
+      textureURL: require("../assets/units/body/apd_super_heavy_1/atlas/apd_super_heavy_1.png"),
+      atlasURL: require("../assets/units/body/apd_super_heavy_1/atlas/apd_super_heavy_1_atlas.json"),
+    }, {
+      key: 'apd_super_heavy_2',
+      textureURL: require("../assets/units/body/apd_super_heavy_2/atlas/apd_super_heavy_2.png"),
+      atlasURL: require("../assets/units/body/apd_super_heavy_2/atlas/apd_super_heavy_2_atlas.json"),
     }
   ];
 

@@ -5,7 +5,7 @@
                  v-bind:close="true"
                  v-bind:refWindow="'marketBox'"
                  v-bind:resizeFunc="resize"
-                 v-bind:minSize="{height: 280, width: 500}"/>
+                 v-bind:minSize="{height: 280, width: 490}"/>
 
     <div id="leftBar">
       <div id="headMarket">
@@ -33,7 +33,7 @@
         <div id="selectItemIcon">
           <template v-if="filters.item">
             <app-background-item-cell v-bind:slotItem="getSlotIcon"/>
-            <input @click="detail" type="button" value="ПОДРОБНО">
+            <input @click="detail" type="button" value="i">
           </template>
         </div>
 
@@ -41,16 +41,17 @@
           <template v-if="filters.item">
             <span>{{ itemName }}</span>
             <span class="category">{{ handbook.categories[language][filters.selectType].name }}</span>
-            <div class="marketButton" @click="newBuyOrder(getSlotIcon)" style="margin: 7px auto;">Купить</div>
+            <div class="marketButton" @click="newBuyOrder(getSlotIcon)" style="margin: 0 auto;">Купить</div>
           </template>
         </div>
 
-        <div class="ordersHead" style="margin-top: 85px; display: block;">
+        <div class="ordersHead" style="margin-top: 55px; display: block;">
           {{ language === 'RU' ? 'Предложения' : 'Offers' }}
         </div>
         <div id="sellOrdersBlock">
           <table class="ordersTable" id="marketSellTable">
             <tr>
+              <th style="width: 35px"></th>
               <th>{{ language === 'RU' ? 'Растояние' : 'Distance' }} <span class="sortArrow">⇕</span></th>
               <th>{{ language === 'RU' ? 'Кол-во' : 'Qty' }} <span class="sortArrow">⇕</span></th>
               <th>{{ language === 'RU' ? 'Цена' : 'Price' }} <span class="sortArrow">⇕</span></th>
@@ -64,6 +65,12 @@
                 v-bind:class="{my : market.my_orders.hasOwnProperty(order.Id)}"
                 @click="buyFromOrder(order)"
                 class="marketRow">
+
+              <td style="width: 35px">
+                <div class="order_icon">
+                  <app-background-item-cell v-bind:slotItem="{type: order.TypeItem, item: order.Item}"/>
+                </div>
+              </td>
 
               <td v-if="order.path_jump === -1"><span class='basePath'>{{ language === 'RU' ? 'База' : 'Base' }}</span>
               </td>
@@ -85,6 +92,7 @@
         <div id="BuyOrdersBlock">
           <table class="ordersTable" id="marketBuyTable">
             <tr>
+              <th style="width: 35px"></th>
               <th>{{ language === 'RU' ? 'Растояние' : 'Distance' }} <span class="sortArrow">⇕</span></th>
               <th>{{ language === 'RU' ? 'Кол-во' : 'Qty' }} <span class="sortArrow">⇕</span></th>
               <th>{{ language === 'RU' ? 'Цена' : 'Price' }} <span class="sortArrow">⇕</span></th>
@@ -99,6 +107,12 @@
                 v-bind:class="{my : market.my_orders.hasOwnProperty(order.Id)}"
                 @click="sellInOrder(order)"
                 class="marketRow">
+
+              <td style="width: 35px">
+                <div class="order_icon">
+                  <app-background-item-cell v-bind:slotItem="{type: order.TypeItem, item: order.Item}"/>
+                </div>
+              </td>
 
               <td v-if="order.path_jump === -1"><span class='basePath'>{{ language === 'RU' ? 'База' : 'Base' }}</span>
               </td>
@@ -121,6 +135,7 @@
       <div id="MyOrdersBlock" v-if="myOrder">
         <table class="ordersTable" id="marketMyTable">
           <tr>
+            <th style="width: 35px"></th>
             <th>{{ language === 'RU' ? 'Растояние' : 'Distance' }}<span class="sortArrow">&#x21D5;</span></th>
             <th>{{ language === 'RU' ? 'Кол-во' : 'Qty' }}<span class="sortArrow">&#x21D5;</span></th>
             <th>{{ language === 'RU' ? 'Цена' : 'Price' }}<span class="sortArrow">&#x21D5;</span></th>
@@ -134,6 +149,12 @@
           </tr>
 
           <tr v-for="order in market.my_orders" class="marketRow myOrders">
+
+            <td style="width: 35px">
+              <div class="order_icon">
+                <app-background-item-cell v-bind:slotItem="{type: order.TypeItem, item: order.Item}"/>
+              </div>
+            </td>
 
             <td v-if="order.path_jump === -1">
               <span class='basePath'>{{ language === 'RU' ? 'База' : 'Base' }}</span>
@@ -259,15 +280,15 @@ export default {
     resize(event, ui, el) {
       el.find('#listItem').css("height", el.height() - 40);
       el.find('#ordersBlock').css("height", el.height() - 7);
-      el.find('#sellOrdersBlock').css("height", el.height() / 2 - 74);
-      el.find('#BuyOrdersBlock').css("height", el.height() / 2 - 74);
+      el.find('#sellOrdersBlock').css("height", el.height() / 2 - 59);
+      el.find('#BuyOrdersBlock').css("height", el.height() / 2 - 59);
       el.find('#MyOrdersBlock').css("height", el.height() - 26);
-      el.find('#ordersBlock').css("width", el.width() - 217);
-      el.find('#sellOrdersBlock').css("width", el.width() - 221);
-      el.find('#BuyOrdersBlock').css("width", el.width() - 221);
-      el.find('#MyOrdersBlock').css("width", el.width() - 221);
-      el.find('#selectItemIcon').css("width", 65);
-      el.find('#selectItemIcon').css("height", 65);
+      el.find('#ordersBlock').css("width", el.width() - 157);
+      el.find('#sellOrdersBlock').css("width", el.width() - 161);
+      el.find('#BuyOrdersBlock').css("width", el.width() - 161);
+      el.find('#MyOrdersBlock').css("width", el.width() - 161);
+      el.find('#selectItemIcon').css("width", 45);
+      el.find('#selectItemIcon').css("height", 45);
     },
     detail() {
       if (this.getSlotIcon.item.hasOwnProperty('id')) {
@@ -418,8 +439,8 @@ export default {
 }
 
 #selectItemIcon {
-  height: 65px;
-  width: 65px;
+  width: 45px;
+  height: 45px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 1);
   background: rgba(63, 70, 74, 0.5);
   margin-top: 5px;
@@ -433,7 +454,7 @@ export default {
   color: rgba(255, 255, 255, 0.8);
   text-shadow: 0 0 4px black;
   min-width: 180px;
-  margin: 7px 0 0 10px;
+  margin: 3px 0 0 10px;
   float: left;
   text-align: left;
 }
@@ -444,7 +465,6 @@ export default {
   color: rgba(255, 255, 255, 0.8);
   text-shadow: 0 0 4px black;
   text-align: left;
-  margin-top: 4px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -465,7 +485,7 @@ export default {
   margin: 0 0 5px 2px;
   overflow-y: scroll;
   border-radius: 2px;
-  box-shadow: inset 0 0 5px black;
+  box-shadow: inset 0 0 2px black;
   background: #89969c;
   height: 112px;
   width: 630px;
@@ -480,16 +500,17 @@ export default {
   width: 110px;
   border-radius: 5px 5px 0 0;
   margin-left: 10px;
-  text-align: center;
+  text-align: left;
+  text-indent: 6px;
   background: rgb(221, 112, 52);
   color: rgba(255, 255, 255, 0.8);
   font-size: 13px;
-  line-height: 17px;
+  line-height: 18px;
   height: 17px;
   user-select: none;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
+  text-shadow: 1px 1px 1px rgb(0 0 0);
   font-weight: bold;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 1);
+  box-shadow: 0 0 2px rgb(0 0 0);
 }
 
 .marketRow {
@@ -507,8 +528,9 @@ export default {
 .marketRow td {
   border-right: 1px solid rgba(0, 0, 0, 0.2);
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  color: rgba(255, 255, 255, 0.8);
-  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
+  color: white;
+  font-weight: 900;
+  text-shadow: 1px 1px 1px black;
 }
 
 #BuyDialogButtonWrapper input[type=button] {
@@ -518,7 +540,7 @@ export default {
 }
 
 #leftBar {
-  width: 200px;
+  width: 152px;
   display: inline-block;
 }
 
@@ -547,7 +569,7 @@ export default {
 #headMarket {
   border-radius: 4px;
   height: 20px;
-  width: 200px;
+  width: 140px;
   margin: 5px 5px 5px 2px;
   padding-top: 4px;
   position: relative;
@@ -578,7 +600,7 @@ export default {
 #balance {
   text-align: left;
   color: rgb(255, 255, 255);
-  font-size: 15px;
+  font-size: 9px;
   box-shadow: inset 0 0 2px black;
   height: 22px;
   line-height: 24px;
@@ -591,17 +613,17 @@ export default {
 }
 
 .marketButton {
-  width: 80px;
+  width: 60px;
   display: inline-block;
   text-align: center;
   transition: 100ms;
   background: rgba(255, 129, 0, 0.75);
-  height: 20px;
-  margin: 2px;
+  height: 14px;
   border-radius: 5px;
   color: #fff;
-  line-height: 20px;
+  line-height: 15px;
   box-shadow: 0 0 2px #000;
+  font-size: 10px;
 }
 
 .marketButton:hover {
@@ -677,6 +699,7 @@ export default {
   position: sticky;
   top: 0;
   padding-top: 2px;
+  z-index: 10;
 }
 
 .ordersTable tr {
@@ -688,11 +711,11 @@ export default {
 }
 
 #marketBuyTable td {
-  width: 12%;
+  width: 14%;
 }
 
 #marketSellTable td {
-  width: 14%;
+  width: 16%;
 }
 
 #MyOrdersBlock td {
@@ -721,18 +744,25 @@ export default {
 
 .basePath {
   margin-left: -10px;
-  color: rgba(255, 255, 255, 0.8);
-  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
 }
 
 #selectItemIcon input {
+  height: 15px;
+  width: 15px;
+  text-align: center;
+  border: 2px solid rgb(173, 173, 173);
+  border-radius: 50%;
+  font-weight: 900;
+  background: #138edc;
+  box-shadow: 0 0 2px black;
+  z-index: 10;
   position: absolute;
-  bottom: 0;
+  top: 0;
+  right: 0;
+  opacity: 0.75;
   font-size: 10px;
-  left: -1px;
-  height: 16px;
-  line-height: 15px;
-  opacity: 0.5;
+  line-height: 11px;
+  padding: 0;
 }
 
 #selectItemIcon input:hover {
@@ -745,6 +775,14 @@ export default {
 
 .marketRow.my {
   background: rgb(28, 109, 179);
+}
+
+.order_icon {
+  position: relative;
+  height: 35px;
+  width: 35px;
+  padding: 0;
+  margin: 0;
 }
 </style>
 

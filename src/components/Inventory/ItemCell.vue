@@ -284,7 +284,7 @@ export default {
         zIndex: 999,
         helper: 'clone',
         appendTo: "body",
-        delay: 200,
+        delay: 0,
         distance: 10,
         opacity: 0.55,
         refreshPositions: true,
@@ -357,6 +357,12 @@ export default {
   position: relative;
   overflow: hidden;
   border: 1px solid #959595;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .InventoryCell:hover {
@@ -368,12 +374,13 @@ export default {
 .QuantityItems {
   z-index: 1;
   position: absolute;
-  bottom: 2px;
-  left: 2px;
-  font-size: 9px;
+  font-family: 'Audiowide', cursive;
   color: #fff16f;
   text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
   pointer-events: none;
+  bottom: 4px;
+  left: 4px;
+  font-size: 10px;
 }
 
 .InventoryCell.ui-selecting {
@@ -409,7 +416,7 @@ export default {
 .itemTax {
   position: absolute;
   top: 5px;
-  font-size: 12px;
+  font-size: 9px;
   color: #ff4c4c;
   text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
   width: 90%;
@@ -454,6 +461,10 @@ export default {
 .infinite {
   font-size: 18px;
   line-height: 10px;
+}
+
+.InventoryCell {
+
 }
 </style>
 

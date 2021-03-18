@@ -6,6 +6,7 @@ import {GetGlobalPos} from "../map/gep_global_pos";
 import {MoveSprite} from "../utils/move_sprite";
 import {SetBodyAngle} from "./rotate";
 import {Scene} from "../create";
+import {DrawTrackTrace} from "./track_trace";
 
 //let oldTime = 0;
 
@@ -47,40 +48,37 @@ function MoveTo(unit, ms) {
 
   HideMarkByTypeAndID("unit", path.id);
 
-  if (path.s !== 0 || path.av * 1000 !== 0) {
+  if (path.id === gameStore.user_squad_id) {
+    store.commit({
+      type: 'setUnitSpeed',
+      speed: path.s,
+    });
+  }
 
-    if (path.id === gameStore.user_squad_id) {
-      store.commit({
-        type: 'setUnitSpeed',
-        speed: path.s,
-      });
+  let size = GetSpriteSizeByMapLvl(path.z, unit.body.scale / 100, 0.02).x;
+  MoveSprite(unit.sprite, pos.x, pos.y, ms, size);
+
+  if (path.sky) {
+    if (path.z !== unit.sprite.depth) {
+      unit.sprite.setDepth(path.z);
     }
 
-    let size = GetSpriteSizeByMapLvl(path.z, unit.body.scale / 100, 0.02).x;
-    MoveSprite(unit.sprite, pos.x, pos.y, ms, size);
+    let shadowPos = GetOffsetShadowByMapLvl(path.z, pos.x, pos.y, 0, 2.5, path.m);
+    let dist = Phaser.Math.Distance.Between(pos.x, pos.y, shadowPos.x, shadowPos.y);
 
-    if (path.sky) {
-      if (path.z !== unit.sprite.depth) {
-        unit.sprite.setDepth(path.z);
-      }
 
-      let shadowPos = GetOffsetShadowByMapLvl(path.z, pos.x, pos.y, 0, 2.5, path.m);
-      let dist = Phaser.Math.Distance.Between(pos.x, pos.y, shadowPos.x, shadowPos.y);
-
-      SetBodyAngle(unit, path.r, ms, true, dist * (1 / unit.sprite.scale));
-    } else {
-      if (35 !== unit.sprite.depth) {
-        unit.sprite.setDepth(35);
-      }
-      SetBodyAngle(unit, path.r, ms, true, Scene.shadowXOffset * 3);
-    }
+    SetBodyAngle(unit, path.r, ms, true, dist * (1 / unit.sprite.scale));
   } else {
-    if (path.id === gameStore.user_squad_id) {
-      store.commit({
-        type: 'setUnitSpeed',
-        speed: 0,
-      });
+    if (35 !== unit.sprite.depth) {
+      unit.sprite.setDepth(35);
     }
+    SetBodyAngle(unit, path.r, ms, true, Scene.shadowXOffset * 3);
+  }
+  if (path.id === gameStore.user_squad_id) {
+    store.commit({
+      type: 'setUnitSpeed',
+      speed: path.s,
+    });
   }
 
   unit.speedDirection = path.d;
@@ -115,6 +113,7 @@ function AnimationMove(unit) {
 
     speedBody(unit.speed, unit.sprite.bodyBottomLeft.anims);
     speedBody(unit.speed, unit.sprite.bodyBottomRight.anims);
+    DrawTrackTrace(unit)
 
   } else {
     if (unit.angularVelocity !== 0) {
@@ -140,6 +139,8 @@ function AnimationMove(unit) {
 
       speedBody(unit.angularVelocity, unit.sprite.bodyBottomLeft.anims);
       speedBody(unit.angularVelocity, unit.sprite.bodyBottomRight.anims);
+      DrawTrackTrace(unit)
+
     } else {
       unit.sprite.bodyBottomLeft.anims.pause();
       unit.sprite.bodyBottomRight.anims.pause();
@@ -186,4 +187,4 @@ function speedBody(speed, anim) {
   }
 }
 
-export {MoveTo, MoveStop, AnimationMove, AddUnitMoveBufferData}
+export {MoveTo, AnimationMove, AddUnitMoveBufferData}

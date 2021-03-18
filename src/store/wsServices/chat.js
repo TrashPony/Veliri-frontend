@@ -1,10 +1,8 @@
 import router from "../../router/router";
-import {unitInfo} from "../../game/unit/mouse_body_over";
-import {gameStore} from "../../game/store";
 import {showMessage} from "../../game/text/message";
 import {logMsg} from "./log";
 import {addError} from "./inventory";
-import Vue from "vue";
+import {gameStore} from "../../game/store";
 
 export default function createChatPlugin(WS) {
   return store => {
@@ -110,6 +108,13 @@ function ChatReader(data, store, ws) {
     });
   }
 
+  if (data.e === 'GetFractionNews') {
+    store.commit({
+      type: 'setFractionNews',
+      news: data.news,
+    });
+  }
+
   if (data.event === "setWindowsState") {
 
     store.commit({
@@ -141,6 +146,7 @@ function ChatReader(data, store, ws) {
   }
 
   if (data.event === "UpdateUsers" || data.event === 'ChangeGroup') {
+    //console.log(data)
     store.commit({
       type: 'updateChatUsers',
       group: data.group,
@@ -157,11 +163,12 @@ function ChatReader(data, store, ws) {
   }
 
   // other reader
-  if (data.event === "openMapMenu") {
+  if (data.e === "openMapMenu") {
     store.commit({
       type: 'setWorldMapState',
       maps: data.maps,
       id: data.id,
+      defenders: data.defenders
     });
   }
 
@@ -186,10 +193,16 @@ function ChatReader(data, store, ws) {
     }
   }
 
-  if (data.event === "dialog" || data.event === "openDepartmentOfEmployment") {
-
+  if (data.e === "dialog" || data.event === "dialog" || data.event === "openDepartmentOfEmployment") {
     if (data.dialog_action) {
       dialogAction(data.dialog_action, store);
+    }
+
+    if (data.mission && data.reward_items) {
+      data.mission.rewardItems = [];
+      for (let i in data.reward_items) {
+        data.mission.rewardItems.push(JSON.parse(data.reward_items[i]))
+      }
     }
 
     store.commit({
@@ -200,7 +213,12 @@ function ChatReader(data, store, ws) {
     });
   }
 
-  if (data.event === "GetMissions") {
+  if (data.e === "GetMissions") {
+
+    if (data.actions && data.missions[data.mission_uuid]) {
+      data.missions[data.mission_uuid].actions = JSON.parse(data.actions);
+    }
+
     store.commit({
       type: 'setMission',
       missions: data.missions,
@@ -339,20 +357,21 @@ function ChatReader(data, store, ws) {
     });
   }
 
-  if (data.event === "GetViolators") {
+  if (data.e === "UserViolator") {
+    store.commit({
+      type: 'setViolator',
+      violator: data.v,
+      time: data.et,
+    });
+  }
+
+  if (data.e === "GetViolators") {
     store.commit({
       type: 'setViolators',
-      violators: data.violators,
-      distressSignals: data.distress_signals,
+      violators: data.v,
+      distressSignals: data.ds,
     });
-
-    for (let userID in data.violators) {
-      for (let unitID in gameStore.units) {
-        if (Number(userID) === Number(gameStore.units[unitID].owner_id)) {
-          unitInfo(gameStore.units[unitID], gameStore.units[unitID].sprite, gameStore.units[unitID].sprite.unitBody)
-        }
-      }
-    }
+    UpdateViolatorsTime(data)
   }
 
   if (data.event === "getMapInfo") {
@@ -401,6 +420,20 @@ function ChatReader(data, store, ws) {
       count: data.c,
       wait_player: data.wp,
       battle: data.b,
+    });
+  }
+
+  if (data.e === "getAllFullMission") {
+    store.commit({
+      type: 'setAllFullMissions',
+      data: data,
+    });
+  }
+
+  if (data.e === "TrackMission") {
+    store.commit({
+      type: 'setTrackMission',
+      data: data,
     });
   }
 
@@ -544,23 +577,35 @@ function globalProgressTraining(lvl, ws) {
 }
 
 function notify(data, store, ws) {
+
+  let deleteNotify = function (uuid) {
+    store.getters.getWSByService('chat').socket.send(JSON.stringify({
+      event: "DeleteNotify",
+      uuid: uuid,
+    }));
+  }
+
   if (data.notify.event === "start_battle") {
     if (location.href.includes('lobby')) {
       router.push('/global');
     }
+    deleteNotify(data.notify.uuid);
   }
 
   if (data.notify.event === "end_battle") {
     if (location.href.includes('global')) {
       router.push('/lobby');
     }
+    deleteNotify(data.notify.uuid);
   }
 
   if (data.notify.event === "battle_kill_broadcast") {
+    //console.log(data)
     store.commit({
       type: 'addKillsNotify',
       notify: data.notify,
     });
+    deleteNotify(data.notify.uuid);
     return;
   }
 
@@ -569,6 +614,7 @@ function notify(data, store, ws) {
       type: 'addPointsNotify',
       notify: data.notify,
     });
+    deleteNotify(data.notify.uuid);
     return;
   }
 
@@ -576,11 +622,22 @@ function notify(data, store, ws) {
     ws.send(JSON.stringify({
       event: "getCurrentDialog",
     }));
+    deleteNotify(data.notify.uuid);
     return;
   }
 
   if (data.notify.event === "group_exit_queue") {
     addError('Группа неготова', store)
+    deleteNotify(data.notify.uuid);
+    return;
+  }
+
+  if (data.notify.event === "update_credits") {
+    store.commit({
+      type: 'setCredits',
+      my_credits: data.notify.count,
+    });
+    deleteNotify(data.notify.uuid);
     return;
   }
 
@@ -594,6 +651,7 @@ function notify(data, store, ws) {
         forceOpen: true,
       });
     }
+    deleteNotify(data.notify.uuid);
     return;
   }
 
@@ -601,6 +659,7 @@ function notify(data, store, ws) {
     store.getters.getWSByService('inventory').socket.send(JSON.stringify({
       event: "openInventory"
     }));
+    deleteNotify(data.notify.uuid);
     return;
   }
 
@@ -609,8 +668,9 @@ function notify(data, store, ws) {
       type: 'addNotification',
       id: data.notify.uuid,
       removeSec: 5,
-      html: data.notify.text,
+      html: getSkillLvlUpMsg(store, data.notify),
     });
+    deleteNotify(data.notify.uuid);
   }
 
   store.commit({
@@ -618,7 +678,6 @@ function notify(data, store, ws) {
     notify: data.notify,
   });
 }
-
 
 function parseGroupHistory(group, history, store) {
   if (group) {
@@ -638,5 +697,42 @@ function parseGroupHistory(group, history, store) {
         }
       }
     }
+  }
+}
+
+function getSkillLvlUpMsg(store, notify) {
+  if (store.getters.getHandBook["skill"][store.getters.getSettings.Language][notify.text] && store.getters.getHandBook["skill"][store.getters.getSettings.Language][notify.text].hasOwnProperty('name')) {
+    let skillName = store.getters.getHandBook["skill"][store.getters.getSettings.Language][notify.text].name
+
+    if (store.getters.getSettings.Language === 'RU') {
+      return `Уровень <span class="importantly"> ${skillName} </span> повышен до
+                <span class="importantly"> ${notify.count} </span> уровня.`
+    } else {
+      return `Lvl up <span class="importantly"> ${skillName} </span> to
+                <span class="importantly"> ${notify.count} </span> level.`
+    }
+  } else {
+    return `<span class="importantly">[delete]</span>`
+  }
+}
+
+function UpdateViolatorsTime(data) {
+  gameStore.violators = data.v
+  for (let i in gameStore.violators) {
+
+    if (gameStore.violatorsUpdateTime[i]) {
+      clearInterval(gameStore.violatorsUpdateTime[i])
+    }
+
+    gameStore.violators[i].time *= 1000
+    gameStore.violatorsUpdateTime[i] = setInterval(function () {
+
+      if (!gameStore.violators[i] || !gameStore.violators[i].time || gameStore.violators[i].time <= 0) {
+        clearInterval(gameStore.violatorsUpdateTime[i])
+        return
+      }
+
+      gameStore.violators[i].time -= 200
+    }, 200)
   }
 }

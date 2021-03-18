@@ -1,9 +1,10 @@
 import {gameStore} from "../store";
-import {removeAllObj} from "../radar/object";
+import {removeAllObj, removeDrone, removeReservoir} from "../radar/object";
 import {deleteBullet} from "../bullet/remove";
 import {RemoveAllMark} from "../radar/marks";
 import {destroyAllSelectedSprite} from "../map_editor/create_select_sprite";
 import store from "../../store/store";
+import {RemoveShield} from "../shield/shield";
 
 function RemoveOldMap() {
 
@@ -25,10 +26,7 @@ function RemoveOldMap() {
   }
 
   for (let i in gameStore.shields) {
-    gameStore.shields[i].border.destroy();
-    gameStore.shields[i].sprite.destroy();
-
-    delete gameStore.shields[i];
+    RemoveShield(gameStore.shields[i].uuid)
   }
 
   for (let i in gameStore.mapEditorState.labels) {
@@ -42,6 +40,16 @@ function RemoveOldMap() {
     if (gameStore.spawns.hasOwnProperty(i)) {
       gameStore.spawns[i].destroy();
       delete gameStore.spawns[i];
+    }
+  }
+
+  for (let i in gameStore.reservoirs) {
+    removeReservoir(gameStore.reservoirs[i])
+  }
+
+  for (let i in gameStore.drones) {
+    if (gameStore.drones.hasOwnProperty(i)) {
+      removeDrone(gameStore.drones[i], i)
     }
   }
 

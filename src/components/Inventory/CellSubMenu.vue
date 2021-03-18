@@ -26,6 +26,10 @@
                  :value="language === 'RU' ? 'Починить' : 'Repair'">
           <input v-if="point==='remove'" @click="remove" type="button"
                  :value="language === 'RU' ? 'Снять' : 'Take off'">
+          <input v-if="point==='to_hold'" @click="moveItem('storage', 'squadInventory')" type="button"
+                 :value="language === 'RU' ? 'В трюм' : 'To hold'">
+          <input v-if="point==='to_storage'" @click="moveItem('squadInventory', 'storage')" type="button"
+                 :value="language === 'RU' ? 'На склад' : 'To storage'">
           <input v-if="point==='cancel'" @click="cancel" type="button"
                  :value="language === 'RU' ? 'Отменить' : 'Cancel'">
         </template>
@@ -37,33 +41,62 @@
          v-bind:style="{ left: subMenuProps.x + 'px', top: subMenuProps.y + 'px' }">
 
       <div class="wrapper">
-        <div>
-          <div class="sellIconItem">
+        <div style="float: left; width: 100%;">
+          <div class="iconItem">
             <app-background-item-cell v-bind:slotItem="subMenuProps.slot"/>
           </div>
-          <div class="sellNameItem">{{ itemName }}</div>
-        </div>
 
-        <div style="clear: both; padding: 5px;">
-          <div style="clear: both; margin-top: 5px;">
-            <span>{{language === 'RU' ? 'Кол-во' : 'Qty'}}</span>
-            <input id="sellQuantity" v-model="cellProps.count" type="number" min="1" :max="subMenuProps.slot.quantity">
-          </div>
+          <div>
+            <div class="range_button" style="border-radius: 5px 0 0 5px" @click="splitChangeCount(-1)">-1</div>
+            <input type="range" v-model="cellProps.count" min="1" :max="subMenuProps.slot.quantity">
+            <div class="range_button" @click="splitChangeCount(1)">+1</div>
 
-          <div style="margin-top: 5px;">
-            <span>{{language === 'RU' ? 'Цена за шт.' : 'Price per piece'}}</span>
-            <input id="sellPrice" v-model="cellProps.price" min="1" type="number">
-          </div>
+            <input type="number" v-model="cellProps.count" min="1" :max="subMenuProps.slot.quantity"/>
 
-          <div style="margin-top: 25px;">
-            <span>{{language === 'RU' ? 'Всего выручки:' : 'Total revenue:'}} </span>
-            <output>{{ cellProps.count * cellProps.price }}</output>
+            <div style="width: calc(100% - 53px); float: left; margin-bottom: 5px;">
+              <span>{{ language === 'RU' ? 'Цена за шт.' : 'Price per piece' }}</span>
+              <input id="sellPrice" v-model="cellProps.price" min="1" type="number">
+            </div>
           </div>
         </div>
 
-        <input type="button" @click="cancel" style="pointer-events: auto; float: left" :value="language === 'RU' ? 'Отменить' : 'Cancel'">
-        <input type="button" @click="cell" style="pointer-events: auto; float: right" :value="language === 'RU' ? 'Продать' : 'Sell'">
+        <div style="width: 100%; float: left;">
+          <input type="button" :value="language === 'RU' ? 'Отмена' : 'Cancel'" @click="cancel"
+                 style="float: left; margin-left: 10px;">
+          <input type="button" :value="language === 'RU' ? 'Продать' : 'Sell'" @click="cell"
+                 style="float: right; margin-right: 10px;">
+        </div>
       </div>
+      <!--      <div class="wrapper">-->
+      <!--        <div>-->
+      <!--          <div class="sellIconItem">-->
+      <!--            <app-background-item-cell v-bind:slotItem="subMenuProps.slot"/>-->
+      <!--          </div>-->
+      <!--          <div class="sellNameItem">{{ itemName }}</div>-->
+      <!--        </div>-->
+
+      <!--        <div style="clear: both; padding: 5px;">-->
+      <!--          <div style="clear: both; margin-top: 5px;">-->
+      <!--            <span>{{ language === 'RU' ? 'Кол-во' : 'Qty' }}</span>-->
+      <!--            <input id="sellQuantity" v-model="cellProps.count" type="number" min="1" :max="subMenuProps.slot.quantity">-->
+      <!--          </div>-->
+
+      <!--          <div style="margin-top: 5px;">-->
+      <!--            <span>{{ language === 'RU' ? 'Цена за шт.' : 'Price per piece' }}</span>-->
+      <!--            <input id="sellPrice" v-model="cellProps.price" min="1" type="number">-->
+      <!--          </div>-->
+
+      <!--          <div style="margin-top: 25px;">-->
+      <!--            <span>{{ language === 'RU' ? 'Всего выручки:' : 'Total revenue:' }} </span>-->
+      <!--            <output>{{ cellProps.count * cellProps.price }}</output>-->
+      <!--          </div>-->
+      <!--        </div>-->
+
+      <!--        <input type="button" @click="cancel" style="pointer-events: auto; float: left"-->
+      <!--               :value="language === 'RU' ? 'Отменить' : 'Cancel'">-->
+      <!--        <input type="button" @click="cell" style="pointer-events: auto; float: right"-->
+      <!--               :value="language === 'RU' ? 'Продать' : 'Sell'">-->
+      <!--      </div>-->
     </div>
 
     <div id="QuantityRange"
@@ -74,12 +107,18 @@
           <div class="iconItem">
             <app-background-item-cell v-bind:slotItem="subMenuProps.slot"/>
           </div>
+
+          <div class="range_button" style="border-radius: 5px 0 0 5px" @click="splitChangeCount(-1)">-1</div>
           <input type="range" v-model="splitProps.count" min="1" :max="subMenuProps.slot.quantity">
-          <output>{{ splitProps.count }}</output>
+          <div class="range_button" @click="splitChangeCount(1)">+1</div>
+
+          <input type="number" v-model="splitProps.count" min="1" :max="subMenuProps.slot.quantity"/>
         </div>
 
-        <input type="button" value="Отмена" @click="cancel" style="float: left;">
-        <input type="button" value="Разделить" @click="split" style="float: right; margin-right: 10px;">
+        <div style="width: 150px; float: left;">
+          <input type="button" value="Отмена" @click="cancel" style="float: left;">
+          <input type="button" value="Разделить" @click="split" style="float: right; margin-right: 10px;">
+        </div>
       </div>
     </div>
   </div>
@@ -87,6 +126,7 @@
 
 <script>
 import BackgroundItemCell from './BackgroundItemCell'
+import Input from "../Chat/Input";
 
 export default {
   name: "CellSubMenu",
@@ -105,6 +145,25 @@ export default {
     }
   },
   methods: {
+    moveItem(src, dst) {
+      this.$store.getters.getWSByService('inventory').socket.send(JSON.stringify({
+        event: "itemsToDst",
+        source: src,
+        destination: dst,
+        storage_slots: {[Number(this.$props.subMenuProps.slot.number)]: 0},
+      }));
+      this.cancel()
+    },
+    splitChangeCount(change) {
+      this.splitProps.count += change
+      if (this.splitProps.count < 1) {
+        this.splitProps.count = 1
+      }
+
+      if (this.splitProps.count > this.$props.subMenuProps.slot.quantity) {
+        this.splitProps.count = Number(this.$props.subMenuProps.slot.quantity)
+      }
+    },
     splitDialog() {
       this.action = 'split';
     },
@@ -246,6 +305,7 @@ export default {
     }
   },
   components: {
+    Input,
     AppBackgroundItemCell: BackgroundItemCell,
   }
 }
@@ -271,84 +331,30 @@ export default {
   margin: 2px auto 0;
   width: 100%;
   pointer-events: auto;
-  font-size: 9px;
+  font-size: 11px;
   text-align: center;
   transition: 100ms;
   background: rgba(255, 129, 0, 0.6);
-  height: 16px;
+  height: 18px;
   border-radius: 5px;
   color: #fff;
   line-height: 15px;
   box-shadow: 0 0 2px #000;
-}
-
-#sellDialog {
-  position: absolute;
-  border-radius: 5px;
-  width: 270px;
-  padding: 3px;
-  border: 1px solid rgba(37, 160, 225, 0.2);
-  background: rgba(8, 138, 210, 0.2);
-  z-index: 91;
-  filter: drop-shadow(0 0 2px black);
-  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
-}
-
-#sellDialog .sellIconItem {
-  height: 35px;
-  width: 35px;
-  position: relative;
-  margin: 4px;
-  float: left;
-}
-
-#sellDialog .sellNameItem {
-  color: yellow;
-  float: left;
-  margin-left: 5px;
-  font-size: 12px;
-  margin-top: 7px;
+  cursor: pointer;
 }
 
 #sellDialog span {
-  display: inline-block;
-  width: 100px;
-  text-align: left;
-  font-size: 12px;
+  font-size: 10px;
   color: bisque;
-  margin-left: 6px;
+  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
 }
 
-#sellDialog input[type=number] {
-  width: 100px;
+#sellDialog #sellPrice {
+  margin: 0;
   float: right;
 }
 
-#sellDialog output {
-  width: 60px;
-  color: #ff7800;
-  display: inline-block;
-  padding-left: 5px;
-  padding-right: 5px;
-  float: right;
-}
-
-#sellDialog input[type="button"] {
-  margin: 6px 10px 4px;
-  width: 65px;
-  font-size: 9px;
-  display: inline-block;
-  text-align: center;
-  transition: 100ms;
-  background: rgba(255, 129, 0, 0.6);
-  height: 16px;
-  border-radius: 5px;
-  color: #fff;
-  line-height: 15px;
-  box-shadow: 0 0 2px #000;
-}
-
-#QuantityRange {
+#QuantityRange, #sellDialog {
   position: absolute;
   left: calc(50% - 100px);
   top: 27px;
@@ -364,7 +370,11 @@ export default {
   padding: 3px 3px 5px;
 }
 
-#QuantityRange .iconItem {
+#sellDialog {
+  height: 77px;
+}
+
+#QuantityRange .iconItem, #sellDialog .iconItem {
   position: relative;
   border-radius: 5px;
   width: 36px;
@@ -379,16 +389,15 @@ export default {
   float: left;
 }
 
-#QuantityRange input[type=range] {
+#QuantityRange input[type=range], #sellDialog input[type=range] {
   float: left;
   margin-top: 10px;
-  margin-left: 2px;
-  width: 100px;
+  width: 70px;
   margin-bottom: 5px;
   padding: 0;
 }
 
-#QuantityRange input[type=button] {
+#QuantityRange input[type=button], #sellDialog input[type=button] {
   width: 65px;
   margin-top: 3px;
   font-size: 9px;
@@ -411,14 +420,26 @@ export default {
   background: rgba(255, 129, 0, 1);
 }
 
-#QuantityRange output {
+#QuantityRange input[type=number], #sellDialog input[type=number] {
   float: right;
   margin-top: 10px;
-  margin-right: 15px;
+  margin-right: 5px;
   color: #ff7800;
   text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
+  width: 27px;
+  height: 14px;
+  text-indent: 1px;
 }
 
+#QuantityRange input[type=number]::-webkit-inner-spin-button, #sellDialog input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+#QuantityRange input[type=number], #sellDialog input[type=number] {
+  -moz-appearance: textfield;
+}
 
 .headSubMenu {
   height: 30px;
@@ -459,5 +480,36 @@ export default {
   height: calc(100% - 8px);
   width: calc(100% - 8px);
   padding: 3px;
+}
+
+.range_button {
+  width: 15px;
+  height: 14px;
+  float: left;
+  font-size: 9px;
+  display: inline-block;
+  text-align: center;
+  transition: 100ms;
+  background: rgba(255, 129, 0, 0.6);
+  border-radius: 0 5px 5px 0;
+  color: #fff;
+  line-height: 15px;
+  box-shadow: 0 0 2px #000;
+  margin-top: 11px;
+  cursor: pointer;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+.range_button:hover {
+  background: rgba(255, 129, 0, 1);
+}
+
+.range_button:active {
+  transform: scale(0.98);
 }
 </style>

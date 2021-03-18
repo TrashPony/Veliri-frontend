@@ -19,15 +19,17 @@
       </div>
 
       <div v-if="slot.slot && (slot.active || slot.on) && modes(slot.slot).length > 0">
-        <div class="mode"
-             v-for="mode in modes(slot.slot)"
-             @click.stop="selectMode(mode.name, slot)"
-             v-bind:class="[{'active': slot.mode === mode.name}]"
-             :style="{left: mode.left, backgroundImage: modeIcon(mode.name)}">
+        <div class="modes">
+          <div class="mode"
+               v-for="mode in modes(slot.slot)"
+               @click.stop="selectMode(mode.name, slot)"
+               v-bind:class="[{'active': slot.mode === mode.name}]"
+               :style="{backgroundImage: modeIcon(mode.name)}">
 
-          <div class="title">{{ mode.title }}</div>
+            <div class="title">{{ mode.title }}</div>
 
-          <app-change-weapon-ammo v-if="mode.name === 'change_weapon_ammo' && subAmmoOpen" v-bind:ammo="ammo"/>
+            <app-change-weapon-ammo v-if="mode.name === 'change_weapon_ammo' && subAmmoOpen" v-bind:ammo="ammo"/>
+          </div>
         </div>
       </div>
 
@@ -87,7 +89,7 @@ export default {
 
               let draggable = ui.draggable;
 
-              console.log(draggable.data("slotData"))
+              //console.log(draggable.data("slotData"))
               // если родитель конструктор то это снятие эквипа с тушки, там свои методы
               if (draggable.data("slotData").parent === "Constructor") {
                 app.$store.getters.getWSByService('inventory').socket.send(JSON.stringify({
@@ -102,7 +104,7 @@ export default {
                   event: "ItemToEquipPanel",
                   source: draggable.data("slotData").parent,
                   panel_slot: number,
-                  storage_slots: draggable.data("selectedItems").slotsNumbers
+                  src_slot: draggable.data("selectedItems").slotsNumbers[0]
                 }));
               } else if (draggable.data("slotData").parent === "equipPanel") {
                 app.$store.getters.getWSByService('inventory').socket.send(JSON.stringify({
@@ -392,14 +394,27 @@ export default {
 <style scoped>
 .SquadBarEquipCell {
   float: left;
-  height: 46px;
-  width: 46px;
+  height: 40px;
+  width: 40px;
   background-color: #585858;
   border-radius: 5px;
-  box-shadow: inset 0 0 2px, 0 0 2px;
-  margin: 2px;
+  margin: 0 1px;
   position: relative;
   border: 2px solid rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 1200px) {
+  .SquadBarEquipCell {
+    height: 35px;
+    width: 35px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .SquadBarEquipCell {
+    height: 30px;
+    width: 30px;
+  }
 }
 
 .SquadBarEquipCell.weapon {
@@ -563,16 +578,21 @@ export default {
   pointer-events: none;
 }
 
+.modes {
+  position: absolute;
+  top: -53px;
+  left: 2px;
+}
+
 .mode {
   border: 1px solid #2e2e2e;
-  position: absolute;
-  height: 26px;
-  width: 26px;
+  height: 20px;
+  width: 20px;
   border-radius: 2px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
   background-color: rgba(127, 127, 127, 0.8);
-  top: -53px;
   background-size: cover;
+  margin-bottom: 2px;
 }
 
 .mode .title {

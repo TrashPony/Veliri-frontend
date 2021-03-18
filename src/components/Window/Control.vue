@@ -2,7 +2,7 @@
   <div class="windowsHead"
        @mousedown="mouseDown"
        @mouseup="mouseUp">
-    {{ head }}
+    <span class="windowsHeadTitle">{{ head }}</span>
 
     <div class="closeWindowButton" v-if="close" @click="closeWindow"/>
 
@@ -78,14 +78,14 @@ export default {
       let top = $(block).position().top;
       let left = $(block).position().left;
 
-      if (top < 0) top = 0;
-      if ((top + $(block).outerHeight()) - $(window).height() > 0) {
-        top = $(window).height() - $(block).outerHeight()
+      if (top < 5) top = 5;
+      if ((top + $(block).outerHeight() + 10) - $(window).height() > 0) {
+        top = $(window).height() - $(block).outerHeight() - 10
       }
 
-      if (left < 0) left = 0;
-      if ((left + $(block).outerWidth()) - $(window).width() > 0) {
-        left = $(window).width() - $(block).outerWidth()
+      if (left < 5) left = 5;
+      if ((left + $(block).outerWidth() + 5) - $(window).width() > 0) {
+        left = $(window).width() - $(block).outerWidth() - 5
       }
 
       //console.log(block.id)
@@ -108,8 +108,8 @@ export default {
             let left = ui.position.left;
 
             if (top < 5) ui.position.top = 5;
-            if ((top + $(block).outerHeight() + 5) - $(window).height() > 0) {
-              ui.position.top = $(window).height() - $(block).outerHeight() - 5
+            if ((top + $(block).outerHeight() + 10) - $(window).height() > 0) {
+              ui.position.top = $(window).height() - $(block).outerHeight() - 10
             }
 
             if (left < 5) ui.position.left = 5;
@@ -141,7 +141,7 @@ export default {
       if (this.$store.getters.getWSByService('chat').connect) {
         this.$store.getters.getWSByService('chat').socket.send(JSON.stringify({
           event: "setWindowState",
-          resolution: window.screen.availWidth + ':' + window.screen.availHeight,
+          resolution: $(window).width() + ':' + $(window).height(),
           name: id,
           left: Math.round(Number(left)),
           top: Math.round(Number(top)),

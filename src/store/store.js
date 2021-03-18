@@ -39,6 +39,11 @@ state.connections = {
     socket: null,
     connect: false,
     error: false,
+  },
+  dialog_editor: {
+    socket: null,
+    connect: false,
+    error: false,
   }
 };
 

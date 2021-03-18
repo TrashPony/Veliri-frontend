@@ -336,7 +336,7 @@ export default {
 #listItem {
   border-radius: 4px;
   height: 387px;
-  width: 210px;
+  width: 150px;
   margin: 0 5px 5px 2px;
   padding-top: 4px;
   overflow-y: scroll;
@@ -354,7 +354,7 @@ export default {
   box-shadow: 0 0 5px rgba(0, 0, 0, 1);
   color: rgba(255, 255, 255, 0.85);
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 9px;
   line-height: 14px;
   min-height: 15px;
   user-select: none;

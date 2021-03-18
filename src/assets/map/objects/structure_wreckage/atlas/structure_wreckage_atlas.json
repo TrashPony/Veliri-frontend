@@ -1,0 +1,164 @@
+{
+    "frames": [
+        {
+            "filename": "repair_station_damaged",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tank_turret_damaged",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 256,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "artillery_turret_damaged",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 0,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "energy_generator_damaged",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 256,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "beacon_damaged",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 512,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "jammer_generator_damaged",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 512,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "extractor_damaged",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 0,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "laser_turret_damaged",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 256,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "missile_defense_damaged",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 512,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "radar_damaged",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 768,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "shield_generator_damaged",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 768,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "storage_damaged",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 768,
+                "y": 512
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

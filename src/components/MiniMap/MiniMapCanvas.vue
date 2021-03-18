@@ -3,7 +3,11 @@
     <div class="back"></div>
     <canvas width="200" height="200" id="canvasFog" ref="canvasFog"/>
     <canvas width="200" height="200" id="canvasMapStatic" ref="canvasMapStatic"/>
-    <canvas width="200" height="200" id="canvasMap" ref="canvasMap" @mousedown="fastMove"/>
+    <canvas width="200" height="200" id="canvasMap" ref="canvasMap"
+            @mousemove="fastMove($event)"
+            @mouseup="moveCamera = false"
+            @mouseout="moveCamera = false"
+            @mousedown="fastMove($event, true)"/>
   </div>
 </template>
 
@@ -24,6 +28,7 @@ export default {
       scale: 1,
       map: 0,
       staticObjCount: 0,
+      moveCamera: false,
       updaters: {
         static: null,
         other: null,
@@ -66,7 +71,6 @@ export default {
 
         let canvasFog = app.$refs['canvasFog'];
         let ctx2 = canvasFog.getContext("2d");
-
         ctx2.clearRect(0, 0, canvas.width, canvas.height);
         app.fog(ctx2);
       }
@@ -85,25 +89,78 @@ export default {
     battleState() {
       return this.$store.getters.getBattleState
     },
+    getGlobalTarget() {
+      let target = this.$store.getters.getGlobalTarget;
+      let currentSector = this.$store.getters.getSectorState.id;
+
+      if (target) {
+        if (gameStore.bases) {
+          for (let i in gameStore.bases) {
+            if (Number(i) === Number(target.baseID)) {
+              return gameStore.bases[i];
+            }
+          }
+        }
+
+        if (target.points) {
+          for (let p of target.points) {
+            if (p.map_id === currentSector) return p;
+          }
+        }
+
+        if (target.mapID === currentSector) {
+          return null
+        } else {
+          this.$store.getters.getWSByService('global').socket.send(JSON.stringify({
+            event: "MoveToSector",
+            map_id: Number(target.mapID),
+            base_id: Number(target.baseID),
+            type: 'target',
+          }));
+        }
+      }
+
+      return null
+    },
   },
   methods: {
-    fastMove() {
+    fastMove(e, on) {
 
+      if (on) this.moveCamera = true;
+
+      if (this.moveCamera) {
+        let x = e.offsetX * this.offsetX;
+        let y = e.offsetY * this.offsetY;
+
+        let pos = GetGlobalPos(x, y, gameStore.map.id);
+
+        Scene.cameras.main.stopFollow();
+        Scene.cameras.main.centerOn(pos.x, pos.y);
+      }
     },
-    getObjectColorByUserID(userID) {
-      if (userID === gameStore.user.id) {
-        return {strokeColor: "rgba(0, 0, 0, 0.7)", fillColor: "#19ff00"}
+    getObjectColorByUserID(userID, fraction) {
+      if (gameStore.user && userID === gameStore.user.id) {
+        return {strokeColor: "rgb(0,0,0)", fillColor: "#19ff00"}
       } else {
         if (this.groupState.members && this.groupState.members.hasOwnProperty(userID)) {
-          return {strokeColor: "rgba(0, 0, 0, 0.7)", fillColor: "#00aaff"}
+          return {strokeColor: "rgba(0, 0, 0, 0.7)", fillColor: "#00ff1c"}
         } else {
           if (this.battleState) {
             return {strokeColor: "rgba(0, 0, 0, 0.7)", fillColor: "#ff0000"}
           } else {
-            return {strokeColor: "rgba(0, 0, 0, 0.7)", fillColor: "#ff7a00"}
+            if (fraction) {
+              if (fraction === 'Replics') return {strokeColor: "rgba(0, 0, 0, 0.7)", fillColor: "#ee7015"}
+              if (fraction === 'Reverses') return {strokeColor: "rgba(0, 0, 0, 0.7)", fillColor: "#659DFF"}
+              if (fraction === 'Explores') return {strokeColor: "rgba(0, 0, 0, 0.7)", fillColor: "#7aba00"}
+              if (fraction === 'APD') return {strokeColor: "rgba(0, 0, 0, 0.7)", fillColor: "#d7bc09"}
+            } else {
+              return {strokeColor: "rgba(0, 0, 0, 0.7)", fillColor: "#ffffff"}
+            }
           }
         }
       }
+
+      return {strokeColor: "rgba(0, 0, 0, 0.7)", fillColor: "#ffffff"}
     },
     fillGeoData(ctx, geoPoint) {
       let app = this;
@@ -261,6 +318,10 @@ export default {
             app.fillGeoData(ctx, obstacle)
           }
         }
+
+        // if (obj.type === "roads") {
+        //   app.createMapRing(ctx, obj.x, obj.y, 15, null, "rgb(11,110,103)")
+        // }
       }
 
       if (app.battleState) {
@@ -303,6 +364,9 @@ export default {
       // дальность обьектов
       for (let i in gameStore.objects) {
         let obj = gameStore.objects[i];
+
+        if (!gameStore.user) continue;
+
         if (obj && obj.work && (obj.owner_id === gameStore.user.id || (app.groupState && app.groupState.members && app.groupState.members.hasOwnProperty(obj.owner_id)) && obj.range_view > 0)) {
           app.createMapRing(ctx, obj.x, obj.y, obj.range_view, openFogColor, openFogColor)
         }
@@ -329,6 +393,16 @@ export default {
       // туман войны
       let userUnit = gameStore.units[gameStore.user_squad_id];
 
+      if (app.getGlobalTarget && userUnit && userUnit.sprite) {
+        ctx.beginPath();
+        ctx.strokeStyle = "#ffb700";
+        ctx.lineWidth = 3
+        ctx.moveTo(userUnit.x / app.offsetX, userUnit.y / app.offsetY);
+        ctx.lineTo(app.getGlobalTarget.x / app.offsetX, app.getGlobalTarget.y / app.offsetY);
+        ctx.stroke();
+        ctx.lineWidth = 1;
+      }
+
       // линии радара
       if (userUnit && userUnit.sprite) {
         if (userUnit.body.range_radar > 0) {
@@ -339,6 +413,9 @@ export default {
       // линии радара обьектов
       for (let i in gameStore.objects) {
         let obj = gameStore.objects[i];
+
+        if (!gameStore.user) continue;
+
         if (obj && (obj.owner_id === gameStore.user.id || (app.groupState && app.groupState.members && app.groupState.members.hasOwnProperty(obj.owner_id))) && obj.range_radar > 0) {
           app.createMapRing(ctx, obj.x, obj.y, obj.range_radar, "rgba(0, 0, 255, 0.5)", null)
         }
@@ -367,7 +444,7 @@ export default {
         if (obj && obj.geo_data && obj.geo_data.length > 0) {
 
           if (obj.build) {
-            let {strokeColor, fillColor} = app.getObjectColorByUserID(obj.owner_id)
+            let {strokeColor, fillColor} = app.getObjectColorByUserID(obj.owner_id, obj.fraction)
             app.createMapRect(ctx, obj.x, obj.y, 50, 50, strokeColor, fillColor, true, true)
           } else {
             for (let j in obj.geo_data) {
@@ -386,10 +463,8 @@ export default {
       }
 
       for (let i in gameStore.map.entry_points) {
-        for (let j in gameStore.map.entry_points[i].positions) {
-          let position = gameStore.map.entry_points[i].positions[j];
-          app.createMapRing(ctx, position.x, position.y, 30, "#00fff9", "rgba(155, 155, 0, 1)", true)
-        }
+        let position = gameStore.map.entry_points[i];
+        app.createMapRing(ctx, position.x, position.y, 30, "#00fff9", "rgba(155, 155, 0, 1)", true)
       }
 
       for (let id in gameStore.units) {
@@ -398,7 +473,7 @@ export default {
           let unit = gameStore.units[id]
           let size = (unit.body.width + unit.body.height) / 1.5;
 
-          let {strokeColor, fillColor} = app.getObjectColorByUserID(unit.owner_id)
+          let {strokeColor, fillColor} = app.getObjectColorByUserID(unit.owner_id, unit.of)
           app.createMapRhombus(ctx, unit.x, unit.y, size * 2, size * 3, strokeColor, fillColor, true);
 
           if (unit.owner_id === gameStore.user.id) {
@@ -431,11 +506,26 @@ export default {
         let base = gameStore.bases[i]
         app.createMapRing(ctx, base.x, base.y, 40, "rgb(0, 0, 0)", "rgb(0, 243, 255)")
         app.createMapRing(ctx, base.x, base.y, base.gravity_radius, "rgba(0, 243, 255, 0.5)", "rgba(0, 243, 255, 0.1)")
+
+        if (base.type === 'base' && !gameStore.map.possible_battle && !gameStore.map.free_land) {
+          if (userUnit && userUnit.sprite && Phaser.Math.Distance.Between(userUnit.sprite.x - MapSize, userUnit.sprite.y - MapSize, base.x, base.y) < base.gravity_radius) {
+            app.$store.commit({
+              type: 'setSecureZone',
+              secure: true,
+            });
+          } else {
+            app.$store.commit({
+              type: 'setSecureZone',
+              secure: false,
+            });
+          }
+        }
       }
 
       for (let i in gameStore.evacuations) {
         let evacuation = gameStore.evacuations[i];
-        app.createMapTriangle(ctx, evacuation.x - MapSize, evacuation.y - MapSize, 70, 70, "rgb(0, 0, 0)", "#ff7a00", true);
+        let {strokeColor, fillColor} = app.getObjectColorByUserID(null, evacuation.transportState.fraction)
+        app.createMapTriangle(ctx, evacuation.x - MapSize, evacuation.y - MapSize, 70, 70, strokeColor, fillColor, true);
       }
 
       for (let uuid in gameStore.radar_marks) {

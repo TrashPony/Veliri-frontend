@@ -6,13 +6,14 @@
 
       <div :class="{dead: dead(member)}">
 
-        <div class="chatUserIcon" v-bind:style="{backgroundImage: avatars[member.user_id]}">
-          {{ getAvatar(member.user_id) }}
+        <div class="chatUserName">
+          {{ member.user_name }}
         </div>
 
         <div class="bars">
-          <div class="chatUserName">
-            {{ member.user_name }}
+
+          <div class="chatUserIcon" v-bind:style="{backgroundImage: avatars[member.user_id]}">
+            {{ getAvatar(member.user_id) }}
           </div>
 
           <table v-if="groupState.state && groupState.state[member.user_id].on">
@@ -39,9 +40,9 @@
           </table>
         </div>
 
-        <template v-if="battleState && battleState.kills">
-          <span class="kills count">x{{ battleState.kills[member.user_id] }}</span>
-        </template>
+<!--        <template v-if="battleState && battleState.kills">-->
+<!--          <span class="kills count">x{{ battleState.kills[member.user_id] }}</span>-->
+<!--        </template>-->
       </div>
 
       <div class="respawn_time"
@@ -104,15 +105,15 @@ export default {
 .minSquad {
   position: absolute;
   min-height: 35px;
-  width: 150px;
+  width: 100px;
   top: 100%;
-  left: 2px;
+  left: 0;
   margin-top: 3px;
 }
 
 .row {
   clear: both;
-  height: 38px;
+  height: 32px;
   margin-bottom: 2px;
   background: rgb(8, 138, 210);
   border: 1px solid #25a0e1;
@@ -122,24 +123,23 @@ export default {
 }
 
 .chatUserIcon {
-  border-radius: 5px;
-  height: 38px;
-  width: 38px;
+  border-radius: 3px;
+  height: 20px;
+  width: 20px;
   background: rgba(0, 0, 0, 0.3);
   float: left;
   box-shadow: inset 0 0 2px black;
   background-size: cover;
-  margin-right: 2px;
+  margin-top: 2px;
 }
 
 .chatUserName {
-  line-height: 16px;
-  height: 15px;
-  margin-left: 2px;
+  line-height: 12px;
+  height: 10px;
   white-space: nowrap;
   overflow: hidden;
   color: #e6e1d8;
-  font-size: 9pt;
+  font-size: 8px;
   background: rgba(0, 0, 0, 0.32);
   border-radius: 4px;
   text-align: center;
@@ -175,7 +175,7 @@ export default {
 }
 
 table {
-  width: calc(100% - 44px);
+  width: calc(100% - 20px);
   color: #e6e1d8;
 }
 

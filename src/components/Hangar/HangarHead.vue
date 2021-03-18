@@ -2,7 +2,7 @@
   <div id="SquadHead">
 
     <div id="squadName">
-      <span v-if="inventory.stateMS">Отряд: </span>
+      <span v-if="inventory.stateMS">Транспорт: </span>
       <span style="color: rgb(0, 255, 253);">{{inventory.squadName}}</span>
     </div>
 
@@ -88,7 +88,7 @@
 <style scoped>
   #SquadHead {
     height: 20px;
-    width: 470px;
+    width: calc(100% - 23px);
     margin: 0 0 4px 0;
     border-radius: 10px 100px 10px 10px;
     background-size: 100% 4px;
@@ -162,7 +162,7 @@
     background: rgba(0, 0, 0, 0.6);
     height: 100%;
     width: 100%;
-    z-index: 12;
+    z-index: 3;
     left: 0;
     top: 0;
     border-radius: 5px;

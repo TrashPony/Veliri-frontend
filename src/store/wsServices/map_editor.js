@@ -4,6 +4,7 @@ import {CreateGame, Scene} from "../../game/create";
 import {CreateLabelBase, CreateMapLabels} from "../../game/map_editor/labels";
 import {MapSize} from "../../game/map/createMap";
 import {CreateSpawn, CreateSpawnZone} from "../../game/map_editor/spawn";
+import {CreateDynamicObjects} from "../../game/radar/object";
 
 export default function createMapEditorPlugin(WS) {
   return store => {
@@ -76,12 +77,16 @@ function MapEditorReader(data, store) {
 
     gameStore.maps = data.full_maps;
     gameStore.bases = data.bases;
+    gameStore.gameDataInit.data = true;
+
 
     CreateGame(true);
 
     let wait = setInterval(function () {
       if (gameStore.gameReady) {
-        CreateMapLabels(gameStore.map);
+
+        CreateDynamicObjects(data.dynamic_objects)
+        CreateMapLabels(gameStore.map, false);
         CreateLabelBase(gameStore.bases);
         clearInterval(wait);
         CreateSpawnZone(gameStore.map.spawns);
@@ -110,6 +115,7 @@ function MapEditorReader(data, store) {
   if (data.event === "updateTypeCoordinate") {
     if (gameStore.mapEditorState.typeCoordinateEdit) {
       gameStore.mapEditorState.typeCoordinateEdit = data.dynamic_object;
+      gameStore.mapEditorState.typeCoordinateEdit.type_geo_data = data.type_geo_data;
     }
   }
 }

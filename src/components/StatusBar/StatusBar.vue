@@ -1,6 +1,6 @@
 <template>
   <div id="StatusBarWrapper" ref="StatusBarWrapper"
-       :style="{height: user && user.game_mod === 'open_world' ? '115px' : '64px', width: '262px'}"
+       :style="{height: '62px', width: '160px'}"
        @mousedown="toUp">
 
     <app-control v-bind:head="'Игрок: '"
@@ -18,10 +18,10 @@
           <div>
             <h4 class="user_name">{{ user.login }}</h4>
 
-            <template
-              v-if="user.game_mod !== 'open_world' && battleState && battleState.kills">
-              <div class="kills count">x{{ battleState.kills[user.id] }}</div>
-            </template>
+            <!--            <template-->
+            <!--              v-if="user.game_mod !== 'open_world' && battleState && battleState.kills">-->
+            <!--              <div class="kills count">x{{ battleState.kills[user.id] }}</div>-->
+            <!--            </template>-->
 
             <div class="hp_bar_wrapper session">
               <span> HP </span>
@@ -41,7 +41,21 @@
       </div>
     </div>
 
-    <app-reactor-status v-if="user && user.game_mod === 'open_world'"/>
+    <div class="exitTime" v-if="chatState && chatState.exitTime > 0"
+         title="Недавно вы получали урон или нарушили закон, поэтому ваш транспорт сможет выйти из игры только через время.">
+      <div class="time">
+        {{ TimeFormat(chatState.exitTime).minutes }}:{{ TimeFormat(chatState.exitTime).sec }}
+      </div>
+    </div>
+
+    <div class="lawTime" v-if="chatState && chatState.violator && chatState.violator.time > 0"
+         :title="'Вы нарушили закон и находитель в режиме \'' + chatState.violator.type + '\''">
+      <div class="vio">{{ chatState.violator.type.toUpperCase() }}</div>
+      <div class="time">
+        {{ TimeFormat(chatState.violator.time).minutes }}:{{ TimeFormat(chatState.violator.time).sec }}
+      </div>
+    </div>
+
     <app-min-squad/>
 
     <div style="top: calc(100% + 10px); left: 200px; position: absolute; z-index: 2;">
@@ -53,7 +67,6 @@
 <script>
 import Control from '../Window/Control';
 import MinSquad from './MinSquad';
-import ReactorStatus from './ReactorStatus';
 import KillBoard from '../BattleState/KillBoard';
 
 import urls from '../../const';
@@ -99,6 +112,16 @@ export default {
     colorDamage(percent) {
       return this.$store.getters.GetColorDamage(percent)
     },
+    TimeFormat(time) {
+
+      if (time < 0) {
+        return '-- : --'
+      }
+
+      let minutes = Math.floor(time / 60);
+      let sec = time % 60;
+      return {minutes: (minutes % 60 < 10 ? "0" : "") + minutes, sec: (sec % 60 < 10 ? "0" : "") + sec};
+    },
   },
   computed: {
     slots() {
@@ -109,6 +132,9 @@ export default {
     },
     unit() {
       return this.$store.getters.getUnit
+    },
+    chatState() {
+      return this.$store.getters.getChatState
     },
     currentSpeed() {
       return this.$store.getters.getUnitSpeed
@@ -144,7 +170,6 @@ export default {
   components: {
     AppControl: Control,
     AppMinSquad: MinSquad,
-    AppReactorStatus: ReactorStatus,
     AppKillBoard: KillBoard,
   }
 }
@@ -156,9 +181,9 @@ export default {
   border-radius: 5px;
   background: rgb(8, 138, 210);
   border: 1px solid #25a0e1;
-  padding: 18px 3px 0;
-  left: 15px;
-  top: 15px;
+  padding: 17px 1px 0;
+  left: 5px;
+  top: 5px;
 }
 
 #StatusBarUserInfo {
@@ -166,12 +191,10 @@ export default {
   height: 100px;
   background: #8c8c8c;
   width: 200px;
-  margin: 2px 0 0 2px;
+  margin: 2px 0 0 0;
   border-radius: 5px;
   box-shadow: inset 0 0 2px;
 }
-
-
 
 .bars {
   float: left;
@@ -198,12 +221,13 @@ export default {
   padding: 0;
   margin: 6px 2px 2px -10px;
   box-shadow: 0 0 2px black;
-  width: 140px;
   background: rgb(119, 119, 119);
   padding-left: 8px;
-  line-height: 20px;
   height: 16px;
   display: block;
+  line-height: 19px;
+  font-size: 12px;
+  width: calc(100% - 65px);
 }
 
 .hp_bar_wrapper, .energy_bar_wrapper {
@@ -278,7 +302,7 @@ export default {
 
 #StatusBarUserInfo.StatusBarSession {
   height: 59px;
-  width: 259px;
+  width: 100%;
 }
 
 .kills {
@@ -293,6 +317,43 @@ export default {
   margin-left: 5px;
   color: white;
   font-weight: 900;
+  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
+}
+
+.exitTime, .lawTime {
+  position: absolute;
+  height: 35px;
+  width: 35px;
+  background-size: cover;
+  background-image: url(https://img.icons8.com/fluent/48/000000/medium-risk.png);
+  left: calc(100% + 12px);
+  top: 1px;
+  filter: drop-shadow(0px 0px 2px black);
+}
+
+.lawTime {
+  background-image: url(https://img.icons8.com/emoji/48/000000/red-triangle-pointed-up-emoji.png);
+  left: calc(100% + 55px);
+  top: 2px;
+}
+
+.exitTime .time, .lawTime .time {
+  color: yellow;
+  font-weight: 900;
+  font-size: 10px;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
+}
+
+.vio {
+  font-size: 8px;
+  line-height: 45px;
+  color: white;
+  width: 100%;
+  text-align: center;
   text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
 }
 </style>

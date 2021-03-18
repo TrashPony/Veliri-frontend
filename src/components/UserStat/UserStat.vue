@@ -36,6 +36,14 @@
             {{ headers.missions }}
           </div>
 
+          <div
+            v-if="user_id === currentUser.user_id && false"
+            v-bind:class="{actionChatTab : tab === 'relations'}"
+            @click="changeTab('relations')"
+            class="StatUserStat">
+            {{ headers.relations }}
+          </div>
+
           <template v-if="currentUser && currentUser.game_mode !== 'open_world'">
             <div
               v-if="user_id === currentUser.user_id"
@@ -55,6 +63,8 @@
     <app-other-user v-if="tab === 'common' && user_id !== currentUser.user_id" v-bind:user="users[user_id]"/>
     <app-skills v-if="tab === 'skill'&& user_id === currentUser.user_id"/>
     <app-user-summary v-if="tab === 'summary'&& user_id === currentUser.user_id" v-bind:user="users[user_id]"/>
+    <app-relations v-if="tab === 'relations'&& user_id === currentUser.user_id" v-bind:user="users[user_id]"/>
+    <app-missions v-if="tab === 'missions'&& user_id === currentUser.user_id" v-bind:user="users[user_id]"/>
   </div>
 </template>
 
@@ -64,6 +74,8 @@ import MyUser from './MyUser';
 import OtherUser from './OtherUser';
 import Skills from './Skills';
 import UserSummary from './UserSummary';
+import Relations from './Relations';
+import Missions from './Missions';
 
 export default {
   name: "UserStat",
@@ -78,6 +90,8 @@ export default {
       event: "OpenUserStat",
       ID: Number(this.$props.user_id),
     }));
+
+    this.resize(null, null, $(this.$el))
   },
   methods: {
     toUp() {
@@ -95,6 +109,7 @@ export default {
         el.find('.skillContent').css("width", el.width() - 165);
         el.find('.skillContent').css("height", el.height() - 29);
         el.find('#HelpSections').css("height", el.height() - 17);
+        el.find('.relations').css("height", el.height() - 23);
       } catch (e) {
 
       }
@@ -117,12 +132,12 @@ export default {
       if (this.language === 'RU') {
         return {
           common: "Общие", skills: "Навыки", missions: "Задания", user: "Пользователь",
-          summary: "Сводка", history: "История игр"
+          summary: "Сводка", history: "История игр", relations: "Отношения"
         }
       } else {
         return {
           common: "Common", skills: "Skills", missions: "Missions", user: "User",
-          summary: "Summary", history: "History games"
+          summary: "Summary", history: "History games", relations: "Отношения"
         }
       }
     }
@@ -133,6 +148,8 @@ export default {
     AppOtherUser: OtherUser,
     AppSkills: Skills,
     AppUserSummary: UserSummary,
+    AppRelations: Relations,
+    AppMissions: Missions,
   }
 }
 </script>
@@ -157,6 +174,7 @@ export default {
   border: 1px solid #25a0e1;
   background: rgb(8, 138, 210);
   box-shadow: 0 0 2px black;
+  height: 175px;
 }
 
 .usersStatusTabs {

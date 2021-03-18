@@ -53,7 +53,7 @@ export default {
 #mainWrapper {
   width: 1100px;
   margin: auto;
-  margin-top: 50px;
+  margin-top: 0;
   margin-bottom: 25px;
   padding: 5px;
   padding-top: 30px;

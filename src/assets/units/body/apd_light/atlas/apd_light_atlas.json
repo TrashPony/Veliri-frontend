@@ -40,7 +40,7 @@
             }
         },
         {
-            "filename": "apd_light_mask2",
+            "filename": "apd_light_mask",
             "frame": {
                 "w": 256,
                 "h": 256,
@@ -53,7 +53,7 @@
             }
         },
         {
-            "filename": "apd_light",
+            "filename": "apd_light_mask2",
             "frame": {
                 "w": 256,
                 "h": 256,
@@ -66,7 +66,7 @@
             }
         },
         {
-            "filename": "apd_light_bottom",
+            "filename": "apd_light",
             "frame": {
                 "w": 256,
                 "h": 256,
@@ -79,7 +79,7 @@
             }
         },
         {
-            "filename": "apd_light_mask",
+            "filename": "apd_light_bottom",
             "frame": {
                 "w": 256,
                 "h": 256,

@@ -33,10 +33,15 @@ const getDefaultState = () => {
       sector: {
         base: null,
         capture_time: null,
+        name: "",
+        id: 0,
+        detail: null,
       },
       open_objects: {},
       availableAmmo: {},
       current_speed: 0,
+      secure_zone: false,
+      global_target: null,
     },
     Battle: null,
     KillsNotify: [],
@@ -70,7 +75,10 @@ const getDefaultState = () => {
       corporations: {}, /** все корпорации в игре **/
       mySkills: {}, /** скилы игрока **/
       violators: {},
+      violator: {},
+      exitTime: null,
       distressSignals: {},
+      fractionNews: {},
     },
     Market: {
       assortment: {
@@ -160,6 +168,7 @@ const getDefaultState = () => {
       fine: {}, /** шарактериситики на которые наложен штраф из за несоотвествия скила и шмота **/
       stateEquip: {},
       stateBodyBonus: {},
+      placeDialog: null,
     },
     /** если у игрока открыт диалог то автоматически откроется окно с активной странице **/
     OpenDialog: {
@@ -167,6 +176,7 @@ const getDefaultState = () => {
       mission: null,
       visited_pages: null,
     },
+    /** остлеживает текущее состояние миссии и обновляется всегда когда происходят изменения **/
     Missions: {
       missions: null,
       currentMissionUUID: null,
@@ -174,9 +184,12 @@ const getDefaultState = () => {
       helper: null, /** обьект который позволяет видеть на мини карте или даже в игре подсказки по мисии **/
       points: null,
     },
+    /** для отображения подробной информации по миссиям в меню игрока **/
+    AllFullMissions: {},
     WorldMap: {
       userMapID: null,
       maps: null,
+      defenders: {},
       previewPath: null,
       mapInfo: {}, /** подробная информация о каждой карте [id] {bases: , etc...}**/
     },
@@ -184,7 +197,7 @@ const getDefaultState = () => {
       users: {},
     },
     Interface: {
-      resolution: window.screen.availWidth + ':' + window.screen.availHeight,
+      resolution: $(window).width() + ':' + $(window).height(),
       state: {},
       allowIDs: {},
       openQueue: [],
@@ -196,11 +209,14 @@ const getDefaultState = () => {
         resources: null,
         fraction: null, // т.к. база может быть не центральная(заводы, установки) то фракции там может не быть
         exit: false,
+        stories: {},
       },
       recycler: {
         recycle_slots: null,
         preview_recycle_slots: null,
         user_recycle_skill: null,
+        lost_recycle_slots: null,
+        tax_recycle_slots: null,
       },
       prefabricated_menu: {
         details: null,
@@ -244,6 +260,15 @@ const getDefaultState = () => {
       maps: null,
       typeCoordinates: null,
     },
+    DialogEditor: {
+      dialogs: null,
+    },
+    MissionEditor: {
+      missions: null,
+      items: null,
+      actions: null,
+      rewardItems: null,
+    },
     ServerState: {
       count_bots: 0,
       count_players: 0,
@@ -269,7 +294,11 @@ const getDefaultState = () => {
       maps_evacuations: null,
       maps_signals: null,
     },
-    HandBook: {} // описания и названия предмедов на разных языках
+    HandBook: {}, // описания и названия предмедов на разных языках
+    FractionStore: {
+      assortment: {},
+      user_fraction_points: 0,
+    },
   }
 };
 

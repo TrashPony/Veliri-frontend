@@ -77,7 +77,7 @@ export default {
           display.background = "#15fff5";
         }
 
-        if (anomalies[i].type_anomaly === 0 || anomalies[i].type_anomaly === 1) { // ящик
+        if (anomalies[i].type_anomaly === 0 || anomalies[i].type_anomaly === 1 || anomalies[i].type_anomaly === 7 || anomalies[i].type_anomaly === 8) { // ящик
           display.background = "#fff604";
         }
 
@@ -85,7 +85,7 @@ export default {
           display.background = "#13ff12";
         }
 
-        if (anomalies[i].type_anomaly === 3) { // текс, квест
+        if (anomalies[i].type_anomaly === 3 || anomalies[i].type_anomaly === 4) { // текс, артефакт
           display.background = "#0b0fff";
         }
 

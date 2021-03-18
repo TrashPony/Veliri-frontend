@@ -3,6 +3,8 @@ import {gameStore} from "../store";
 import {CreateAnimate, CreateObject} from "./objects";
 import {initGunDesignator} from "../interface/server_gun_designator";
 import {GetGlobalPos} from "./gep_global_pos";
+import store from "../../store/store";
+import {CreateTextBaseLabels, CreateTextLabels} from "./text_labels";
 
 let MapSize = 4096;
 
@@ -44,6 +46,19 @@ function CreateAllMaps(scene) {
       gameStore.HoldAttackMouse = false;
     });
 
+    scene.input.on('pointerdown', function (pointer) {
+
+      if (gameStore.HoldAttackMouse || !pointer.leftButtonDown()) {
+        return
+      }
+
+      store.getters.getWSByService('global').socket.send(JSON.stringify({
+        event: "MoveTo",
+        x: Math.round(scene.game.input.mousePointer.worldX - MapSize),
+        y: Math.round(scene.game.input.mousePointer.worldY - MapSize),
+      }));
+    });
+
     scene.input.on('gameout', function (pointer) {
       gameStore.HoldAttackMouse = true;
     });
@@ -63,25 +78,35 @@ function CreateAllMaps(scene) {
 
       if (gameStore.maps[i].x === 0 && gameStore.maps[i].y === 0) {
         gameStore.map = gameStore.maps[i].map
+
+        store.commit({
+          type: 'setSectorName',
+          name: gameStore.map.Name,
+          id: gameStore.map.id,
+        });
       }
 
       CreateMap(scene, gameStore.maps[i].map)
+      CreateTextLabels(gameStore.maps[i].map);
     }
   }
+
+  CreateTextBaseLabels()
 }
 
 function CreateMap(scene, map) {
-  CreateFlore(map, scene);
-  CreateObjects(map, scene);
+  setTimeout(function (){
+    CreateFlore(map, scene);
+    CreateObjects(map, scene);
+  }, 100)
 }
 
 function CreateFlore(map, scene) {
   let pos = GetGlobalPos(0, 0, map.id);
   //bitmapData для отрисовки статичного нижнего слоя
   let bmdTerrain = scene.add.renderTexture(pos.x, pos.y, MapSize, MapSize);
-  bmdTerrain.fill(0x2d2d2d);
   bmdTerrain.setInteractive();
-  bmdTerrain.setInteractive();
+  bmdTerrain.setDepth(-3)
   gameStore.mapsState[map.id].bmdTerrain = {
     bmd: bmdTerrain,
   };

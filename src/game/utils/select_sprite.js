@@ -35,17 +35,17 @@ function SelectSprite(x, y, callback, tint, tintOver, radius) {
     alphaTolerance: 1
   });
 
-  selectSprite.on('pointerover', function () {
-    selectSprite.setTint(tintOver);
-  });
-
-  selectSprite.on('pointerout', function () {
-    selectSprite.setTint(tint);
-  });
-
-  selectSprite.on('pointerdown', function (pointer) {
-    if (callback) callback(pointer);
-  });
+  // selectSprite.on('pointerover', function () {
+  //   selectSprite.setTint(tintOver);
+  // });
+  //
+  // selectSprite.on('pointerout', function () {
+  //   selectSprite.setTint(tint);
+  // });
+  //
+  // selectSprite.on('pointerdown', function (pointer) {
+  //   if (callback) callback(pointer);
+  // });
 
   return selectSprite
 }

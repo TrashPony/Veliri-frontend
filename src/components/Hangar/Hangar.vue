@@ -69,13 +69,13 @@ export default {
 <style scoped>
 #inventoryBox {
   position: absolute;
-  top: 15%;
-  width: 630px;
-  left: calc(315px + 10%);;
+  top: 9%;
+  width: 506px;
+  left: calc(50% - 260px);
   border-radius: 5px;
   z-index: 11;
   padding: 20px 3px 3px 3px;
-  height: 359px;
+  height: 309px;
   border: 1px solid #25a0e1;
   background: rgb(8, 138, 210);
   box-shadow: 0 0 2px black;

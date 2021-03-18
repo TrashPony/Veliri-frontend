@@ -40,7 +40,7 @@ export default {
       bodiesSlots: {},
       sizeGrid: {
         x: 9,
-        y: 5,
+        y: 8,
       },
     }
   },
@@ -115,7 +115,7 @@ export default {
       app.$api.get(urls.itemURL + '?id=' + id + "&type=body&method=item").then(function (response) {
         Vue.set(app.bodiesSlots, id, response.data);
       }).catch(function (err) {
-        console.log(err)
+        //console.log(err)
       });
     },
     openSubMenu(event, slot) {

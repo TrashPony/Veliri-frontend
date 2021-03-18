@@ -1,5 +1,5 @@
 <template>
-  <div class="msIconWrapper"
+  <div class="msIconWrapper" id="msIconWrapper"
        @mouseover="setFindBodyFilter()"
        @mouseout="removeFindFilter()">
 
@@ -17,7 +17,7 @@
            v-if="equipBackground(slot)"
            :style="{ backgroundImage: 'url(' + require('../../assets/' + equipBackground(slot).back) + ')',
               left: equipBackground(slot).left, top: equipBackground(slot).top}"/>
-      
+
     </div>
   </div>
 </template>
@@ -105,8 +105,8 @@
   }
 
   .msIconWrapper {
-    width: 200px;
-    height: 200px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
     border: 1px solid rgba(149, 149, 149, 0.25);
     background-color: rgba(64, 49, 31, 0.75);
@@ -114,8 +114,8 @@
     box-shadow: inset 0 0 7px 2px black;
     z-index: 2;
     position: absolute;
-    left: calc(50% - 102px);
-    top: calc(50% - 102px);
+    left: calc(50% - 82px);
+    top: calc(50% - 82px);
   }
 
   #MSIcon {
@@ -127,8 +127,6 @@
     background-size: 128px;
     background-position: center;
     position: absolute;
-    left: calc(50% - 102px);
-    top: calc(50% - 102px);
     box-shadow: inset 0 0 7px 2px black;
     z-index: 2;
   }

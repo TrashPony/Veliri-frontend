@@ -13,7 +13,8 @@
           </span>
         </div>
 
-        <div class="entryButton" id="battle" @click="selectMode('quick_battle')">
+        <div class="entryButton" id="battle" v-if="currentUser.user_role === 'admin'"
+             @click="selectMode('quick_battle')">
           <span>
             {{ settings.Language === 'RU' ? 'Быстрые' : 'Quick' }}
             <br>
@@ -25,11 +26,20 @@
           <span>Map <br> Editor</span>
         </div>
 
+        <div class="entryButton" id="dialogEditor" v-if="currentUser.user_role === 'admin'"
+             @click="to('/dialog_editor')">
+          <span>Dialog <br> Editor</span>
+        </div>
+
+        <div class="entryButton" id="missionEditor" v-if="currentUser.user_role === 'admin'" @click="to('/mission_editor')">
+          <span>Mission <br> Editor</span>
+        </div>
+
         <div class="entryButton" v-if="currentUser.user_role === 'admin'" @click="to('/server_state')">
           <span>Server <br> State</span>
         </div>
 
-        <div class="language">
+        <div class="language" v-if="currentUser.user_role === 'admin'">
           <div :class="{disable_language: settings.Language !=='RU'}"
                @click="changeLanguage('RU')"
                style="background-image: url('https://img.icons8.com/cute-clipart/64/000000/russian-federation.png')"/>
@@ -50,43 +60,70 @@ import Control from '../Window/Control';
 import UserLine from '../Chat/UserLine';
 import OpenWorld from './OpenWorld';
 import QuickFight from './QuickFight';
+import urls from '../../const';
+import {CreateGame} from "../../game/create";
 
 export default {
   name: "Gate",
   data() {
     return {
       selectGameMode: '',
+      error: '',
     }
   },
   created() {
+    this.$store.commit({
+      type: 'setVisibleLoader',
+      visible: true,
+      text: `<span>Получаем информацию...</span>`,
+    });
+
     this.$store.commit({
       type: 'resetState',
     });
   },
   mounted() {
-    if (this.$store.getters.getWSByService('chat').connect) {
+    let app = this;
 
-      this.$store.getters.getWSByService('chat').socket.send(JSON.stringify({
-        event: "OpenChat",
-      }));
+    if (app.$route.query['auth_key'] && app.$route.query['api_id'] && app.$route.query['viewer_id'] && app.$route.query['access_token']) {
 
-      this.$store.getters.getWSByService('chat').socket.send(JSON.stringify({
-        event: "GetPlayers",
-      }));
+      let queryStr = '?auth_key=' + app.$route.query['auth_key'] + '&api_id=' + app.$route.query['api_id'] +
+        '&viewer_id=' + app.$route.query['viewer_id'] + '&access_token=' + app.$route.query['access_token']
+
+      app.$api.get(urls.vkAppLogin + queryStr, {
+        withCredentials: true,
+      }).then(function (response) {
+        if (response.data.success) {
+          app.resetConnects()
+        } else {
+          app.error = response.data.error
+        }
+      });
 
     } else {
-      this.$store.commit({
-        type: 'reconnectWS',
-        service: 'chat',
-        force: false,
-      });
+      app.resetConnects()
     }
-    this.$store.commit({
-      type: 'setVisibleLoader',
-      visible: false,
-    });
   },
   methods: {
+    resetConnects() {
+      if (this.$store.getters.getWSByService('chat').connect) {
+
+        this.$store.getters.getWSByService('chat').socket.send(JSON.stringify({
+          event: "OpenChat",
+        }));
+
+        this.$store.getters.getWSByService('chat').socket.send(JSON.stringify({
+          event: "GetPlayers",
+        }));
+
+      } else {
+        this.$store.commit({
+          type: 'reconnectWS',
+          service: 'chat',
+          force: false,
+        });
+      }
+    },
     changeLanguage(language) {
       this.$store.getters.getWSByService('chat').socket.send(JSON.stringify({
         event: "SetLanguage",
@@ -114,7 +151,16 @@ export default {
   },
   computed: {
     currentUser() {
-      return this.$store.getters.getGameUser
+      let currentUser = this.$store.getters.getGameUser
+
+      if (currentUser.hasOwnProperty('id')) {
+        this.$store.commit({
+          type: 'setVisibleLoader',
+          visible: false,
+        });
+      }
+
+      return currentUser
     },
     settings() {
       return this.$store.getters.getSettings

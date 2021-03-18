@@ -69,37 +69,23 @@ function UpdateDynamicObject(mark, object) {
     if (object.ce) obj.current_energy = object.ce;
     if (object.me) obj.max_energy = object.me;
     if (object.ow) obj.owner_id = object.ow;
-    if (object.w) obj.work = object.w
+    if (object.w !== undefined) obj.work = Boolean(object.w)
 
     NoCompleteStructure(obj);
 
-
     if (!obj.build) {
-      let setScale = function (sprite) {
-
-        if (object.s && object.gt) {
-          let tween = Scene.tweens.add({
-            targets: sprite,
-            scale: object.s / 100,
-            ease: 'Linear',
-            duration: object.gt,
-            onComplete: function () {
-              tween.remove();
-            }
-          });
-        }
-      };
-
-
       if (!obj.build) {
         if (object.h) obj.objectSprite.setDepth(object.h);
       }
-      setScale(obj.objectSprite);
 
       if (obj.objectSprite.shadow) {
 
         if (!obj.build) {
           if (object.h) obj.objectSprite.shadow.setDepth(object.h - 2);
+        }
+
+        if (object.s && object.gt) {
+          MoveSprite(obj.objectSprite, obj.objectSprite.x, obj.objectSprite.y, object.gt, object.s / 100);
         }
 
         if (object.xs && object.ys && object.gt && object.s) {

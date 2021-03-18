@@ -38,6 +38,10 @@ function EditCoordinate(typeCoordinate) {
   }
 
   gameStore.mapEditorState.typeCoordinateEdit = typeCoordinate;
+  store.getters.getWSByService('map_editor').socket.send(JSON.stringify({
+    event: "getObject",
+    id_type: gameStore.mapEditorState.typeCoordinateEdit.type_id,
+  }));
 
   if (!objGrid) {
     objGrid = Scene.add.graphics(0, 0);
@@ -98,7 +102,9 @@ function EditCoordinate(typeCoordinate) {
 
   setInterval(function () {
     objNewGeoData.clear();
-    for (let geoPoint of gameStore.mapEditorState.typeCoordinateEdit.type_geo_data) {
+
+    for (let i in gameStore.mapEditorState.typeCoordinateEdit.type_geo_data) {
+      let geoPoint = gameStore.mapEditorState.typeCoordinateEdit.type_geo_data[i];
       if (geoPoint.move) {
         objNewGeoData.fillStyle(0x0000FF, 0.5);
       } else {
@@ -107,6 +113,7 @@ function EditCoordinate(typeCoordinate) {
       objNewGeoData.fillCircleShape({x: geoPoint.x, y: geoPoint.y, radius: geoPoint.radius});
     }
     objNewGeoData.setDepth(901);
+
   }, 100)
 }
 

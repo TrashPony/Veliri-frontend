@@ -1,61 +1,12 @@
 <template>
   <div id="chat" ref="chat" @mousedown="toUp" @mouseover="over" @mouseout="out">
 
-    <div id="notifyBlock">
-      <template v-for="notify in chatState.notifys">
-
-        <div v-if="notify.name === 'craft'" style="background: #00fffe" @click="deleteNotify(notify)">
-          <div class="missionNotify">
-            <h3>Завершено производство</h3>
-            <div class="notifyParagraph">
-              На базе <span class="importantly">{{ notify.base.name }}</span>
-              что в секторе <span class="importantly">{{ notify.map.Name }}</span>
-              завершено производство
-              <div class="notifyIconItem">
-                <app-background-item-cell v-bind:slotItem="notify.item"/>
-              </div>
-              <span class="importantly">{{ notify.item.item.name }}</span>
-              в количестве <span class="importantly">{{ notify.item.quantity }}</span> единиц.
-              <p> Созданные вещи ожидают вас на складе базы <span class="importantly">{{ notify.base.name }}</span></p>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="notify.name === 'sell' || notify.name === 'buy'" style="background: #cd00ff"
-             @click="deleteNotify(notify)">
-          <div class="missionNotify">
-            <h3>Совершена {{ typeDealName(notify.name)[0] }}</h3>
-            <div class="notifyParagraph">
-              На базе <span class="importantly">{{ notify.base.name }}</span>
-              что в секторе <span class="importantly">{{ notify.map.Name }}</span>
-              было {{ typeDealName(notify.name)[1] }}
-              <div class="notifyIconItem">
-                <app-background-item-cell v-bind:slotItem="notify.item"/>
-              </div>
-              <span class="importantly">{{ notify.item.item.name }}</span>
-              в количестве <span class="importantly">{{ notify.item.quantity }}</span> единиц, по цене <span
-              class="importantly">{{ notify.price }}</span>
-              <span class="cr">cr</span> за шт.
-              <p>Общая стоимость сделки составила <span
-                class="importantly">{{ notify.item.quantity * notify.price }}</span>
-                <span class="cr">cr</span>.</p>
-              <p>{{ typeDealName(notify.name)[2] }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="notify.name === 'skill_up'" style="background: #ff9700" @click="deleteNotify(notify)">
-          <div class="missionNotify" v-html="notify.text"></div>
-        </div>
-      </template>
-    </div>
-
     <app-control v-bind:head="'Чат'"
                  v-bind:move="true"
                  v-bind:close="false"
                  v-bind:refWindow="'chat'"
                  v-bind:resizeFunc="resize"
-                 v-bind:minSize="{height: 200, width: 300}"/>
+                 v-bind:minSize="{height: 120, width: 200}"/>
 
     <div class="tabs" id="chatTabs">
 
@@ -92,6 +43,8 @@
     </div>
 
     <div class="topButton" @click="viewAllGroups">+</div>
+    <div class="topButton fontSize" @click="changeFontSize(1)">T+</div>
+    <div class="topButton fontSize" @click="changeFontSize(-1)">T-</div>
 
     <div id="chatBox" ref="chatBox">
 
@@ -104,15 +57,15 @@
         <div class="chatMessage" v-for="message in chatState.groups[chatState.currentChatID].history" v-if="message">
 
           <template v-if="message.system">
-            <span class="chatSystem">{{ message.message }}</span>
+            <span class="chatSystem" :style="{fontSize: fontSize + 'px'}">{{ message.message }}</span>
           </template>
 
           <template v-else>
             <div class="chatUserIcon" v-bind:style="{backgroundImage: avatars[message.user_id]}">
               {{ getAvatar(message.user_id) }}
             </div>
-            <span class="ChatUserName">{{ message.user_name }}:</span>
-            <span class="ChatText">{{ message.message }}</span>
+            <span class="ChatUserName" :style="{fontSize: fontSize + 'px'}">{{ message.user_name }}:</span>
+            <span class="ChatText" :style="{fontSize: fontSize + 'px'}">{{ message.message }}</span>
           </template>
 
         </div>
@@ -148,6 +101,7 @@ export default {
     return {
       currentChatID: 0,
       inputDisabled: true,
+      fontSize: 10,
       userSubMenuProps: {
         user: null,
         x: 0,
@@ -172,8 +126,20 @@ export default {
       el.find('#usersBox').css("height", el.height() - 55);
       el.find('#chatBox').css("width", el.width() - 130);
       el.find('#chatInput').css("width", el.width() - 16);
-      el.find('#tabsGroupWrapper').css("width", el.width() - 60);
-      el.find('#chatTabs').css("width", el.width() - 25);
+      el.find('#tabsGroupWrapper').css("width", el.width() - 90);
+      el.find('#chatTabs').css("width", el.width() - 55);
+
+      if (el.width() < 280) {
+        el.find('#usersBox').css("width", 38);
+        el.find('#chatBox').css("width", el.width() - 47);
+      } else {
+        el.find('#chatBox').css("width", el.width() - 130);
+        el.find('#usersBox').css("width", 121);
+      }
+    },
+    changeFontSize(changeSize) {
+      this.fontSize += changeSize
+      if (this.fontSize < 6) this.fontSize = 6;
     },
     over() {
       this.inputDisabled = false;
@@ -245,19 +211,6 @@ export default {
         });
       });
     },
-    typeDealName(typeDeal) {
-      if (typeDeal === 'sell') {
-        return ['продажа', 'продано', ''];
-      } else if (notify.name === "buy") {
-        return ['покупка', 'куплено', 'Купленные вещи ожидают вас на складе базы <span class="importantly">' + notify.base.name + '</span>'];
-      }
-    },
-    deleteNotify(notify) {
-      this.$store.getters.getWSByService('chat').socket.send(JSON.stringify({
-        event: "DeleteNotify",
-        uuid: notify.uuid,
-      }));
-    },
   },
   computed: {
     avatars() {
@@ -291,8 +244,8 @@ export default {
   height: 200px;
   border: 1px solid #25a0e1;
   background: rgb(8, 138, 210);
-  bottom: 15px;
-  left: 15px;
+  bottom: 17px;
+  left: 5px;
   z-index: 11;
   padding: 20px 0 0 0;
   box-shadow: 0 0 2px black;
@@ -459,6 +412,15 @@ export default {
   transform: scale(0.97);
 }
 
+#chat .fontSize.fontSize {
+  font-size: 8px;
+  height: 12px;
+  width: 14px;
+  line-height: 15px;
+  color: white;
+  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
+}
+
 .chatUserIcon {
   height: 25px;
   width: 25px;
@@ -504,121 +466,6 @@ export default {
   to {
     color: #ff7800;
   }
-}
-
-#notifyBlock {
-  position: absolute;
-  background-color: rgb(33, 176, 255);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 50px 20px 0px 0px;
-  width: 259px;
-  height: 12px;
-  left: 4px;
-  top: -16px;
-  box-shadow: inset 0 0 4px 0px rgba(0, 0, 0, 0.5);
-  padding-left: 3px;
-  padding-top: 1px;
-}
-
-#notifyBlock > div {
-  position: relative;
-  height: 9px;
-  width: 9px;
-  border-radius: 50%;
-  background: rgb(255, 240, 0);
-  box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(0, 0, 0, 0.25);
-  border: 1px solid;
-  float: left;
-  margin-left: 3px;
-  transition: 0.1s;
-}
-
-#notifyBlock > div:hover div {
-  visibility: visible;
-}
-
-#notifyBlock > div:active {
-  transform: scale(0.95);
-}
-
-@keyframes new {
-  from {
-    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(0, 0, 0, 0.25);
-  }
-  50% {
-    box-shadow: inset 0 0 1px 1px rgba(31, 255, 0, 0.8), 0 0 30px 20px rgba(0, 255, 36, 0.6);
-  }
-  to {
-    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(0, 0, 0, 0.25);
-  }
-}
-
-#notifyBlock > div:hover {
-  box-shadow: 0 0 1px 1px rgba(236, 255, 167, 0.5);
-}
-
-.missionNotify {
-  visibility: hidden;
-  position: absolute;
-  bottom: 7px;
-  left: 0;
-  background-size: 100% 3px;
-  background-image: linear-gradient(0deg, rgba(7, 41, 60, 0.6) 87%, rgba(0, 62, 95, 0.5) 30%);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
-  height: 190px;
-  width: 250px;
-  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
-  overflow-y: scroll;
-  z-index: 1;
-  color: white;
-  font-size: 12px;
-  padding: 5px;
-  overflow-x: hidden;
-}
-
-.missionNotify h3 {
-  margin: 0;
-  text-align: left;
-  padding-left: 5px;
-  color: yellow;
-}
-
-.missionNotify h4 {
-  margin: 0;
-  color: #78ff00;
-  font-size: 11px;
-  text-align: left;
-  padding-left: 5px;
-}
-
-.missionNotify p, .notifyParagraph {
-  text-align: justify;
-  padding: 5px;
-  color: #ff8100;
-  margin: 5px 0;
-  text-indent: 1.5em;
-}
-
-.missionNotify a:visited {
-  text-decoration: none;
-  color: aqua;
-}
-
-.missionNotify a:hover {
-  text-decoration: none;
-  color: #0093ff;
-}
-
-.notifyIconItem {
-  display: inline-block;
-  height: 35px;
-  width: 35px;
-  position: relative;
-  box-shadow: inset 0 0 4px 0 white;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
-  margin: 0 4px;
 }
 
 #tabsGroup .localTabChat {

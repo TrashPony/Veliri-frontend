@@ -1,0 +1,112 @@
+{
+    "frames": [
+        {
+            "filename": "apd_super_heavy_1_bottom_animate_left",
+            "frame": {
+                "w": 512,
+                "h": 1280,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "apd_super_heavy_1_bottom_animate_right",
+            "frame": {
+                "w": 512,
+                "h": 1280,
+                "x": 512,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "apd_super_heavy_1_bottom_animate",
+            "frame": {
+                "w": 512,
+                "h": 1280,
+                "x": 1024,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "apd_super_heavy_1_bottom",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 0,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "apd_super_heavy_1_mask2",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 256,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "apd_super_heavy_1",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 512,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "apd_super_heavy_1_mask",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 768,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "apd_super_heavy_1_skin_1",
+            "frame": {
+                "w": 256,
+                "h": 256,
+                "x": 1024,
+                "y": 1280
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

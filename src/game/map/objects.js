@@ -36,6 +36,12 @@ function CreateObject(coordinate, x, y, noBmd, scene) {
     }
   }
 
+  // todo костыль
+  if (coordinate.texture === "bones_3") {
+    coordinate.objectSprite.setDepth(2);
+    coordinate.objectSprite.shadow.setDepth(1);
+  }
+
   ObjectEvents(coordinate, coordinate.objectSprite, x, y);
 
   if (coordinate.type === "turret") {
@@ -114,12 +120,12 @@ function gameObjectCreate(x, y, texture, scale, needShadow, rotate, group, xShad
 
   object.shadow = shadow;
 
-  if (!gameStore.mapEditor && !needShadow && scene.floorObjectLayer && !noBmd) {
-    object.setPosition(x, y);
-    gameStore.mapsState[mapID].bmdTerrain.bmd.draw(object);
-    object.destroy();
-    object = null;
-  }
+  // if (!gameStore.mapEditor && !needShadow && scene.floorObjectLayer && !noBmd) {
+  //   object.setPosition(x, y);
+  //   gameStore.mapsState[mapID].bmdTerrain.bmd.draw(object);
+  //   object.destroy();
+  //   object = null;
+  // }
 
   return object
 }
@@ -211,6 +217,16 @@ function ObjectEvents(coordinate, object, x, y) {
     object.on('pointerover', function () {
 
       if (!coordinate.build) {
+
+        if (!coordinate.build || coordinate.complete > 99) {
+          //object.setPostPipeline([ 10, 10 ]);
+        }
+
+        // todo костыль
+        if (coordinate.name === "Телепорт" || coordinate.name === "Выход из телепорта") {
+          return
+        }
+
         store.commit({
           type: 'toggleWindow',
           id: 'reservoirTip' + object.x + "" + object.y,
@@ -226,10 +242,6 @@ function ObjectEvents(coordinate, object, x, y) {
           forceOpen: true,
         });
       }
-
-      if (!coordinate.build || coordinate.complete > 99) {
-        object.setPipeline("bloom");
-      }
     });
 
     object.on('pointerout', function () {
@@ -238,7 +250,7 @@ function ObjectEvents(coordinate, object, x, y) {
         id: 'reservoirTip' + object.x + "" + object.y,
         component: 'reservoirTip',
       });
-      object.resetPipeline();
+      //object.resetPipeline();
     });
   }
 
@@ -251,10 +263,6 @@ function ObjectEvents(coordinate, object, x, y) {
       }));
     }
   });
-
-  if (coordinate.texture.indexOf('base') + 1) {
-    // todo выводить окошо с мин информацией по базе
-  }
 }
 
 export {CreateObject, CreateAnimate, gameObjectCreate, gameAnimateObjectCreate}

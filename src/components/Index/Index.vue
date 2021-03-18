@@ -22,6 +22,8 @@
         </div>
       </header>
 
+      <div class="logo"/>
+
       <router-view/>
 
       <footer>
@@ -69,6 +71,15 @@ body {
   background-size: cover;
   height: 100vh;
   width: 100vw;
+}
+.logo {
+  background: url('../../assets/logo/Veliri_logo_Colour_12.png') left no-repeat;
+  background-size: contain;
+  background-position: 5% center;
+  height: 100px;
+  width: 1100px;
+  margin: auto;
+  filter: drop-shadow(2px 2px 0px black);
 }
 
 .scroll_div {

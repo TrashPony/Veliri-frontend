@@ -11,6 +11,10 @@ let UnitHeight = 35
 
 function CreateNewUnit(newUnit) {
 
+  if (!newUnit.hasOwnProperty('id')) {
+    newUnit = JSON.parse(newUnit);
+  }
+
   if (!gameStore.gameReady) return;
 
   let unit = gameStore.units[newUnit.id];
@@ -260,36 +264,96 @@ function createUnit(unit, x, y, rotate, bColor, b2Color, wColor, w2Color) {
 
 function createUnitName(unit) {
 
-  // if (store.getters.getUser && store.getters.getUser.game_mode === 'open_world') {
-  //   return;
-  // }
-
-  let color = "rgb(255,255,255)";
-
-  unit.sprite.userName = {login: null, pointer: null};
-  unit.sprite.userName.login = Scene.add.text(unit.sprite.x, unit.sprite.y, unit.owner, {
-    font: "44px Arial Black",
-    fill: color,
-  });
-  unit.sprite.userName.login.setStroke('#000', 8);
+  unit.sprite.userName = {login: null, loginShadow: null, pointer: null};
+  unit.sprite.userName.login = Scene.add.bitmapText(unit.sprite.x, unit.sprite.y, 'bit_text', unit.owner, 32)
   unit.sprite.userName.login.setDepth(900);
   unit.sprite.userName.login.setOrigin(0.5);
-  unit.sprite.userName.login.setScale(0.22);
+  unit.sprite.userName.login.setScale(0.35);
 
-  unit.sprite.userName.pointer = Scene.add.text(unit.sprite.x, unit.sprite.y, "v", {
-    font: "44px Arial Black",
-    fill: color,
-  });
-  unit.sprite.userName.pointer.setStroke('#000', 8);
+  unit.sprite.userName.pointer = Scene.add.bitmapText(unit.sprite.x, unit.sprite.y, 'bit_text', 'v', 32)
   unit.sprite.userName.pointer.setDepth(900);
   unit.sprite.userName.pointer.setOrigin(0.5);
-  unit.sprite.userName.pointer.setScale(0.26);
+  unit.sprite.userName.pointer.setScale(0.35);
+
+  unit.sprite.userName.detail = Scene.add.bitmapText(unit.sprite.x, unit.sprite.y, 'bit_text', 'подробно', 32)
+  unit.sprite.userName.detail.setDepth(900);
+  unit.sprite.userName.detail.setOrigin(0.5);
+  unit.sprite.userName.detail.setScale(0.27);
+  unit.sprite.userName.detail.setVisible(false);
+
+  unit.sprite.userName.pk = Scene.add.bitmapText(unit.sprite.x, unit.sprite.y, 'bit_text', 'преступник', 32)
+  unit.sprite.userName.pk.setDepth(900);
+  unit.sprite.userName.pk.setOrigin(0.5);
+  unit.sprite.userName.pk.setScale(0.27);
+  unit.sprite.userName.pk.setVisible(false);
+  unit.sprite.userName.pk.setTint(0xff0000);
 }
 
 function colorName(unit) {
-  if (store.getters.getUser.user_id === unit.owner_id) {
+
+  let violator = gameStore.violators[unit.owner_id];
+  let user = store.getters.getUser;
+
+  if (violator && violator.type === "pvp") {
+    if (violator.time < 3000 && violator.time % 400 === 0) {
+    } else {
+      unit.sprite.userName.login.setTint(0xcc5ffd);
+      unit.sprite.userName.pointer.setTint(0xcc5ffd);
+      return
+    }
+  }
+
+  if (violator && violator.type === "pk") {
+    unit.sprite.userName.login.setTint(0xff0000);
+    unit.sprite.userName.pointer.setTint(0xff0000);
+    unit.sprite.userName.pk.setVisible(true);
+    return
+  } else {
+    unit.sprite.userName.pk.setVisible(false);
+  }
+
+  if (unit.sprite.userName.detail.visible) {
+    unit.sprite.userName.login.setTint(0x00E1FF);
+    unit.sprite.userName.pointer.setTint(0x00E1FF);
+    unit.sprite.userName.detail.setTint(0x00E1FF);
+    return
+  }
+
+  if (user && user.user_id === unit.owner_id) {
     unit.sprite.userName.login.setTint(0x15FF19);
     unit.sprite.userName.pointer.setTint(0x15FF19);
+    return
+  }
+
+  if (user && user.game_mode === 'open_world') {
+
+    if (unit.of === 'Replics') {
+      unit.sprite.userName.login.setTint(0xee7015);
+      unit.sprite.userName.pointer.setTint(0xee7015);
+      return
+    }
+
+    if (unit.of === 'Reverses') {
+      unit.sprite.userName.login.setTint(0x659DFF);
+      unit.sprite.userName.pointer.setTint(0x659DFF);
+      return
+    }
+
+    if (unit.of === 'Explores') {
+      unit.sprite.userName.login.setTint(0x7aba00);
+      unit.sprite.userName.pointer.setTint(0x7aba00);
+      return
+    }
+
+    if (unit.of === 'APD') {
+      unit.sprite.userName.login.setTint(0xd7bc09);
+      unit.sprite.userName.pointer.setTint(0xd7bc09);
+      return
+    }
+
+    unit.sprite.userName.login.setTint(0xffffff);
+    unit.sprite.userName.pointer.setTint(0xffffff);
+    unit.sprite.userName.detail.setTint(0xffffff);
   } else {
     if (getMyTeam()) {
       if (!getMyTeam().players.includes(unit.owner_id)) {

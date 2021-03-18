@@ -7,7 +7,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    //publicPath: '/dist/',
+    publicPath: '/',
     filename: 'build-[hash:6].js'
   },
   module: {
@@ -34,7 +34,7 @@ module.exports = {
         use: "raw-loader"
       }, {
         test: /\.(gif|png|jpe?g|svg|xml|json|ogg|mp3|wav|mpe?g)$/i,
-        use: "file-loader"
+        use: "file-loader",
       }
     ]
   },

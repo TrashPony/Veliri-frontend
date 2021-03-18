@@ -11,6 +11,9 @@
       <!--      Missions открыто всегда-->
       <app-missions/>
 
+      <!--      MenuBar открыто всегда, панель снизу экрана с элементами меню -->
+      <app-menu-bar/>
+
       <!--      Help -->
       <app-help v-if="openComponents['helpWrapper'] && openComponents['helpWrapper'].open"
                 v-bind:meta="openComponents['helpWrapper'].meta"/>
@@ -18,7 +21,7 @@
 
       <app-technology-menu
         v-if="openComponents['TechnologyMenu'] && openComponents['TechnologyMenu'].open"
-        v-bind:meta="openComponents['helpWrapper'].meta"/>
+        v-bind:meta="openComponents['TechnologyMenu'].meta"/>
 
       <!--      Inventory-->
       <template v-if="endLoad.inventory">
@@ -63,8 +66,6 @@
       <app-friend-list v-if="openComponents['FriendList'] && openComponents['FriendList'].open"/>
       <app-group-menu v-if="openComponents['GroupMenu'] && openComponents['GroupMenu'].open"/>
       <app-corporation v-if="openComponents['Corporation'] && openComponents['Corporation'].open"/>
-
-      <app-audio-player/>
     </template>
 
     <!--      игра открыта всегда даже в фоне, что бы не делать загрузки каждый раз когда зашел вышел из базы -->
@@ -92,11 +93,11 @@ import Alerts from "./components/Alerts/Alerts"
 import Loader from "./components/Loader/Loader"
 import Market from "./components/Market/Market"
 import ModalNotify from "./components/ModalNotify/ModalNotify"
-import AudioPlayer from "./components/AudioPlayer/AudioPlayer"
 import FriendList from "./components/FriendList/FriendList"
 import GroupMenu from "./components/GroupMenu/GroupMenu"
 import Corporation from "./components/Corporation/Corporation"
 import TechnologyMenu from './components/TechnologyMenu/TechnologyMenu'
+import MenuBar from './components/MenuBar/MenuBar'
 
 export default {
   name: 'app',
@@ -164,11 +165,11 @@ export default {
     AppLoader: Loader,
     AppMarket: Market,
     AppModalNotify: ModalNotify,
-    AppAudioPlayer: AudioPlayer,
     AppFriendList: FriendList,
     AppGroupMenu: GroupMenu,
     AppCorporation: Corporation,
     AppTechnologyMenu: TechnologyMenu,
+    AppMenuBar: MenuBar,
   }
 }
 </script>
@@ -612,8 +613,8 @@ input[type=range]:focus::-ms-fill-upper {
 
 .InventoryCell.bodyEquip span {
   font-weight: 900;
-  font-size: 20px;
-  line-height: 44px;
+  font-size: 15px;
+  line-height: 38px;
   text-align: center;
   width: 100%;
   display: block;
@@ -626,8 +627,8 @@ input[type=range]:focus::-ms-fill-upper {
   padding: 0;
   z-index: 1;
   font-weight: 900;
-  font-size: 10px;
-  line-height: 10px;
+  font-size: 8px;
+  line-height: 8px;
   width: 100%;
   display: block;
   color: #ff7800;
@@ -637,7 +638,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 .InventoryCell.bodyThorium p {
   margin: 0 2px 0 0;
-  font-size: 9px;
+  font-size: 8px;
   padding: 0;
   text-align: right;
   color: #c5c3c1;
@@ -654,7 +655,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 #hp_bar_wrapper {
-  height: 10px;
+  height: 6px;
   border: 1px solid #4c4c4c;
   text-align: left;
   display: block;
@@ -665,16 +666,17 @@ input[type=range]:focus::-ms-fill-upper {
   background-color: #959595;
   margin: 0 auto 0;
   position: absolute;
-  top: 95px;
+  top: 79px;
   z-index: 2;
-  width: 100px;
-  left: calc(50% - 52px);
+  width: 80px;
+  left: calc(50% - 40px);
+  opacity: .75;
 }
 
 #hp_bar_wrapper span {
   display: block;
-  font-size: 10px;
-  line-height: 11px;
+  font-size: 5px;
+  line-height: 7px;
   width: 100%;
   text-align: center;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);

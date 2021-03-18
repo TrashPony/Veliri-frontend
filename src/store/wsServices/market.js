@@ -58,6 +58,12 @@ function MarketReader(data, store) {
       order_id: data.order_id,
       count: data.count,
     });
+  }
+  if (data.event === 'getCredits') {
+    store.commit({
+      type: 'setCredits',
+      my_credits: data.credits,
+    });
   } else {
     store.commit({
       type: 'setMarketState',

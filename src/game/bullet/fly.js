@@ -62,13 +62,15 @@ function FlyBullet(bullet) {
   ShortDirectionRotateTween(bullet.shadow, data.r, data.ms);
 
   if (bullet.fairy) {
+    let speed = Phaser.Math.Distance.Between(data.x, data.y, bullet.sprite.x, bullet.sprite.y)
+
     MoveSprite(bullet.fairy, data.x, data.y, data.ms, null);
     bullet.fairy.emitter.setEmitterAngle({min: 180 + data.r, max: 180 + data.r});
+    bullet.fairy.emitter.setSpeed({min: speed * 5, max: speed * 10})
   }
 }
 
 function FlyLaser(jsonData) {
-
   // TODO адаптировать под этот тип данных все методы
   if (!jsonData.msg) return;
 
@@ -116,7 +118,7 @@ function FlyLaser(jsonData) {
 
   let line = new Phaser.Geom.Line(path.x, path.y, target.x, target.y);
   let particles = Scene.add.particles('flares');
-  let emiter = particles.createEmitter({
+  let emitter = particles.createEmitter({
     frame: color,
     x: 0, y: 0,
     scale: {start: scale, end: 0},
@@ -125,18 +127,19 @@ function FlyLaser(jsonData) {
     quantity: quantity,
     emitZone: {source: line},
     blendMode: 'SCREEN',
-    lifespan: 500,
+    lifespan: 300,
   });
   particles.setDepth(40);
 
   SmokeExplosion(target.x, target.y, 500, 15, 5, 10, null, null, 40);
   setTimeout(function () {
-    emiter.stop();
+    emitter.stop();
   }, 100);
 
   setTimeout(function () {
+    emitter.killAll();
     particles.destroy();
-  }, 600);
+  }, 300);
 }
 
 function checkTTL(bullet, data) {

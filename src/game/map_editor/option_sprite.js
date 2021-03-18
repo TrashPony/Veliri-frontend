@@ -2,7 +2,6 @@ import {selectObjects} from "./place_coordinate";
 import store from "../../store/store";
 import {gameStore} from "../store";
 import {GetGlobalPos} from "../map/gep_global_pos";
-import {MapSize} from "../map/createMap";
 import {Scene} from "../create";
 
 function OptionSprite() {
@@ -21,6 +20,15 @@ function ChangeOptionSprite(x, y) {
     // console.log(pos, x, y)
     if (gameStore.mapsState[gameStore.map.id].staticObjects[id].x === x && gameStore.mapsState[gameStore.map.id].staticObjects[id].y === y) {
       coordinate = gameStore.mapsState[gameStore.map.id].staticObjects[id]
+    }
+  }
+
+  for (let id in gameStore.objects) {
+
+    if (!gameStore.objects[id]) continue;
+
+    if (gameStore.objects[id].x === x && gameStore.objects[id].y === y) {
+      coordinate = gameStore.objects[id]
     }
   }
 

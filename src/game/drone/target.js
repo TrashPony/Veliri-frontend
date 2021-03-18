@@ -18,7 +18,7 @@ function DroneTarget(data) {
 
   if (drone.equip_slot.equip.applicable === "digger") {
 
-    if (droneTarget.destroyTime <= 0) {
+    if (droneTarget.destroyTime <= 0 && !droneTarget.radiusControlSprite) {
 
       // дрон копатель
       droneTarget.radiusControlSprite = Scene.make.sprite({
@@ -48,12 +48,13 @@ function DroneTarget(data) {
           clearInterval(closeTarget);
           droneTarget.radiusControlSprite.destroy();
           droneTarget.targetSprite.destroy();
+          droneTarget.radiusControlSprite = null;
         } else {
           droneTarget.destroyTime -= 10
         }
       }, 10)
     }
-    droneTarget.destroyTime = 100;
+    droneTarget.destroyTime = 250;
 
     if (droneTarget.radiusControlSprite) {
       droneTarget.targetSprite.setVisible(data.msg.successful);

@@ -27,15 +27,28 @@
 
           <div class="MapPoint" v-for="mapsPoint in mapsPoints"
                :style="{left: mapsPoint.x + 'px', top: mapsPoint.y + 'px'}"
-               @mousemove="openSubMenu($event, mapsPoint.map)"
+               @mousemove="openSubMenu($event, mapsPoint.map, false)"
                @mouseout="mapPointMouseOut()"
+               @mouseover="previewPath(mapsPoint.map.id)"
+               @mousedown="openSubMenu($event, mapsPoint.map, true)"
                v-bind:class="{User: mapsPoint.map.id === worldMap.userMapID}"
                :ref="'map' + mapsPoint.map.id">
 
-            <div class="animateAura" @mouseover="previewPath(mapsPoint.map.id)"
+            <div class="count_defenders" v-if="!mapsPoint.map.possible_battle && !mapsPoint.map.free_land">
+              {{ defenders[mapsPoint.map.id] ? defenders[mapsPoint.map.id] : "" }}
+            </div>
+
+            <div class="animateAura"
+                 v-bind:class="{animate: mapsPoint.map.id === worldMap.userMapID, battleMap: mapsPoint.map.possible_battle}"
                  @mouseout="clearPath('GlobalMapPathCanvas')"></div>
-            <div class="fractionIcon"
-                 :style="{backgroundImage: 'url(' + require('../../assets/' + fractionLogo(mapsPoint.map.fraction)) + ')'}"></div>
+
+            <div class="fractionIcon" v-if="!mapsPoint.map.free_land"
+                 :style="{backgroundImage: 'url(' + require('../../assets/' + fractionLogo(mapsPoint.map.fraction)) + ')'}"/>
+
+            <div class="fractionIcon" v-if="mapsPoint.map.free_land"
+                 style="background-image: url('https://img.icons8.com/flat_round/64/000000/self-destruct-button--v1.png')"/>
+
+
             <div class="sectorName">{{ mapsPoint.map.Name }}</div>
 
             <div class="battle" v-if="mapsPoint.map.battle"></div>
@@ -58,7 +71,7 @@ export default {
   },
   data() {
     return {
-      gridSize: 72,
+      gridSize: 35,
       initUser: false,
       zoomChange: false,
       whellTimeOut: false,
@@ -99,16 +112,27 @@ export default {
         type: 'setPreviewPath',
         previewPath: null,
       });
-      this.subMenuProps = null;
+
       this.actialPath = null;
+
+      if (this.subMenuProps && this.subMenuProps.active) {
+        return
+      }
+
+      this.subMenuProps = null;
     },
-    openSubMenu(event, map) {
+    openSubMenu(event, map, active) {
       let app = this;
+
+      if (app.subMenuProps && app.subMenuProps.active) {
+        return
+      }
 
       app.subMenuProps = {
         x: event.pageX + 20,
         y: event.pageY + 20,
         map: map,
+        active: active,
       };
 
       this.$store.getters.getWSByService('chat').socket.send(JSON.stringify({
@@ -117,6 +141,7 @@ export default {
       }));
     },
     previewPath(mapID) {
+      this.clearPath('GlobalMapPathCanvas')
       this.$store.getters.getWSByService('chat').socket.send(JSON.stringify({
         event: "previewPath",
         id: Number(mapID)
@@ -153,7 +178,7 @@ export default {
     scaleAndScroll(change) {
       let app = this;
 
-      if (app.gridSize + change < 28) {
+      if (app.gridSize + change < 15) {
         return
       } else if (app.gridSize + change > 150) {
         return
@@ -423,7 +448,7 @@ export default {
       }
 
       return true
-    }
+    },
   },
   computed: {
     worldMap() {
@@ -443,6 +468,9 @@ export default {
     },
     maps() {
       return this.$store.getters.getWorldMapState.maps
+    },
+    defenders() {
+      return this.$store.getters.getWorldMapState.defenders
     },
     mapsPoints() {
       let points = [];
@@ -549,8 +577,11 @@ export default {
   height: 40px;
   width: 40px;
   border-radius: 50%;
-  animation: rotate 8s infinite ease-in-out;
   border: 1px dashed rgb(255, 255, 255);
+}
+
+.animateAura.animate {
+  animation: rotate 8s infinite ease-in-out;
 }
 
 .animateAura:hover {
@@ -601,12 +632,13 @@ export default {
 
 .sectorName {
   color: rgba(255, 255, 255, 0.5);
-  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5), 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.5), -1px 0 1px rgba(0, 0, 0, 0.5), 1px 0 1px rgba(0, 0, 0, 0.5), -1px 0 1px rgba(0, 0, 0, 0.5), 1px 0 1px rgba(0, 0, 0, 0.5), -1px -1px 1px rgba(0, 0, 0, 0.5), 1px -1px 1px rgba(0, 0, 0, 0.5), -1px 1px 1px rgba(0, 0, 0, 0.5), 1px 1px 1px rgba(0, 0, 0, 0.5), -1px -1px 1px rgba(0, 0, 0, 0.5), 1px -1px 1px rgba(0, 0, 0, 0.5), -1px 1px 1px rgba(0, 0, 0, 0.5), 1px 1px 1px rgba(0, 0, 0, 0.5);
   font-size: 13px;
   top: calc(100% + 5px);
-  left: -5px;
-  position: relative;
+  left: 50%;
+  position: absolute;
   pointer-events: none;
+  transform: translate(-50%, 0%);
+  width: fit-content;
 }
 
 .MapPoint:hover .sectorName {
@@ -621,7 +653,6 @@ export default {
   width: 26px;
   background-size: cover;
   pointer-events: none;
-  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 1));
 }
 
 .GridBox {
@@ -676,5 +707,37 @@ export default {
   left: 10%;
   top: 10%;
   pointer-events: none;
+}
+
+.fractionIcon.shield {
+  background-image: url('https://img.icons8.com/fluent/48/000000/shield.png');
+  height: 40px;
+  width: 40px;
+  left: calc(50% - 20px);
+  top: calc(50% - 20px);
+}
+
+.battleMap {
+  border: 2px dashed rgb(251, 72, 72);
+  left: -2px;
+  top: -2px;
+}
+
+.count_defenders {
+  background-image: url(https://img.icons8.com/cotton/64/000000/security-shield.png);
+  height: 24px;
+  width: 24px;
+  right: -6px;
+  top: -6px;
+  background-size: contain;
+  position: absolute;
+  z-index: 1;
+  background-repeat: no-repeat;
+  font-size: 9px;
+  text-align: center;
+  line-height: 22px;
+  font-family: 'Audiowide', cursive;
+  color: #fff16f;
+  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
 }
 </style>

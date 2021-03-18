@@ -16,8 +16,22 @@ function deleteBullet(bullet, id) {
   }
 
   if (bullet.fairy) {
-    bullet.fairy.setVisible(false);
-    bullet.fairy.emitter.stop();
+    bullet.fairy.destroy();
+  }
+
+  if (bullet.emitter) { // метеориты
+    bullet.emitter.killAll()
+    bullet.emitter.stop();
+
+    if (bullet.shadow) {
+      bullet.shadow.emitter.killAll()
+      bullet.shadow.emitter.stop();
+      bullet.shadow.destroy();
+    }
+
+    bullet.sprite.destroy();
+    delete gameStore.bullets[id];
+    return;
   }
 
   delete gameStore.bullets[id];

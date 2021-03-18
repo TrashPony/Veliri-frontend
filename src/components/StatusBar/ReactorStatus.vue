@@ -1,8 +1,8 @@
 <template>
-  <div id="HeadGlobal" style="width: 257px">
+  <div id="HeadGlobal">
     <div id="statusBar">
 
-      <div id="reactorStatus" v-if="unit && state">
+      <div id="reactorStatus" v-if="false">
         <div id="countPower">{{ (unit.power / 100).toFixed(0) }} / {{ (state.max_power / 100).toFixed(0) }}</div>
         <div id="recoverPower">
           +{{ countRecovery }} <span>ед/сек.</span>
@@ -19,20 +19,25 @@
               opacity: slots[n].count === 0 ? '0.5' : '1',
               animation: slots[n].count / slots[n].max_count < 0.2 && slots[n].count !== 0 ? 'alertPulse 2s infinite ease-in-out' : ''}">
 
-            {{ slots[n].count + "/" + slots[n].max_count }}
 
-            <div v-if="slots[n].count > 0" class="wrapper">
-              <div class="WorkOutBar" :style="{width: 100 / (100 / (100 - slots[n].worked_out)) + '%'}"/>
+            <span class="ThoriumCount">{{ slots[n].count + "/" + slots[n].max_count }}</span>
+
+            <div style="position: absolute; bottom: 0; width: 100%;">
+              <div v-if="slots[n].count > 0" class="wrapper" style="margin-bottom: 2px;">
+                <div class="WorkOutBar" :style="{width: 100 / (100 / (100 - slots[n].worked_out)) + '%'}"/>
+              </div>
+
+              <div v-if="slots[n].count > 0" class="wrapper">
+                <div class="WorkOutBar"
+                     :style="{width: (100 / (slots[n].max_count / slots[n].count)) + '%', backgroundColor: colorDamage((100 / (slots[n].max_count / slots[n].count)))}"/>
+              </div>
             </div>
           </div>
         </template>
       </div>
 
-      <div style="float: left; margin: 4px 0 0;" v-if="state">
-
-        <div id="speedBarEfficiency" :style="{color: getSpeedColor}">{{ Math.round(currentSpeed) }}
-        </div>
-
+      <div style="float: left; margin: 4px 0 0;" v-if="state && false">
+        <div id="speedBarEfficiency" :style="{color: getSpeedColor}">{{ Math.round(currentSpeed) }}</div>
         <div id="thoriumBarEfficiency">{{ Math.round(state.efficiency_reactor) * 100 }}%</div>
       </div>
 
@@ -58,6 +63,9 @@ export default {
     }, 100)
   },
   methods: {
+    colorDamage(percent) {
+      return this.$store.getters.GetColorDamage(percent)
+    },
     removeThorium(i) {
       this.$store.getters.getWSByService('global').socket.send(JSON.stringify({
         event: "removeThorium",
@@ -145,24 +153,11 @@ export default {
 
 <style scoped>
 #HeadGlobal {
-  height: 45px;
-  width: 300px;
-  box-shadow: inset 0 0 2px black;
-  background: #8cb3c7;
-  border-radius: 5px;
-  float: left;
-  margin-bottom: 2px;
-  padding: 0 5px 5px 0;
-  margin-top: 2px;
+
 }
 
 #statusBar {
-  position: relative;
-  float: left;
-  display: block;
-  width: 302px;
-  height: 46px;
-  z-index: 10;
+
 }
 
 #reactorStatus {
@@ -189,26 +184,14 @@ export default {
 
 #statusBar #Thorium .Thorium {
   position: relative;
-  width: 34px;
-  height: 34px;
+  width: 25px;
+  height: 12px;
   float: left;
+  border-radius: 2px;
   background-size: cover;
-  border-radius: 5px;
-  border: 1px solid #959595;
-  background-color: #4c4c4c;
-  background-repeat: no-repeat;
-  margin: 2px;
+  margin: 0 2px;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 1);
-  font-family: Arial;
-  font-size: 9px;
-  color: #00FFFD;
-  line-height: 46px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  text-align: center;
-  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
+  background: #066ea8;
 }
 
 #statusBar #Thorium .Thorium.noActive {
@@ -216,18 +199,7 @@ export default {
 }
 
 #statusBar #Thorium {
-  width: 120px;
-  height: 40px;
-  border-radius: 5px;
-  margin: 5px 2px;
-  float: left;
-  word-wrap: break-word;
-  text-align: left;
-  text-shadow: #28a5e4 0 0 4px;
-  font-family: sans-serif;
-  font-size: 9pt;
-  box-shadow: inset 0 0 5px black;
-  background: #8cb3c7;
+
 }
 
 #backAfterburner {
@@ -269,17 +241,43 @@ export default {
 }
 
 .wrapper {
-  width: 28px;
-  position: absolute;
-  left: calc(50% - 14px);
-  bottom: 2px;
+  width: calc(100% - 2px);
+  box-shadow: 0 0 2px black;
+  background: grey;
+  border-radius: 2px;
+  overflow: hidden;
+  height: 4px;
+  margin: 0 auto 1px;
 }
 
 .WorkOutBar {
   width: 100%;
-  height: 4px;
+  height: 100%;
   overflow: visible;
-  background: rgb(255, 130, 14);
-  border-radius: 2px;
+  background: rgb(3, 245, 255);
+  box-shadow: inset 0 0 2px black;
+}
+
+.ThoriumCount {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 3px);
+  font-size: 11px;
+  color: yellow;
+  padding: 2px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-align: center;
+  border: 1px solid rgba(37, 160, 225, 0.5);
+  background: rgba(8, 138, 210, 0.5);
+  border-radius: 3px;
+  box-shadow: 0 0 2px black;
+  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
+}
+
+.Thorium:hover .ThoriumCount {
+  display: block;
 }
 </style>

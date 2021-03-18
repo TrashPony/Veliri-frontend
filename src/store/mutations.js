@@ -8,6 +8,7 @@ import createMapEditorPlugin from "./wsServices/map_editor";
 
 import store from './store'
 import Vue from 'vue'
+import createDialogEditorPlugin from "./wsServices/dialog_editor";
 
 const mutations = {
   resetState(state) {
@@ -67,6 +68,12 @@ const mutations = {
       const marketWS = new WebSocket(urls.socketMapEditor);
       let market = createMapEditorPlugin(marketWS);
       market(store);
+    }
+
+    if (payload.service === 'dialog_editor') {
+      const editorWS = new WebSocket(urls.socketDialogEditor);
+      let editor = createDialogEditorPlugin(editorWS);
+      editor(store);
     }
   },
   setWSConnectState(state, payload) {
@@ -361,6 +368,13 @@ const mutations = {
     Vue.set(state.Chat, 'violators', payload.violators);
     Vue.set(state.Chat, 'distressSignals', payload.distressSignals);
   },
+  setViolator(state, payload) {
+    Vue.set(state.Chat, 'violator', payload.violator);
+    Vue.set(state.Chat, 'exitTime', payload.time);
+  },
+  setFractionNews(state, payload) {
+    Vue.set(state.Chat, 'fractionNews', payload.news);
+  },
   addKillsNotify(state, payload) {
     state.KillsNotify.push(payload.notify)
   },
@@ -389,6 +403,10 @@ const mutations = {
     Vue.set(state.Inventory, 'stateEquip', payload.stateEquip);
     Vue.set(state.Inventory, 'stateBodyBonus', payload.stateBodyBonus);
     Vue.set(state.Inventory, 'fine', payload.fine);
+
+    if (payload.unit) {
+      Vue.set(state.Game, 'thorium_slots', payload.unit.thorium_slots);
+    }
   },
   updateWarehouse(state, payload) {
 
@@ -413,11 +431,15 @@ const mutations = {
       Vue.set(state.Inventory.warehouses[payload.warehouse], 'size', payload.size);
       Vue.set(state.Inventory.warehouses[payload.warehouse], 'inventory', payload.inventory);
       Vue.set(state.Inventory.warehouses[payload.warehouse], 'title', payload.title);
+      Vue.set(state.Inventory.warehouses[payload.warehouse], 'object_owner', payload.object_owner);
     }
 
     if (payload.meta) {
       Vue.set(state.Inventory.warehouses[payload.warehouse], 'meta', payload.meta);
     }
+  },
+  setPlaceDialog(state, payload) {
+    Vue.set(state.Inventory, 'placeDialog', payload.data);
   },
   removeWarehouse(state, payload) {
     Vue.delete(state.Inventory.warehouses, payload.warehouse);
@@ -450,6 +472,10 @@ const mutations = {
     Vue.set(state.Market, 'my_credits', payload.my_credits);
   },
 
+  setCredits(state, payload) {
+    Vue.set(state.Market, 'my_credits', payload.my_credits);
+  },
+
   setCountItems(state, payload) {
     Vue.set(state.Market.count_items, payload.order_id, payload.count);
   },
@@ -468,6 +494,7 @@ const mutations = {
   setWorldMapState(state, payload) {
     Vue.set(state.WorldMap, 'maps', payload.maps);
     Vue.set(state.WorldMap, 'userMapID', payload.id);
+    Vue.set(state.WorldMap, 'defenders', payload.defenders);
   },
   setPreviewPath(state, payload) {
     Vue.set(state.WorldMap, 'previewPath', payload.previewPath);
@@ -516,11 +543,27 @@ const mutations = {
   setPoints(state, payload) {
     Vue.set(state.Missions, 'points', payload.points);
   },
+  setAllFullMissions(state, payload) {
+    Vue.set(state.AllFullMissions, 'data', payload.data);
+  },
+  setTrackMission(state, payload) {
+
+    if (!state.AllFullMissions.data || !state.AllFullMissions.data.missions || !state.AllFullMissions.data.missions[payload.data.uuid]) {
+      return
+    } else {
+      Vue.set(state.AllFullMissions.data.missions[payload.data.uuid], 'track', payload.data.track);
+    }
+  },
+
   /** Lobby **/
   setBaseFullStatus(state, payload) {
     if (payload.state !== "") Vue.set(state.Lobby.base, 'state', JSON.parse(payload.state));
-    if (payload.resources !== "") Vue.set(state.Lobby.base, 'resources', JSON.parse(payload.resources));
+    if (payload.resources && payload.resources !== "") Vue.set(state.Lobby.base, 'resources', JSON.parse(payload.resources));
+    Vue.set(state.Lobby.base, 'stories', payload.stories);
     Vue.set(state.Lobby.base, 'fraction', payload.fraction);
+  },
+  setBaseWorkStatus(state, payload) {
+    Vue.set(state.Lobby.base.state, 'type', payload.typeBase);
   },
   setBaseStatus(state, payload) {
     Vue.set(state.Lobby.base, 'state', payload.state);
@@ -557,6 +600,8 @@ const mutations = {
     Vue.set(state.Lobby.recycler, 'recycle_slots', payload.recycle_slots);
     Vue.set(state.Lobby.recycler, 'preview_recycle_slots', payload.preview_recycle_slots);
     Vue.set(state.Lobby.recycler, 'user_recycle_skill', payload.user_recycle_skill);
+    Vue.set(state.Lobby.recycler, 'lost_recycle_slots', payload.lost_recycle_slots);
+    Vue.set(state.Lobby.recycler, 'tax_recycle_slots', payload.tax_recycle_slots);
   },
 
   /** PrefabricatedMenu **/
@@ -587,8 +632,14 @@ const mutations = {
 
     Vue.set(state.Game, 'thorium_slots', payload.thorium_slots);
   },
+  setSecureZone(state, payload) {
+    Vue.set(state.Game, 'secure_zone', payload.secure);
+  },
   setUser(state, payload) {
     Vue.set(state.Game, 'user', payload.user);
+  },
+  setGlobalTarget(state, payload) {
+    Vue.set(state.Game, 'global_target', payload.global_target);
   },
   setUserUnit(state, payload) {
     Vue.set(state.Inventory, 'unit', payload.unit);
@@ -602,12 +653,22 @@ const mutations = {
   setUnitEnergy(state, payload) {
     Vue.set(state.Inventory.unit, 'power', payload.energy);
   },
+  setAutoPilot(state, payload) {
+    Vue.set(state.Inventory.unit, 'autoPilot', payload.auto);
+  },
   setStateUnit(state, payload) {
     Vue.set(state.Inventory, 'stateMS', payload.stateMS);
   },
   setSector(state, payload) {
     Vue.set(state.Game.sector, 'base', payload.base);
     Vue.set(state.Game.sector, 'capture_time', payload.capture_time);
+  },
+  setDetailSector(state, payload) {
+    Vue.set(state.Game.sector, 'detail', payload.data);
+  },
+  setSectorName(state, payload) {
+    Vue.set(state.Game.sector, 'name', payload.name);
+    Vue.set(state.Game.sector, 'id', payload.id);
   },
   setEquipPanel(state, payload) {
 
@@ -661,6 +722,19 @@ const mutations = {
     Vue.set(state.MapEditor, 'typeCoordinates', payload.typeCoordinates)
   },
 
+  /** Dialog editor **/
+  setDialogsInDialogEditor(state, payload) {
+    Vue.set(state.DialogEditor, 'dialogs', payload.dialogs)
+  },
+
+  /** Mission editor **/
+  setMissionInMissionEditor(state, payload) {
+    Vue.set(state.MissionEditor, 'missions', payload.missions)
+    Vue.set(state.MissionEditor, 'items', payload.items)
+    Vue.set(state.MissionEditor, 'actions', payload.actions)
+    Vue.set(state.MissionEditor, 'rewardItems', payload.rewardItems)
+  },
+
   /** Volume, SFXVolume **/
   setVolume(state, payload) {
     Vue.set(state.Settings, 'volume', payload.volume)
@@ -704,6 +778,14 @@ const mutations = {
   },
   setHandBook(state, payload) {
     Vue.set(state, 'HandBook', payload.description_items)
+  },
+
+  /** FRACTION STORE **/
+  setFractionStoreAssortment(state, payload) {
+    Vue.set(state.FractionStore, 'assortment', payload.assortment)
+  },
+  setFractionStoreUserPoints(state, payload) {
+    Vue.set(state.FractionStore, 'user_fraction_points', payload.user_fraction_points)
   }
 };
 

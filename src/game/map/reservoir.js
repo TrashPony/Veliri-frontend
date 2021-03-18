@@ -39,8 +39,6 @@ function CreateReservoir(reservoir) {
       },
       forceOpen: true,
     });
-
-    reservoir.sprite.setPipeline("bloom");
   });
 
   reservoir.sprite.on('pointerout', function () {
@@ -50,7 +48,6 @@ function CreateReservoir(reservoir) {
       component: 'reservoirTip',
       forceClose: true,
     });
-    reservoir.sprite.resetPipeline();
   });
 }
 

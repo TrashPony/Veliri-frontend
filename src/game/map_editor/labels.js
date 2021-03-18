@@ -2,20 +2,16 @@ import {Scene} from "../create";
 import {gameStore} from "../store";
 import {GetGlobalPos} from "../map/gep_global_pos";
 
-function CreateMapLabels(map) {
+function CreateMapLabels(map, onlySector) {
   for (let i of map.handlers_coordinates) {
-
     let pos = GetGlobalPos(i.x, i.y, map.id);
-    i.x = pos.x;
-    i.y = pos.y;
-
-    CreateLabels(i, i.x, i.y)
+    CreateLabels(i, pos.x, pos.y, onlySector)
   }
 
   CreateLabelEntry(map.entry_points)
 }
 
-function CreateLabels(coordinate, x, y) {
+function CreateLabels(coordinate, x, y, onlySector) {
   if (coordinate.coordinateText) {
     for (let text in coordinate.coordinateText) {
       coordinate.coordinateText[text].destroy();
@@ -24,76 +20,68 @@ function CreateLabels(coordinate, x, y) {
     coordinate.coordinateText = {};
   }
 
-  if (gameStore.gameReady) {
+  if (coordinate.transport && !onlySector) {
+    let transportIcon = Scene.make.sprite({
+      x: x,
+      y: y,
+      key: 'transportIcon',
+      add: true
+    });
+    transportIcon.setOrigin(0.5);
+    transportIcon.setScale(0.5);
+    transportIcon.setDepth(1000);
 
-    if (coordinate.transport) {
-      let transportIcon = Scene.make.sprite({
-        x: x,
-        y: y,
-        key: 'transportIcon',
-        add: true
-      });
-      transportIcon.setOrigin(0.5);
-      transportIcon.setScale(0.5);
-      transportIcon.setDepth(1000);
+    gameStore.mapEditorState.labels['transportIcon' + x + ":" + y] = transportIcon;
+  }
 
-      gameStore.mapEditorState.labels['transportIcon' + x + ":" + y] = transportIcon;
-    }
+  if (coordinate.handler === 'sector') {
+    let transportIcon = Scene.make.sprite({
+      x: x,
+      y: y,
+      key: 'sectorOutIcon',
+      add: true
+    });
+    transportIcon.setOrigin(0.5);
+    transportIcon.setScale(0.5);
+    transportIcon.setDepth(1000);
 
-    if (coordinate.handler === 'sector') {
-      let transportIcon = Scene.make.sprite({
-        x: x,
-        y: y,
-        key: 'sectorOutIcon',
-        add: true
-      });
-      transportIcon.setOrigin(0.5);
-      transportIcon.setScale(0.5);
-      transportIcon.setDepth(1000);
+    gameStore.mapEditorState.labels['sectorOutIcon' + x + ":" + y] = transportIcon;
+  }
 
-      gameStore.mapEditorState.labels['sectorOutIcon' + x + ":" + y] = transportIcon;
-    }
+  if (coordinate.handler === 'base' && !onlySector) {
+    let transportIcon = Scene.make.sprite({
+      x: x,
+      y: y,
+      key: 'baseInIcon',
+      add: true
+    });
+    transportIcon.setOrigin(0.5);
+    transportIcon.setScale(0.3);
+    transportIcon.setDepth(1000);
 
-    if (coordinate.handler === 'base') {
-      let transportIcon = Scene.make.sprite({
-        x: x,
-        y: y,
-        key: 'baseInIcon',
-        add: true
-      });
-      transportIcon.setOrigin(0.5);
-      transportIcon.setScale(0.3);
-      transportIcon.setDepth(1000);
-
-      gameStore.mapEditorState.labels['baseInIcon' + x + ":" + y] = transportIcon;
-    }
+    gameStore.mapEditorState.labels['baseInIcon' + x + ":" + y] = transportIcon;
   }
 }
 
 function CreateLabelEntry(entryPoints) {
-  for (let i of entryPoints) {
-    if (i.positions) {
-      for (let position of i.positions) {
 
-        let pos = GetGlobalPos(position.x, position.y, gameStore.map.id);
-        position.x = pos.x;
-        position.y = pos.y;
+  for (let position of entryPoints) {
 
-        let baseResp = Scene.make.sprite({
-          x: position.x,
-          y: position.y,
-          key: 'baseResp',
-          add: true
-        });
+    let pos = GetGlobalPos(position.x, position.y, gameStore.map.id);
 
-        baseResp.setOrigin(0.5);
-        baseResp.setScale(0.05);
-        baseResp.setDepth(1000);
-        baseResp.angle = position.resp_rotate;
+    let mapRest = Scene.make.sprite({
+      x: pos.x,
+      y: pos.y,
+      key: 'baseResp',
+      add: true
+    });
 
-        gameStore.mapEditorState.labels['baseResp' + position.x + ":" + position.y] = baseResp;
-      }
-    }
+    mapRest.setOrigin(0.5);
+    mapRest.setScale(0.05);
+    mapRest.setDepth(1000);
+    mapRest.angle = position.resp_rotate;
+
+    gameStore.mapEditorState.labels['baseResp' + pos.x + ":" + pos.y] = mapRest;
   }
 }
 

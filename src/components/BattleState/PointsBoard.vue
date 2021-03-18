@@ -23,6 +23,8 @@ export default {
       if (pointType === "capture") return "Захват базы";
       if (pointType === "intelligence_damage") return "Урон по разведданным";
       if (pointType === "heal") return "Ремонт";
+      if (pointType === "destroy_structure") return "Уничтожение структур";
+      if (pointType === "capture_sector") return "Захват сектора";
     }
   },
   computed: {
@@ -64,6 +66,10 @@ export default {
 .points_board {
   white-space: nowrap;
   pointer-events: none;
+  left: calc(50%);
+  transform: translate(-50%, 0%);
+  position: absolute;
+  top: 30px;
 }
 
 .point {

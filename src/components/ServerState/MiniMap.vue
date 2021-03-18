@@ -1,8 +1,6 @@
 <template>
   <div class="can">
     <div class="back"></div>
-    <canvas width="400" height="400" id="canvasMapStatic" ref="canvasMapStatic"/>
-    <canvas width="400" height="400" id="canvasMap" ref="canvasMap" @mousedown="fastMove"/>
   </div>
 </template>
 

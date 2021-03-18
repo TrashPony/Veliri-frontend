@@ -112,10 +112,10 @@
             if (response.data.error === "password error") {
               app.err = "Пароли не совпадают"
             }
-            console.log(response)
+            //console.log(response)
           }
         }).catch(function (error) {
-          console.log(error)
+          //console.log(error)
         });
       },
       login: function () {
@@ -135,10 +135,10 @@
             if (response.data.error === "not allow") {
               app.err = "Не верный логин либо пароль"
             }
-            console.log(response)
+            //console.log(response)
           }
         }).catch(function (error) {
-          console.log(error);
+          //console.log(error);
         });
       },
       load() {

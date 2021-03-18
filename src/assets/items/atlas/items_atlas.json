@@ -1,0 +1,1295 @@
+{
+    "frames": [
+        {
+            "filename": "replic_weapon_1",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_weapon_2",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 32,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_weapon_3",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 0,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_weapon_4",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 32,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_builder",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 64,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_builder_body",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 64,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_miner",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 0,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_miner_extracted",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 32,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_scout",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 64,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_transport",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 96,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_warrior",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 96,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_weapon_1",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 96,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_weapon_2",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 0,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_weapon_4",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 32,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "reverses_weapon_3",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 64,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "secure_underground_box",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 96,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "silicon",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 128,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "silicon_ore",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 128,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "small_laser",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 128,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "small_lens",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 128,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "small_missile",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 0,
+                "y": 128
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "small_missile_bullet",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 32,
+                "y": 128
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "steel",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 64,
+                "y": 128
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "strange_box",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 96,
+                "y": 128
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tank_gun",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 128,
+                "y": 128
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "thorium_ore",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 160,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "titanium",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 160,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "titanium_ore",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 160,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "titanium_plate",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 160,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "underground_box",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 160,
+                "y": 128
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "wire",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 0,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "wires",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 32,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "aim_big_missile_bullet",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 64,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "aim_small_missile_bullet",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 96,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "apd_heavy",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 128,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "apd_light",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 160,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "apd_medium",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 192,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "apd_super_heavy_1",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 192,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "apd_super_heavy_2",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 192,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "armor_items",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 192,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "armored",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 192,
+                "y": 128
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "artillery",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 192,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "ballistics_artillery_bullet",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 0,
+                "y": 192
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "batteries",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 32,
+                "y": 192
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "big_laser",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 64,
+                "y": 192
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "big_missile",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 96,
+                "y": 192
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "big_missile_bullet",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 128,
+                "y": 192
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "blueprint",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 160,
+                "y": 192
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "blueprint_in_map",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 192,
+                "y": 192
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "box",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 224,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "box_2",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 224,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "box_3",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 224,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "copper",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 224,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "copper_ore",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 224,
+                "y": 128
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "datasheet",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 224,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "digger",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 224,
+                "y": 192
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "distance_generator",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 0,
+                "y": 224
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "distance_repair",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 32,
+                "y": 224
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "electronics",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 64,
+                "y": 224
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "energy_shield",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 96,
+                "y": 224
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "enriched_thorium",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 128,
+                "y": 224
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_builder",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 160,
+                "y": 224
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_builder_body",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 192,
+                "y": 224
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_miner",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 224,
+                "y": 224
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_miner_extracted",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 256,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_scout",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 256,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_transport",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 256,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_warrior",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 256,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_weapon_1",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 256,
+                "y": 128
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_weapon_2",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 256,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_weapon_3",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 256,
+                "y": 192
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "explores_weapon_4",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 256,
+                "y": 224
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "gear",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 0,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "geo_scanner",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 32,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "gravity_gun",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 64,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "gravity_square",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 96,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "iron",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 128,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "iron_ore",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 160,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "mashership_1",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 192,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "jammer",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 224,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "mashership_2",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 256,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "mashership_3",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 288,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "medium_lens",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 288,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "missile_defense",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 288,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "oil",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 288,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "piu-piu",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 288,
+                "y": 128
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "piu-piu_2",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 288,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "plastic",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 288,
+                "y": 192
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "red_card",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 288,
+                "y": 224
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "repair_kit",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 288,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "repair_passive",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 0,
+                "y": 288
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_builder",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 32,
+                "y": 288
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_builder_body",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 64,
+                "y": 288
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_label",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 96,
+                "y": 288
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_miner",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 128,
+                "y": 288
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_miner_extracted",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 160,
+                "y": 288
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_scout",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 192,
+                "y": 288
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_transport",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 224,
+                "y": 288
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "replic_warrior",
+            "frame": {
+                "w": 32,
+                "h": 32,
+                "x": 256,
+                "y": 288
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

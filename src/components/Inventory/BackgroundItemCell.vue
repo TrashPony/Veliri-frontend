@@ -34,7 +34,7 @@ export default {
       try {
         back = require('../../assets/' + this.getBackGround(slot))
       } catch (e) {
-        console.log(e)
+        //console.log(e)
       }
 
       return back;
@@ -125,7 +125,7 @@ export default {
   position: absolute;
   height: 100%;
   width: 100%;
-  filter: drop-shadow(0 0 2px white);
+  /*filter: drop-shadow(0 0 2px white);*/
   z-index: 0;
   background-position: center;
   top: 0;

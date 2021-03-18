@@ -1,13 +1,43 @@
 <template>
   <div id="battleState" v-if="battleState">
     <!--    тут говнокод потому что мне лень думоть...-->
+
     <div class="wrapper">
+
+      <div class="players_pick" v-if="battleState.type === 'battle' && myTeam && hostileTeam">
+        <div class="pick my_team_pick">
+          <div class="pick_kill_count">{{ countTeamKills(myTeam) }}</div>
+          <div class="pick_unit"
+               v-for="memberID in myTeam.players"
+               v-if="battleState.players[memberID] && battleState.players[memberID].live"/>
+
+          <div class="pick_unit dead"
+               v-for="memberID in myTeam.players"
+               v-if="battleState.players[memberID] && !battleState.players[memberID].live"/>
+
+        </div>
+        <div class="splitter">:</div>
+        <div class="pick hostile_pick">
+          <div class="pick_kill_count">{{ countTeamKills(hostileTeam) }}</div>
+          <div class="pick_unit"
+               v-for="memberID in hostileTeam.players"
+               v-if="battleState.players[memberID] && battleState.players[memberID].live"/>
+
+          <div class="pick_unit dead"
+               v-for="memberID in hostileTeam.players"
+               v-if="battleState.players[memberID] && !battleState.players[memberID].live"/>
+        </div>
+      </div>
+
       <div class="captureBar"
            v-if="battleState.type === 'battle' && (battleState.sub_type === 0 || battleState.sub_type === 2)">
         <div class="bar">
           <div class="inner" style="background: rgba(255, 27, 14, 0.6); right: 0; left: unset;"
                :style="{width: battleState.sub_type === 0 ? myTeam.spawn.capture + '%' : battleState.bases[1].capture + '%'}"></div>
-          <div class="bar_text base_name">{{ battleState.sub_type === 0 ? myTeam.spawn.name : battleState.bases[1].name }}</div>
+          <div class="bar_text base_name">{{
+              battleState.sub_type === 0 ? myTeam.spawn.name : battleState.bases[1].name
+            }}
+          </div>
           <div class="bar_split_33"></div>
         </div>
       </div>
@@ -21,8 +51,8 @@
         <div class="kill_count_number" style="float: right;">{{ countTeamKills(myTeam) }} / 15</div>
       </div>
 
-      <div class="base_hp" v-if="battleState.type === 'destroy_base'">
-        <div class="kill_count_number" style="float: right;">Наша база</div>
+      <div class="base_hp" v-if="battleState.type === 'destroy_base' || battleState.type === 'defense' ">
+        <div v-if="battleState.type === 'destroy_base'" class="kill_count_number" style="float: right;">Наша база</div>
         <div class="bar">
           <div class="inner" style="right: 0; left: unset;" :style="{width: myTeam.object_hp + '%'}"></div>
         </div>
@@ -30,8 +60,12 @@
       </div>
 
       <div class="battle_info">
-        <div class="time">{{ timeOutMinutes }}</div>
-        <div class="name">{{ getNameBattleType }}</div>
+        <div class="time">
+          <div class="time_block">{{ timeOutMinutes.minutes }}</div>
+          <div class="time_splitter">:</div>
+          <div class="time_block" style="text-align: left">{{ timeOutMinutes.sec }}</div>
+        </div>
+        <div class="name" style="clear: both">{{ getNameBattleType }}</div>
 
         <div class="captureBar center"
              v-if="(battleState.type === 'battle' && battleState.sub_type === 1 || battleState.sub_type === 2) || battleState.type === 'breakthrough'">
@@ -103,7 +137,9 @@
         <div class="bar">
           <div class="inner"
                :style="{width: battleState.sub_type === 0 ? hostileTeam.spawn.capture + '%' : battleState.bases[2].capture + '%'}"></div>
-          <div class="bar_text base_name">{{ battleState.sub_type === 0 ? hostileTeam.spawn.name : battleState.bases[2].name }}</div>
+          <div class="bar_text base_name">
+            {{ battleState.sub_type === 0 ? hostileTeam.spawn.name : battleState.bases[2].name }}
+          </div>
           <div class="bar_split_33"></div>
         </div>
       </div>
@@ -118,10 +154,6 @@
           </div>
         </div>
       </div>
-
-      <div style="position: absolute; top: calc(100% + 20px); left: 50%;">
-        <app-points-board/>
-      </div>
     </div>
   </div>
 </template>
@@ -129,7 +161,6 @@
 <script>
 import BackgroundItemCell from '../Inventory/BackgroundItemCell'
 import UserLine from '../Chat/UserLine';
-import PointsBoard from './PointsBoard';
 import {CreateSpawn} from "../../game/map_editor/spawn";
 import {gameStore} from "../../game/store";
 import {unitInfo} from "../../game/unit/mouse_body_over";
@@ -150,7 +181,7 @@ export default {
       app.$api.get(urls.itemURL + '?id=' + id + "&type=recycle&method=item").then(function (response) {
         app.resourceState[id].slot = response.data;
       }).catch(function (err) {
-        console.log(err)
+        //console.log(err)
       });
     },
     countTeamKills(team) {
@@ -221,11 +252,11 @@ export default {
           }
         }
 
-        if (this.draw_capture) {
-          for (let unitID in gameStore.units) {
-            unitInfo(gameStore.units[unitID], gameStore.units[unitID].sprite, gameStore.units[unitID].sprite.unitBody)
-          }
-        }
+        // if (this.draw_capture) {
+        //   for (let unitID in gameStore.units) {
+        //     unitInfo(gameStore.units[unitID], gameStore.units[unitID].sprite, gameStore.units[unitID].sprite.unitBody)
+        //   }
+        // }
       }
 
       return state
@@ -280,7 +311,7 @@ export default {
 
       let minutes = Math.floor(this.battleState.time_out / 60);
       let sec = this.battleState.time_out % 60;
-      return minutes + " : " + (sec % 60 < 10 ? "0" : "") + sec;
+      return {minutes: (minutes % 60 < 10 ? "0" : "") + minutes, sec: (sec % 60 < 10 ? "0" : "") + sec};
     },
     getNameBattleType() {
       let type = this.battleState.type;
@@ -354,7 +385,6 @@ export default {
   components: {
     AppBackgroundItemCell: BackgroundItemCell,
     AppUserLine: UserLine,
-    AppPointsBoard: PointsBoard,
   }
 }
 </script>
@@ -363,9 +393,9 @@ export default {
 #battleState {
   position: absolute;
   left: calc(50%);
-  min-height: 50px;
+  min-height: 40px;
   z-index: -1;
-  pointer-events: none;
+  /*pointer-events: none;*/
   transform: translate(-50%, 0%);
   background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%);
   padding: 2px 15px 7px;
@@ -449,7 +479,7 @@ export default {
 .battle_info {
   float: left;
   min-width: 100px;
-  margin: 15px 10px 2px;
+  margin: 10px 10px 2px;
 }
 
 .time, .name {
@@ -567,5 +597,77 @@ export default {
   font-size: 12px;
   line-height: 18px;
   text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
+}
+
+.time_block {
+  float: left;
+  width: 45%;
+  text-align: right;
+}
+
+.time_splitter {
+  float: left;
+  width: 10%;
+  text-align: center;
+}
+
+.players_pick {
+  padding-top: 5px;
+  height: 20px;
+  width: 100%;
+  clear: both;
+  font-family: 'Audiowide', cursive;
+  color: white;
+  text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
+}
+
+.pick {
+  float: left;
+  width: 47%;
+}
+
+.splitter {
+  float: left;
+  width: 6%;
+  text-align: center;
+}
+
+.pick_unit {
+  height: 7px;
+  width: 7px;
+  float: right;
+  background-color: rgb(128, 164, 253);
+  margin: 6px 2px;
+  box-shadow: 0 0 2px black;
+  border: 1px solid black;
+  -webkit-transform: rotate(45deg) skew(10deg, 10deg);
+}
+
+.hostile_pick .pick_unit {
+  float: left;
+  background-color: rgb(205, 70, 53);
+}
+
+.pick_kill_count {
+  width: 20px;
+  text-align: center;
+  color: rgb(128, 164, 253);
+  margin-left: 10px;
+  float: left;
+}
+
+.hostile_pick .pick_kill_count {
+  margin-right: 10px;
+  margin-left: 0;
+  color: rgb(205, 70, 53);
+}
+
+.my_team_pick .pick_kill_count {
+  float: right;
+}
+
+.pick_unit.dead {
+  filter: grayscale(75%);
+  opacity: 0.5;
 }
 </style>

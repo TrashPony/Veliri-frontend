@@ -47,7 +47,7 @@ function InventoryReader(data, store, ws) {
   if (data.event) logMsg(data.event, data);
   if (data.e) logMsg(data.e, data);
 
-  if (data.error !== "") {
+  if (data.error && data.error !== "") {
     addError(data.error, store);
     return;
   }
@@ -59,6 +59,12 @@ function InventoryReader(data, store, ws) {
     let unit = fillUnit(data);
 
     if (data.unit !== '') {
+
+      // console.log(unit)
+      // store.commit({
+      //   type: 'setThoriumSlots',
+      //   thorium_slots: JSON.stringify(unit.thorium_slots),
+      // });
 
       activeTab = 'squadInventory';
       store.commit({
@@ -126,11 +132,19 @@ function InventoryReader(data, store, ws) {
       capacity: data.capacity_size,
       size: data.inventory_size,
       inventory: data.inventory,
+      object_owner: data.object_owner,
       title: "Box",
       meta: {
         type: 'box',
         id: data.id,
       }
+    });
+  }
+
+  if (data.e === "dialog_place") {
+    store.commit({
+      type: 'setPlaceDialog',
+      data: data,
     });
   }
 }

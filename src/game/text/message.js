@@ -1,9 +1,5 @@
 import {gameStore} from "../store";
 import {Scene} from "../create";
-import store from "../../store/store";
-
-// [id] {time, posObj}
-let msgTimes = {};
 
 function showMessage(msg) {
 
@@ -22,55 +18,26 @@ function showMessage(msg) {
     return;
   }
 
-  if (!msgTimes[msg.user_id]) {
-    msgTimes[msg.user_id] = {
-      time: 0,
-      pos: {},
-    }
+  let text = msg.message;
+  if (text.length > 20) {
+    text = text.substring(0, 20) + "...";
   }
 
-  updatePos(msgTimes[msg.user_id].pos, unit);
+  if (!unit.sprite.userMessage) unit.sprite.userMessage = {}
 
-  store.commit({
-    type: 'toggleWindow',
-    id: "UserMsg" + msg.user_id,
-    component: 'UserMsg',
-    meta: {
-      text: msg.message,
-      pos: msgTimes[msg.user_id].pos,
-    },
-    forceOpen: true,
-  });
-
-  let timeInterval = 10;
-
-  if (msgTimes[msg.user_id].time <= 0) {
-
-    let posUpdater = setInterval(function () {
-      msgTimes[msg.user_id].time -= timeInterval;
-
-      updatePos(msgTimes[msg.user_id].pos, unit);
-
-      if (msgTimes[msg.user_id].time <= 0 || !gameStore.units[unit.id]) {
-        msgTimes[msg.user_id].time = 0;
-        store.commit({
-          type: 'toggleWindow',
-          id: "UserMsg" + msg.user_id,
-          component: 'UserMsg',
-          forceClose: true,
-        });
-        clearInterval(posUpdater);
-      }
-
-    }, timeInterval);
+  if (unit.sprite.userMessage.text) {
+    unit.sprite.userMessage.text.destroy();
   }
 
-  msgTimes[msg.user_id].time = 2500;
-}
+  unit.sprite.userMessage.text = Scene.add.bitmapText(unit.sprite.x, unit.sprite.y - 45, 'bit_text', text, 22)
+  unit.sprite.userMessage.text.setOrigin(0.5, 0);
+  unit.sprite.userMessage.text.setScale(0.5)
+  unit.sprite.userMessage.text.setDepth(1001);
 
-function updatePos(pos, unit) {
-  pos.left = Scene.cameras.main.zoom * (unit.sprite.x - Scene.cameras.main.worldView.x);
-  pos.top = Scene.cameras.main.zoom * (unit.sprite.y - Scene.cameras.main.worldView.y - 35);
+  let textSprite = unit.sprite.userMessage.text;
+  setTimeout(function () {
+    textSprite.destroy();
+  }, 3500)
 }
 
 export {showMessage}

@@ -43,6 +43,8 @@ function removeUnit(unit) {
     if (gameUnit.sprite.userName) {
       if (gameUnit.sprite.userName.login) unit.sprite.userName.login.destroy();
       if (gameUnit.sprite.userName.pointer) unit.sprite.userName.pointer.destroy();
+      if (gameUnit.sprite.userName.detail) unit.sprite.userName.detail.destroy();
+      if (unit.sprite.userName.pk) unit.sprite.userName.pk.destroy();
     }
   }
 

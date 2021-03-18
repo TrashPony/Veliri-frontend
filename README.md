@@ -1,1 +1,1 @@
-# veliri http://veliri.ru/#/
+# veliri

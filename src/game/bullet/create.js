@@ -35,11 +35,17 @@ function CreateBullet(data, mpID) {
   group.add(bullet.sprite);
 
   bullet.shadow = shadowBullet;
-  // gameStore.bullets[data.id] = bullet;
+  gameStore.bullets[data.id] = bullet;
 
   bullet.sprite.setDepth(data.z);
   shadowBullet.setDepth(data.z - 1);
 
+  createFairy(data, bullet)
+
+  return bullet
+}
+
+function createFairy(data, bullet) {
   if (data.t === "missile") {
     bullet.fairy = Fairy(data, 500, 'yellow', {min: 100, max: 300}, {start: 0.1, end: 0}, 2, {
       start: 1,
@@ -69,8 +75,6 @@ function CreateBullet(data, mpID) {
 
     bullet.fairy = Fairy(data, 500, frame, speed, scale, quantity, alpha)
   }
-
-  return bullet
 }
 
 function Fairy(data, lifespan, frame, speed, scale, quantity, alpha) {
@@ -117,10 +121,7 @@ function GetCacheBulletSprite(data, mpID) {
     }
 
     if (bullet.fairy) {
-      bullet.fairy.x = data.x;
-      bullet.fairy.y = data.y;
-      bullet.fairy.emitter.setEmitterAngle({min: 180 + data.r, max: 180 + data.r});
-      bullet.fairy.emitter.start();
+      createFairy(data, bullet)
       bullet.fairy.setDepth(data.z);
     }
 

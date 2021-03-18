@@ -8,15 +8,20 @@
       v-if="subMenuProps.slot && subMenuProps.src === inventory.warehouse"
       v-bind:subMenuProps="subMenuProps"/>
 
+    <div class="mask" v-if="inventory.placeDialog">
+      <app-place-dialog/>
+    </div>
+
     <app-control v-bind:head="language === 'RU' ? 'Инвентарь:' : 'Inventory:'"
                  v-bind:move="true"
                  v-bind:close="true"
                  v-bind:refWindow="'wrapperInventoryAndStorage'"
                  v-bind:resizeFunc="resize"
-                 v-bind:minSize="{height: 161, width: 345}"/>
+                 v-bind:minSize="{height: 157, width: 305}"/>
 
     <div id="warehousesTabs">
       <app-warehouse-tab v-for="(warehouse, id) in inventory.warehouses"
+                         v-if="!warehouse.object_owner"
                          @mouseover.native="warehouseMouseOver(id)"
                          @mouseout.native="warehouseMouseLeave"
                          v-bind:title="warehouseTitle(warehouse.title)"
@@ -109,6 +114,7 @@ import Size from './Size';
 import ItemCell from './ItemCell';
 import WarehouseTab from './WarehouseTab';
 import CellSubMenu from './CellSubMenu';
+import PlaceDialog from './PlaceDialog';
 
 export default {
   name: "Inventory",
@@ -164,11 +170,17 @@ export default {
                 destination: "squadInventory",
               }));
             } else {
+
+              let slots = {}
+              for (let slotNumber of draggable.data("selectedItems").slotsNumbers) {
+                slots[slotNumber] = 0
+              }
+
               app.$store.getters.getWSByService('inventory').socket.send(JSON.stringify({
                 event: "itemsToDst",
                 source: draggable.data("slotData").parent,
                 destination: app.inventory.warehouse,
-                storage_slots: draggable.data("selectedItems").slotsNumbers
+                storage_slots: slots
               }));
             }
           }
@@ -186,7 +198,7 @@ export default {
     resize(event, ui, el) {
       let inventory = $('#Inventory');
       let inventoryStorageInventory = $('#inventoryStorageInventory');
-      inventory.css("height", el.height() - 4);
+      inventory.css("height", el.height());
       inventory.css("width", el.width() - 100);
       inventoryStorageInventory.css("height", inventory.height() - 41);
     },
@@ -222,6 +234,7 @@ export default {
       }, 0)
     },
     getSubMenuPoints(slot) {
+
       this.subMenuProps.points = [];
       this.subMenuProps.points.push('detail');
 
@@ -241,6 +254,10 @@ export default {
           if (slot.max_hp > slot.hp) {
             this.subMenuProps.points.push('repair');
           }
+
+          this.subMenuProps.points.push('to_hold');
+        } else if (this.inventory.warehouse === 'squadInventory' && this.inventory.warehouses.hasOwnProperty('squadInventory')) {
+          this.subMenuProps.points.push('to_storage');
         }
       }
 
@@ -320,6 +337,7 @@ export default {
     AppItemCell: ItemCell,
     AppWarehouseTab: WarehouseTab,
     AppCellSubMenu: CellSubMenu,
+    AppPlaceDialog: PlaceDialog,
   }
 }
 </script>
@@ -328,7 +346,7 @@ export default {
 #wrapperInventoryAndStorage {
   position: absolute;
   top: 35%;
-  left: calc(700px + 5%);
+  left: calc(50% - 170px);
   z-index: 11;
   width: 345px;
   height: 226px;
@@ -358,8 +376,8 @@ export default {
 
 .categoryTabs {
   margin-top: 4px;
-  height: 24px;
-  padding-left: 5px;
+  height: 20px;
+  padding-left: 3px;
 }
 
 .categoryTabs ol {
@@ -370,8 +388,8 @@ export default {
 .categoryTabs ol li {
   float: left;
   list-style: none;
-  height: 20px;
-  width: 20px;
+  height: 16px;
+  width: 16px;
   background: #9e9e9e;
   margin: 0 2px 0 0;
   border-radius: 3px;
@@ -382,8 +400,8 @@ export default {
 .categoryTabs ol .activeInventoryTabs {
   border: 0 solid transparent;
   box-shadow: inset 0 0 2px 1px black;
-  height: 22px;
-  width: 22px;
+  height: 18px;
+  width: 18px;
   background: #ce6f3c;
   background-size: 100%;
 }
@@ -408,4 +426,14 @@ export default {
   display: none !important;
 }
 
+.mask {
+  position: absolute;
+  left: 1px;
+  top: 20px;
+  height: calc(100% - 21px);
+  width: calc(100% - 2px);
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  z-index: 10;
+}
 </style>

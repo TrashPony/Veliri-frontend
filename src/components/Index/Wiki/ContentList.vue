@@ -1,10 +1,13 @@
 <template>
   <ul class="content_list">
     <li>
-      <div class="content_button" @click="toPath('world')">Мир</div>
+      <div class="content_button disable">Мир</div>
       <ul class="content_list" style="margin-top: 5px">
         <li>
           <div class="content_button sub" @click="toPath('sector')">Сектор</div>
+        </li>
+        <li>
+          <div class="content_button sub" @click="toPath('teleports')">Телепорты</div>
         </li>
         <li>
           <div class="content_button sub" @click="toPath('base')">База</div>
@@ -13,10 +16,13 @@
           <div class="content_button sub" @click="toPath('defenders')">Защитники</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('Npc')">Боты</div>
+          <div class="content_button sub disable" @click="toPath('Npc')">Боты</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('Structures')">Временные структуры</div>
+          <div class="content_button sub disable" @click="toPath('Structures')">Временные структуры</div>
+        </li>
+        <li>
+          <div class="content_button sub" @click="toPath('expedition')">Экспедиции</div>
         </li>
         <li>
           <div class="content_button sub" @click="toPath('law')">Система правосудия</div>
@@ -24,7 +30,7 @@
       </ul>
     </li>
     <li>
-      <div class="content_button" @click="toPath('transport_and_equip')">Транспорт и снаряжение</div>
+      <div class="content_button disable">Транспорт и снаряжение</div>
       <ul class="content_list" style="margin-top: 5px">
         <li>
           <div class="content_button sub" @click="toPath('bodies')">Корпуса</div>
@@ -38,24 +44,33 @@
       </ul>
     </li>
     <li>
-      <div class="content_button" @click="toPath('battle')">Бой и управление</div>
+      <div class="content_button disable">Бой и управление</div>
       <ul class="content_list" style="margin-top: 5px">
         <li>
-          <div class="content_button sub" @click="toPath('scouting')">Разведка</div>
+          <div class="content_button sub disable" @click="toPath('scouting')">Разведка</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('control')">Управление</div>
+          <div class="content_button sub disable" @click="toPath('control')">Управление</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('ballistic')">Стрельба и баллистика</div>
+          <div class="content_button sub disable" @click="toPath('ballistic')">Стрельба и баллистика</div>
+        </li>
+        <li>
+          <div class="content_button sub" @click="toPath('auto_pilot')">Автопилот</div>
         </li>
       </ul>
     </li>
     <li>
-      <div class="content_button" @click="toPath('mining')">Добыча ресурсов</div>
+      <div class="content_button disable">Добыча ресурсов</div>
       <ul class="content_list" style="margin-top: 5px">
         <li>
-          <div class="content_button sub" @click="toPath('salvage')">Сбор обломков</div>
+          <div class="content_button sub" @click="toPath('mining')">Добыча руды</div>
+        </li>
+        <li>
+          <div class="content_button sub disable" @click="toPath('')">Добыча нефти</div>
+        </li>
+        <li>
+          <div class="content_button sub disable" @click="toPath('salvage')">Сбор обломков</div>
         </li>
         <li>
           <div class="content_button sub" @click="toPath('anomaly')">Поиск аномалий</div>
@@ -63,69 +78,72 @@
       </ul>
     </li>
     <li>
-      <div class="content_button" @click="toPath('production')">Производство</div>
+      <div class="content_button disable">Производство</div>
       <ul class="content_list" style="margin-top: 5px">
         <li>
           <div class="content_button sub" @click="toPath('processing')">Центр переработки</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('parts_production')">Создание деталей на заводе</div>
+          <div class="content_button sub disable" @click="toPath('parts_production')">Детали</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('blueprints')">Чертежи</div>
+          <div class="content_button sub disable" @click="toPath('blueprints')">Чертежи</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('craft_items')">Создание предметов на базе</div>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <div class="content_button" @click="toPath('property_management')">Управление имуществом</div>
-      <ul class="content_list" style="margin-top: 5px">
-        <li>
-          <div class="content_button sub" @click="toPath('boxes')">Ящики</div>
+          <div class="content_button sub disable" @click="toPath('craft_items')">Создание предметов на базе</div>
         </li>
       </ul>
     </li>
     <li>
-      <div class="content_button" @click="toPath('economy')">Экономика</div>
+      <div class="content_button disable">Управление имуществом</div>
       <ul class="content_list" style="margin-top: 5px">
         <li>
-          <div class="content_button sub" @click="toPath('market')">Рынок</div>
+          <div class="content_button sub disable" @click="toPath('boxes')">Ящики</div>
+        </li>
+        <li>
+          <div class="content_button sub" @click="toPath('map_items')">Предметы на земле</div>
         </li>
       </ul>
     </li>
     <li>
-      <div class="content_button" @click="toPath('build')">Строительство</div>
+      <div class="content_button disable">Экономика</div>
       <ul class="content_list" style="margin-top: 5px">
         <li>
-          <div class="content_button sub" @click="toPath('map_blueprint')">Чертеж</div>
+          <div class="content_button sub disable" @click="toPath('market')">Рынок</div>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <div class="content_button disable">Строительство</div>
+      <ul class="content_list" style="margin-top: 5px">
+        <li>
+          <div class="content_button sub disable" @click="toPath('map_blueprint')">Чертеж</div>
         </li>
         <li>
           <div class="content_button sub" @click="toPath('install_and_dismantling')">Установка и демонтаж</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('structure_type')">Типы строений</div>
+          <div class="content_button sub disable" @click="toPath('structure_type')">Типы строений</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('special_cell')">Инвентарь и специльные ячейки</div>
+          <div class="content_button sub disable" @click="toPath('special_cell')">Инвентарь и специльные ячейки</div>
         </li>
       </ul>
     </li>
     <li>
-      <div class="content_button" @click="toPath('fraction')">Фракции</div>
+      <div class="content_button disable">Фракции</div>
       <ul class="content_list" style="margin-top: 5px">
         <li>
-          <div class="content_button sub" @click="toPath('Replics')">Replics</div>
+          <div class="content_button sub disable" @click="toPath('Replics')">Replics</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('Explores')">Explores</div>
+          <div class="content_button sub disable" @click="toPath('Explores')">Explores</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('Reverses')">Reverses</div>
+          <div class="content_button sub disable" @click="toPath('Reverses')">Reverses</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('aop')">АОП</div>
+          <div class="content_button sub disable" @click="toPath('aop')">АОП</div>
         </li>
       </ul>
     </li>
@@ -133,33 +151,33 @@
       <div class="content_button" @click="toPath('fraction_war')">Фракционная война</div>
     </li>
     <li>
-      <div class="content_button" @click="toPath('mission')">Задания</div>
+      <div class="content_button" @click="toPath('missions')">Задания</div>
     </li>
     <li>
-      <div class="content_button" @click="toPath('skills')">Навыки персонажа</div>
+      <div class="content_button disable">Навыки персонажа</div>
       <ul class="content_list" style="margin-top: 5px">
         <li>
-          <div class="content_button sub" @click="toPath('fine')">Штрафы</div>
+          <div class="content_button sub disable" @click="toPath('fine')">Штрафы</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('bonus')">Бонусы корпусов</div>
+          <div class="content_button sub disable" @click="toPath('bonus')">Бонусы корпусов</div>
         </li>
       </ul>
     </li>
     <li>
-      <div class="content_button" @click="toPath('social')">Социальность</div>
+      <div class="content_button disable">Социальность</div>
       <ul class="content_list" style="margin-top: 5px">
         <li>
-          <div class="content_button sub" @click="toPath('clusters')">Кластеры</div>
+          <div class="content_button sub disable" @click="toPath('clusters')">Кластеры</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('squad')">Отряды</div>
+          <div class="content_button sub disable" @click="toPath('squad')">Отряды</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('chat')">Чат</div>
+          <div class="content_button sub disable" @click="toPath('chat')">Чат</div>
         </li>
         <li>
-          <div class="content_button sub" @click="toPath('friends')">Друзья</div>
+          <div class="content_button sub disable" @click="toPath('friends')">Друзья</div>
         </li>
       </ul>
     </li>
@@ -229,5 +247,10 @@ export default {
 
 .content_button:hover {
   background: #ff8100;
+}
+
+.disable {
+  pointer-events: none !important;
+  background: grey !important;
 }
 </style>

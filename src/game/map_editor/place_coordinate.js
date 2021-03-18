@@ -83,6 +83,14 @@ function selectObjects(callBack) {
 
       CreateSelectSprite(gameStore.mapsState[map.id].staticObjects[id].x, gameStore.mapsState[map.id].staticObjects[id].y, callBack, true);
     }
+
+    for (let id in gameStore.objects) {
+      if (!gameStore.objects[id].texture && gameStore.objects.texture === "" && gameStore.objects[id].animate_sprite_sheets === "") {
+        continue
+      }
+
+      CreateSelectSprite(gameStore.objects[id].x, gameStore.objects[id].y, callBack, true);
+    }
   }
 }
 

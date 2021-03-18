@@ -40,11 +40,13 @@ function lobbyReader(data, store, ws) {
   if (data.e) logMsg(data.e, data);
 
   if (data.event === "BaseStatus") {
+
     store.commit({
       type: 'setBaseFullStatus',
       state: data.msg.base,
       resources: data.msg.inventory_slots,
       fraction: data.msg.fraction,
+      stories: data.msg.stories
     });
 
     store.commit({
@@ -158,6 +160,8 @@ function lobbyReader(data, store, ws) {
       recycle_slots: data.msg.recycle_slots,
       preview_recycle_slots: data.msg.preview_recycle_slots,
       user_recycle_skill: data.msg.user_recycle_skill,
+      lost_recycle_slots: data.msg.lost_recycle_slots,
+      tax_recycle_slots: data.msg.tax_recycle_slots,
     });
   }
 
@@ -180,15 +184,15 @@ function lobbyReader(data, store, ws) {
 
   if (data.event === "baseNotWork") {
     store.commit({
-      type: 'setBaseFullStatus',
-      state: '{type: \"not_work\"}',
+      type: 'setBaseWorkStatus',
+      typeBase: "not_work",
     });
   }
 
   if (data.event === "hostileBase") {
     store.commit({
-      type: 'setBaseFullStatus',
-      state: '{type: \"hostile\"}',
+      type: 'setBaseWorkStatus',
+      typeBase: "hostile",
     });
   }
 
@@ -223,6 +227,25 @@ function lobbyReader(data, store, ws) {
     store.commit({
       type: 'setTraining',
       training: data.count,
+    });
+  }
+
+  if (data.event === "GetAssortmentFractionStore") {
+    store.commit({
+      type: 'setFractionStoreAssortment',
+      assortment: data.msg.assortment,
+    });
+
+    store.commit({
+      type: 'setFractionStoreUserPoints',
+      user_fraction_points: data.msg.user_fraction_points,
+    });
+  }
+
+  if (data.event === 'UpdateFractionPoints') {
+    store.commit({
+      type: 'setFractionStoreUserPoints',
+      user_fraction_points: data.msg.user_fraction_points,
     });
   }
 

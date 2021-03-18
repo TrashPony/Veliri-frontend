@@ -3,7 +3,7 @@
     <div class="mask" v-if="(training.point === 2 && !training.needIntoHangar) || training.point === 7"/>
 
     <template v-if="training.point === 1 || training.needIntoHangar">
-      <div class="dialogBlock Training" style="left: 15px; top: 60px; height: 183px;">
+      <div class="dialogBlock Training" style="left: 315px; top: 65px; height: 183px;">
         <div class="dialogPicture">
           <div class="nameDialog">training</div>
           <div class="pictureBack"></div>
@@ -20,7 +20,7 @@
     </template>
 
     <template v-if="training.point === 2 && !training.needIntoHangar">
-      <div id="training1Block" class="dialogBlock Training" style="top: 5%">
+      <div id="training1Block" class="dialogBlock Training" style="top: 5%; z-index: 1005; right: 150px; left: unset;">
         <div class="dialogPicture">
           <div class="nameDialog">training</div>
           <div class="pictureBack"></div>
@@ -261,28 +261,28 @@
     </template>
 
     <template v-if="training.point === 8">
-      <div class="dialogBlock Training" style="left: 15px; top: 60px;">
+      <div class="dialogBlock Training" style="left: 315px; top: 65px;">
         <div class="dialogPicture">
           <div class="nameDialog">module</div>
           <div class="pictureBack"></div>
         </div>
         <div class="dialogText">
           <div class="wrapperText">
-            <p>Что бы войти в штаб нажми желтую пиктограмму.</p>
+            <p>Что бы войти в штаб нажми кнопку "Диспетчер базы".</p>
           </div>
         </div>
       </div>
     </template>
 
-    <template v-if="training.point === 9">
-      <div id="training1IntoDepartmentOfEmployment" class="dialogBlock Training" style="left: 15px; top: 60px;">
+    <template v-if="training.point === 9 && (missions && missions.missions && Object.keys(missions.missions).length !== 0)">
+      <div id="training1IntoDepartmentOfEmployment" class="dialogBlock Training" style="left: 315px; top: 65px;">
         <div class="dialogPicture">
           <div class="nameDialog">module</div>
           <div class="pictureBack"></div>
         </div>
         <div class="dialogText">
           <div class="wrapperText">
-            <p>Для того что бы выйти из базы - нажми эту пиктограмму.</p>
+            <p>Для того что бы выйти из базы - нажми "Выйти с базы".</p>
             <p>
               <span class="definition">Убедись перед выходом что ты не забыл топливо, оружие и боеприпасы!</span>
             </p>
@@ -337,7 +337,11 @@ export default {
 
         if (app.training.point === 3 && app.checkHangarAndInventory()) {
           app.setPos($('#wrapperInventoryAndStorage'), "training1SquadBlock", 200, 0);
+
+          $('#msIconWrapper').css("animation", "selectMenu 1500ms infinite");
+
           if (app.inventory.unit && app.inventory.unit.body) {
+            $('#msIconWrapper').css("animation", "unset");
             app.$store.commit({
               type: 'setFindFilter',
               filters: null,
@@ -357,7 +361,7 @@ export default {
 
         if (app.training.point === 4 && app.checkHangarAndInventory()) {
           app.setPos($('#wrapperInventoryAndStorage'), "training2SquadBlock", 170, 0);
-          app.setPos($('#ConstructorMS'), "training1ThoriumBlock", 20, 15);
+          app.setPos($('#ConstructorMS'), "training1ThoriumBlock", -5, 15);
           $('.bodyThoriumWrapper').css("animation", "selectMenu2 1500ms infinite");
 
           let find = false;
@@ -378,6 +382,8 @@ export default {
           app.setPos($('#powerIcon'), "training1PowerBlock", -115, -210);
           app.setPos($('#MSIcon'), "training1EquipBlock", -60, -335);
 
+          $('.InventoryCell.bodyEquip').css("animation", "selectMenu2 1500ms infinite");
+
           if (!app.inventory.findFilter || app.inventory.findFilter.type !== 'equip') {
             app.$store.commit({
               type: 'setFindFilter',
@@ -389,6 +395,7 @@ export default {
           }
 
           if (app.inventory.unit && app.inventory.unit.body) {
+
             let find = false;
 
             for (let slotNumber in app.inventory.unit.equip_slots) {
@@ -402,6 +409,7 @@ export default {
                 type: 'setFindFilter',
                 filters: null,
               });
+              $('.InventoryCell.bodyEquip').css("animation", "unset");
               app.progressTraining(5)
             }
           }
@@ -410,6 +418,9 @@ export default {
         if (app.training.point === 6 && app.checkHangarAndInventory()) {
           app.setPos($('#wrapperInventoryAndStorage'), "training4SquadBlock", 170, 0);
           app.setPos($('#MSWeaponPanel'), "training1WeaponBlock", 0, -270);
+
+          $('.InventoryCell.bodyWeapon').css("animation", "selectMenu2 1500ms infinite");
+          $('.InventoryCell.bodyAmmo').css("animation", "selectMenu 1500ms infinite");
 
           if (app.inventory.unit && app.inventory.unit.body) {
 
@@ -421,6 +432,8 @@ export default {
             }
 
             if (find) {
+              $('.InventoryCell.bodyWeapon').css("animation", "unset");
+              $('.InventoryCell.bodyAmmo').css("animation", "unset");
               app.progressTraining(6)
             }
           }
@@ -434,7 +447,7 @@ export default {
           }
         }
 
-        if (app.training.point === 9) {
+        if (app.training.point === 9 && (app.missions && app.missions.missions && Object.keys(app.missions.missions).length !== 0)) {
           $('#OutBaseButton').css("animation", "selectMenu 1500ms infinite");
           if (app.openComponents['ExitMenu'] && app.openComponents['ExitMenu'].open) {
             $('#OutBaseButton').css("animation", "unset");
@@ -492,6 +505,9 @@ export default {
     },
     baseStatus() {
       return this.$store.getters.getBaseStatus
+    },
+    missions() {
+      return this.$store.getters.getMissions;
     },
   }
 }

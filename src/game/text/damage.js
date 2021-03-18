@@ -1,9 +1,23 @@
 import {Scene} from "../create";
 import {GetGlobalPos} from "../map/gep_global_pos";
-import {MoveSprite} from "../utils/move_sprite";
+
+let cacheNumber = {};
 
 function damageText(data) {
   let text;
+
+  if (!cacheNumber[data.d]) {
+    let text = Scene.add.bitmapText(0, 0, 'bit_text', data.d, 32);
+
+    let rt = Scene.add.renderTexture(0, 0, 36, 36);
+    rt.draw(text, 2, 2);
+    rt.saveTexture("number_" + data.d);
+
+    rt.destroy();
+    text.destroy();
+
+    cacheNumber[data.d] = true;
+  }
 
   let pos = GetGlobalPos(data.x, data.y, data.m);
   text = Scene.make.sprite({
@@ -19,12 +33,18 @@ function damageText(data) {
 
   text.setDepth(1001);
   text.setOrigin(0.5);
-  text.setScale(0.3);
+  text.setScale(0.55);
 
-  MoveSprite(text, text.x, text.y - 100, 1000, null);
-  setTimeout(function () {
-    text.destroy();
-  }, 1000)
+  Scene.tweens.add({
+    targets: text,
+    x: text.x,
+    y: text.y - 100,
+    ease: 'Linear',
+    duration: 1000,
+    onComplete: function () {
+      text.destroy();
+    }
+  });
 }
 
 export {damageText}

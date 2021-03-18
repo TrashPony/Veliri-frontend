@@ -1,11 +1,14 @@
 <template>
   <div id="MotherShipParams">
 
-    <div id="SquadsList" v-if="inventory.inBase">
-      <div v-for="(squadName, index) in inventory.baseSquads" @click="changeSquad(index)">
-        <span class="squadListName">{{ squadName }}</span>
+    <template v-if="inventory.inBase && Object.keys(inventory.baseSquads).length > 0">
+      <h3 class="SquadsListHead">Транспорты на базе: </h3>
+      <div id="SquadsList">
+        <div v-for="(squadName, index) in inventory.baseSquads" @click="changeSquad(index)">
+          <span class="squadListName">{{ squadName }}</span>
+        </div>
       </div>
-    </div>
+    </template>
 
     <div class="Value params" v-if="msParams.attack" @click="toggleMenu('attack')">▼
       {{ language === 'RU' ? 'Атака' : 'Attack' }}
@@ -156,7 +159,7 @@
       {{ language === 'RU' ? 'Навигация' : 'Navigation' }}
     </div>
 
-    <div class="infoParams" v-if="inventory.stateMS && msParams.nav" style="height: 32px">
+    <div class="infoParams" v-if="inventory.stateMS && msParams.nav" style="height: 24px">
       <table>
         <tr>
           <td>{{ language === 'RU' ? 'Дальность обзора' : 'Range view' }}</td>
@@ -176,7 +179,7 @@
       {{ language === 'RU' ? 'Ходовая' : 'Running gear' }}
     </div>
 
-    <div class="infoParams" v-if="inventory.stateMS && msParams.move" style="height: 48px;">
+    <div class="infoParams" v-if="inventory.stateMS && msParams.move" style="height: 36px;">
       <table>
         <tr>
           <td>{{ language === 'RU' ? 'Макс. скорость' : 'Max speed' }}</td>
@@ -282,8 +285,8 @@ export default {
   box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
   display: inline-block;
   vertical-align: top;
-  width: 291px;
-  height: 326px;
+  width: 217px;
+  height: calc(100% - 33px);
   padding-top: 5px;
   position: relative;
   float: left;
@@ -296,14 +299,15 @@ export default {
 }
 
 #SquadsList {
-  border-radius: 10px;
-  width: 277px;
-  height: 100px;
-  box-shadow: inset 0 0 5px black;
+  width: 201px;
+  min-height: 20px;
+  max-height: 100px;
+  box-shadow: inset 0 0 2px black;
   border: 1px solid #4c4c4c;
-  background: #8cb3c7;
+  background: #89969c;
   position: relative;
   margin-bottom: 4px;
+  margin-left: 1px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -311,7 +315,7 @@ export default {
 .Value.params {
   text-align: left;
   display: block;
-  width: 266px;
+  width: 190px;
   padding-left: 10px;
   background: linear-gradient(22deg, rgb(221, 112, 52), #6c6c6c);
   box-shadow: 0 0 5px rgba(0, 0, 0, 1);
@@ -326,22 +330,22 @@ export default {
 
 .infoParams {
   display: block;
-  width: 270px;
+  width: 195px;
   padding-left: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 1);
   margin: 2px 0 0 2px;
   background: rgba(183, 195, 201, 0.29);
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
-  height: 75px;
+  height: 58px;
 }
 
 .infoParams table {
-  font-size: 11px;
   width: 100%;
   border-collapse: collapse;
   text-align: left;
   color: #c3c3c3;
+  font-size: 8px;
 }
 
 .infoParams tr td {
@@ -365,7 +369,7 @@ export default {
 
 .vul {
   width: calc(33% - 3px);
-  height: 20px;
+  height: 15px;
   float: left;
   background: rgba(122, 127, 122, 0.4);
   margin-left: 3px;
@@ -374,7 +378,7 @@ export default {
 }
 
 #infoParamsAttack {
-  height: 143px;
+  height: 108px;
 }
 
 .vul div {
@@ -387,18 +391,24 @@ export default {
   top: calc(50% - 6px);
   left: calc(50% - 6px);
   color: white;
+  font-size: 10px;
+  line-height: 14px;
 }
 
 #SquadsList > div {
   transition: 0.1s;
   height: 15px;
-  font-size: 12px;
+  font-size: 10px;
+  line-height: 15px;
   text-align: left;
   background: #5d5d5d57;
   padding-left: 10px;
   color: #ffe510;
   cursor: pointer;
   text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 #SquadsList > div:hover {
@@ -422,6 +432,25 @@ export default {
 .infoParams tr span:hover {
   color: #05daff;
   cursor: pointer;
+}
+
+.SquadsListHead {
+  margin: -3px 0 0 2px;
+  background: rgb(221, 112, 52);
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 4px 4px 0 0;
+  font-size: 10px;
+  line-height: 13px;
+  height: 13px;
+  user-select: none;
+  text-shadow: 1px 1px 1px rgb(0 0 0);
+  font-weight: bold;
+  box-shadow: 0 0 2px rgb(0 0 0);
+  padding-left: 10px;
+  width: calc(100% - 14px);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 </style>
 

@@ -1,6 +1,8 @@
 <template>
-  <div id="SquadBar" ref="SquadBar" @mousedown="toUp" v-if="inventory.equipPanel">
-    <app-control v-bind:head="'Снаражение: '"
+  <div id="SquadBar" ref="SquadBar" @mousedown="toUp" v-if="inventory.equipPanel"
+       :class="{autoPilot: inventory.unit.autoPilot}">
+
+    <app-control v-bind:head="'П.С.: '"
                  v-bind:move="true"
                  v-bind:close="false"
                  v-bind:noWidth="true"
@@ -64,21 +66,49 @@ export default {
   right: calc(50% - 462px);
   background: rgb(8, 138, 210);
   border: 1px solid #25a0e1;
-  height: 50px;
-  width: 702px;
-  padding: 18px 4px 4px 4px;
+  height: 44px;
+  width: 600px;
+  padding: 1px 0 1px 18px;
+  box-shadow: 0 0 2px black;
+}
+
+@media (max-width: 1200px) {
+  #SquadBar {
+    width: 535px;
+    height: 39px;
+  }
+}
+
+@media (max-width: 1000px) {
+  #SquadBar {
+    height: 34px;
+    width: 471px;
+  }
 }
 
 #SquadBar .SquadBarEquipCell {
   float: left;
-  height: 46px;
-  width: 46px;
+  height: 40px;
+  width: 40px;
   background-color: #585858;
   border-radius: 5px;
-  box-shadow: inset 0 0 2px, 0 0 2px;
-  margin: 2px;
+  margin: 0 2px;
   position: relative;
   border: 2px solid rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 1200px) {
+  #SquadBar .SquadBarEquipCell {
+    height: 35px;
+    width: 35px;
+  }
+}
+
+@media (max-width: 1000px) {
+  #SquadBar .SquadBarEquipCell {
+    height: 30px;
+    width: 30px;
+  }
 }
 
 #SquadBar .SquadBarEquipCell.weapon {
@@ -271,4 +301,36 @@ export default {
   background-image: url("https://img.icons8.com/plasticine/100/000000/robot.png");
   background-size: contain;
 }
+
+.autoPilot {
+  opacity: 0.5;
+  pointer-events: none;
+}
+</style>
+<style>
+#SquadBar .windowsHead {
+  width: 3px;
+  height: 100%;
+  border-radius: 5px 0 0 5px;
+}
+
+#SquadBar .windowsHead .windowsHeadTitle {
+  transform: rotate(-90deg);
+  display: block;
+  height: 100%;
+  width: 50px;
+}
+
+@media (max-width: 1200px) {
+  #SquadBar .windowsHead .windowsHeadTitle {
+    width: 43px;
+  }
+}
+
+@media (max-width: 1000px) {
+  #SquadBar .windowsHead .windowsHeadTitle {
+    width: 40px;
+  }
+}
+
 </style>

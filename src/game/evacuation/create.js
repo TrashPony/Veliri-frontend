@@ -50,6 +50,7 @@ function CreateEvacuation(transport) {
 
   evacuation.setDepth(transport.z);
   evacuation.shadow.setDepth(transport.z - 1);
+  evacuation.transportState = transport;
 
   gameStore.evacuations[transport.id] = evacuation;
 

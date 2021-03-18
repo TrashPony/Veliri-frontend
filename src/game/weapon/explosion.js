@@ -2,7 +2,6 @@ import {gameStore} from "../store";
 import {Scene} from "../create";
 import {deleteBullet} from "../bullet/remove";
 import {GetGlobalPos} from "../map/gep_global_pos";
-import {PlayPositionSound} from "../sound/play_sound";
 
 function ExplosionBullet(jsonData) {
 
@@ -29,6 +28,13 @@ function ExplosionBullet(jsonData) {
     ExplosionRing(bulletState.x, bulletState.y, 250, bulletState.area_covers, bulletState.z);
     FireExplosion(bulletState.x, bulletState.y, 500, 15, 35, 125, 0, 360, bulletState.z);
     SmokeExplosion(bulletState.x, bulletState.y, 1000, 15, 20, 50, 0, 360, bulletState.z);
+    return
+  }
+
+  if (bulletState.t === "trap_box") {
+    ExplosionRing(bulletState.x, bulletState.y, 250, bulletState.area_covers, bulletState.z);
+    FireExplosion(bulletState.x, bulletState.y, 500, 25, 45, 175, 0, 360, bulletState.z);
+    SmokeExplosion(bulletState.x, bulletState.y, 1000, 25, 30, 60, 0, 360, bulletState.z);
     return
   }
 
@@ -78,20 +84,28 @@ function ExplosionBullet(jsonData) {
   SmokeExplosion(bulletState.x, bulletState.y, 1000, 20, 15, 15, 0, 360, bulletState.z);
 }
 
-function FireExplosion(x, y, time, count, scale, speed, minAngle, maxAngle, z) {
-  Explosion(x, y, time, count, scale, ["yellow"], speed, minAngle, maxAngle, z, 'ADD')
+function FireExplosion(x, y, time, count, scale, speed, minAngle, maxAngle, z, reverseScale) {
+  Explosion(x, y, time, count, scale, ["yellow"], speed, minAngle, maxAngle, z, 'ADD', reverseScale)
 }
 
-function RedExplosion(x, y, time, count, scale, speed, minAngle, maxAngle, z) {
-  Explosion(x, y, time, count, scale, ["red"], speed, minAngle, maxAngle, z, 'ADD')
+function RedExplosion(x, y, time, count, scale, speed, minAngle, maxAngle, z, reverseScale) {
+  Explosion(x, y, time, count, scale, ["red"], speed, minAngle, maxAngle, z, 'ADD', reverseScale)
 }
 
-function BlueExplosion(x, y, time, count, scale, speed, minAngle, maxAngle, z) {
-  Explosion(x, y, time, count, scale, ["blue"], speed, minAngle, maxAngle, z, 'ADD')
+function BlueExplosion(x, y, time, count, scale, speed, minAngle, maxAngle, z, reverseScale) {
+  Explosion(x, y, time, count, scale, ["blue"], speed, minAngle, maxAngle, z, 'ADD', reverseScale)
 }
 
-function SmokeExplosion(x, y, time, count, scale, speed, minAngle, maxAngle, z) {
-  Explosion(x, y, time, count, scale, ["smoke_puff"], speed, minAngle, maxAngle, z, 'SCREEN')
+function BlueExplosionSCREEN(x, y, time, count, scale, speed, minAngle, maxAngle, z, reverseScale) {
+  Explosion(x, y, time, count, scale, ["blue"], speed, minAngle, maxAngle, z, 'SCREEN', reverseScale)
+}
+
+function SmokeExplosion(x, y, time, count, scale, speed, minAngle, maxAngle, z, reverseScale) {
+  Explosion(x, y, time, count, scale, ["smoke_puff"], speed, minAngle, maxAngle, z, 'SCREEN', reverseScale)
+}
+
+function GreenExplosion(x, y, time, count, scale, speed, minAngle, maxAngle, z, reverseScale) {
+  Explosion(x, y, time, count, scale, ["green"], speed, minAngle, maxAngle, z, 'ADD', reverseScale)
 }
 
 function ExplosionRing(x, y, time, radius, z) {
@@ -111,25 +125,36 @@ function ExplosionRing(x, y, time, radius, z) {
     props: {
       displayHeight: {value: radius * 3, duration: time, ease: 'Linear'},
       displayWidth: {value: radius * 3, duration: time, ease: 'Linear'},
+      alpha: {value: 0, duration: time, ease: 'Linear', delayTime: time},
     },
     repeat: 0,
+    onComplete: function () {
+      border.destroy();
+    }
   });
 
-  Scene.tweens.add({
-    targets: border,
-    props: {
-      alpha: {value: 0, duration: time, ease: 'Linear'},
-    },
-    delayTime: time,
-    repeat: 0,
-  });
-
-  setInterval(function () {
-    border.destroy()
-  }, time)
+  // setInterval(function () {
+  //   border.destroy()
+  // }, time)
 }
 
-function Explosion(x, y, time, count, scale, type, speed, minAngle, maxAngle, z, blendMode) {
+// setInterval(function () {
+//   if (Scene) {
+//console.log(Scene.children)
+//console.log(Scene.children.list)
+//console.log(Scene.children.systems.updateList)
+//console.log(Scene.children.systems.tweens)
+//console.log(Scene.children.systems.sound.sounds)
+//   }
+// }, 1000)
+
+function Explosion(x, y, time, count, scale, type, speed, minAngle, maxAngle, z, blendMode, reverseScale) {
+
+  if (reverseScale) {
+    scale = {start: scale / 200, end: scale / 25}
+  } else {
+    scale = {start: scale / 50, end: scale / 100}
+  }
 
   let explosion = Scene.add.particles('flares');
   let emitter = explosion.createEmitter({
@@ -138,7 +163,7 @@ function Explosion(x, y, time, count, scale, type, speed, minAngle, maxAngle, z,
     y: y,
     gravityY: 0,
     speed: {min: 0, max: speed},
-    scale: {start: scale / 50, end: scale / 100},
+    scale: scale,
     angle: {min: minAngle, max: maxAngle},
     alpha: {start: 1, end: 0, ease: 'Quad.easeIn'},
     lifespan: {min: time / 2, max: time},
@@ -157,4 +182,14 @@ function Explosion(x, y, time, count, scale, type, speed, minAngle, maxAngle, z,
   }, time)
 }
 
-export {ExplosionBullet, FireExplosion, RedExplosion, BlueExplosion, SmokeExplosion, ExplosionRing, Explosion}
+export {
+  ExplosionBullet,
+  FireExplosion,
+  RedExplosion,
+  BlueExplosion,
+  GreenExplosion,
+  SmokeExplosion,
+  ExplosionRing,
+  Explosion,
+  BlueExplosionSCREEN
+}

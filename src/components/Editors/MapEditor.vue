@@ -363,7 +363,7 @@ export default {
             }
 
           } catch (e) {
-            console.log(e)
+            //console.log(e)
           }
         } else {
           if (type.animate_sprite_sheets !== "") {
@@ -387,14 +387,14 @@ export default {
           } else if (type.type === "sector_structure") {
             let struct = type.texture.replace("_bottom", "");
             background = createRequireString("map/objects/sector_structure/" + type.texture + ".png")
-          } else if (type.type === "mission") {
-            background = createRequireString("map/objects/mission/" + type.texture + ".png")
           } else if (type.type === "other") {
             background = createRequireString("map/objects/other/" + type.texture + ".png")
           } else if (type.type === "unknown_civilization") {
             background = createRequireString("map/objects/unknown_civilization/" + type.texture + ".png")
           } else if (type.type === 'unit_wreckage') {
             background = createRequireString("map/objects/unit_wreckage/" + type.texture + ".png")
+          } else if (type.type === 'structure_wreckage') {
+            background = createRequireString("map/objects/structure_wreckage/" + type.texture + ".png")
           } else {
             background = createRequireString("map/objects/" + type.texture + ".png")
           }
@@ -719,6 +719,7 @@ export default {
   background: rgba(71, 71, 71, 0.6);
   color: greenyellow;
   pointer-events: none;
+  opacity: 0.4;
 }
 
 .HeightCoordinates {

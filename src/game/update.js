@@ -11,19 +11,25 @@ import {DisableObj} from "./map/structures/no_complete_structure";
 import {MoveTo} from "./unit/move";
 import {FreeMoveEvacuation} from "./evacuation/move";
 import {DroneTo} from "./drone/fly";
-import {FlyBullet, FlyLaser} from "./bullet/fly";
+import {FlyBullet} from "./bullet/fly";
 import {colorName} from "./unit/unit";
 
 let connect = null;
 let groupState = null;
 let visibleSquad = false;
 
-function update() {
+function gameInit(scene) {
+  if (!gameStore.gameDataInit.sendRequest) {
+    let ws = store.getters.getWSByService('global')
+    if (ws && ws.connect) {
+      gameStore.gameDataInit.sendRequest = true;
+      ws.socket.send(JSON.stringify({
+        event: "InitGame"
+      }));
+    }
+  }
 
-  if (gameStore.reload) return;
-
-  GrabCamera(this); // функцуия для перетаскивания карты мышкой /* Магия */
-
+  if (gameStore.reload || !gameStore.gameDataInit.data) return;
   if (!gameStore.gameReady) {
 
     if (!gameStore.mapEditor) {
@@ -37,11 +43,19 @@ function update() {
       });
     }
 
-    CreateAllMaps(this);
+    // todo ксотыль без которого карта при переходе из сектра в сектор артефачит
+    if (!gameStore.mapDrawing) {
+      gameStore.mapDrawing = true;
+      setTimeout(function () {
+        CreateAllMaps(scene);
+        gameStore.gameReady = true;
+        gameStore.mapDrawing = false;
+      })
+    }
 
     if (!gameStore.mapEditor) {
       connect.socket.send(JSON.stringify({
-        event: "LoadComplete"
+        event: "StartLoad"
       }));
 
       store.commit({
@@ -50,8 +64,16 @@ function update() {
         text: 'Ищем транспорт...'
       });
     }
-    gameStore.gameReady = true;
   }
+}
+
+function update() {
+
+  gameInit(this)
+
+  if (!gameStore.gameReady) return;
+
+  GrabCamera(this); // функцуия для перетаскивания карты мышкой /* Магия */
 
   if (gameStore.mapEditor) {
     if (gameStore.mapEditorState.placeObj) {
@@ -68,35 +90,18 @@ function update() {
   if (!gameStore.unitReady) {
     let unit = gameStore.units[gameStore.user_squad_id];
     if (unit) {
-      gameStore.unitReady = true;
-      setTimeout(function () {
-        FocusMS();
-        store.commit({
-          type: 'setVisibleLoader',
-          visible: false,
-        });
-      }, 500);
+      setUnitReady(unit.id)
     }
   }
 
-
   if (!gameStore.unitReady && store.getters.getGameRole === "Spectrum") {
     if (document.getElementById("end_status")) {
-      gameStore.unitReady = true;
-      store.commit({
-        type: 'setVisibleLoader',
-        visible: false,
-      });
+      setUnitReady(gameStore.units[i].id)
     }
 
     for (let i in gameStore.units) {
       if (groupState.members.hasOwnProperty(gameStore.units[i].owner_id)) {
-        gameStore.unitReady = true;
-        FocusUnit(gameStore.units[i].id);
-        store.commit({
-          type: 'setVisibleLoader',
-          visible: false,
-        });
+        setUnitReady(gameStore.units[i].id)
       }
     }
   }
@@ -135,26 +140,7 @@ function update() {
     gameStore.FogOfWar.brush.setVisible(false);
   }
 
-  for (let i in gameStore.bullets) {
-    let bullet = gameStore.bullets[i];
-    if (bullet.bufferMoveTick.length > 0) {
-      if (bullet.updaterPos) FlyBullet(bullet)
-    }
-  }
-
-  for (let i in gameStore.drones) {
-    let drone = gameStore.drones[i];
-    if (!drone.moveTween || !drone.moveTween.isPlaying() || drone.bufferMoveTick.length > 1) {
-      if (drone.updaterPos) DroneTo(drone, 64, i)
-    }
-  }
-
-  for (let i in gameStore.evacuations) {
-    let transport = gameStore.evacuations[i];
-    if (!transport.moveTween || !transport.moveTween.isPlaying() || transport.bufferMoveTick.length > 1) {
-      if (transport.updaterPos) FreeMoveEvacuation(transport, 64, i)
-    }
-  }
+  moveObjects()
 
   for (let i in gameStore.units) {
     let unit = gameStore.units[i];
@@ -164,9 +150,15 @@ function update() {
     }
 
     if (unit.sprite.userName) {
-      if (unit.sprite.userName.login) unit.sprite.userName.login.setPosition(unit.sprite.x, unit.sprite.y - 30);
+      if (unit.sprite.userName.login) unit.sprite.userName.login.setPosition(unit.sprite.x, unit.sprite.y - 27);
       if (unit.sprite.userName.pointer) unit.sprite.userName.pointer.setPosition(unit.sprite.x, unit.sprite.y - 20);
+      if (unit.sprite.userName.detail) unit.sprite.userName.detail.setPosition(unit.sprite.x, unit.sprite.y - 35);
+      if (unit.sprite.userName.pk) unit.sprite.userName.pk.setPosition(unit.sprite.x, unit.sprite.y - 35);
       colorName(unit)
+    }
+
+    if (unit.sprite.userMessage) {
+      if (unit.sprite.userMessage.text) unit.sprite.userMessage.text.setPosition(unit.sprite.x, unit.sprite.y - 45);
     }
 
     if (unit.id !== gameStore.user_squad_id && groupState.members.hasOwnProperty(unit.owner_id) && groupState.state[unit.owner_id]) {
@@ -225,6 +217,44 @@ function update() {
 
       let shield = UpdateShieldObjectPos(obj);
       if (!shield) ClearBars('object', obj.id, 'shield');
+    }
+  }
+}
+
+function setUnitReady(focusUnit) {
+  gameStore.unitReady = true;
+  if (focusUnit) FocusUnit(focusUnit);
+  store.commit({
+    type: 'setVisibleLoader',
+    visible: false,
+  });
+
+  setTimeout(function () {
+    connect.socket.send(JSON.stringify({
+      event: "loadComplete"
+    }));
+  }, 1000)
+}
+
+function moveObjects() {
+  for (let i in gameStore.bullets) {
+    let bullet = gameStore.bullets[i];
+    if (bullet.bufferMoveTick.length > 0) {
+      if (bullet.updaterPos) FlyBullet(bullet)
+    }
+  }
+
+  for (let i in gameStore.drones) {
+    let drone = gameStore.drones[i];
+    if (!drone.moveTween || !drone.moveTween.isPlaying() || drone.bufferMoveTick.length > 1) {
+      if (drone.updaterPos) DroneTo(drone, 64, i)
+    }
+  }
+
+  for (let i in gameStore.evacuations) {
+    let transport = gameStore.evacuations[i];
+    if (!transport.moveTween || !transport.moveTween.isPlaying() || transport.bufferMoveTick.length > 1) {
+      if (transport.updaterPos) FreeMoveEvacuation(transport, 64, i)
     }
   }
 }

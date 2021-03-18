@@ -15,6 +15,7 @@ import {deleteBullet} from "../bullet/remove";
 import store from "../../store/store";
 import {ClearBars, createObjectBars} from "../interface/status_layer";
 import {ParseObject} from "../map/createMap";
+import {CreateMapItems, DestroyItem} from "../map_items/map_items";
 
 function CreateRadarObject(mark, object) {
   if (mark.to === "transport") {
@@ -44,6 +45,10 @@ function CreateRadarObject(mark, object) {
   if (mark.to === "shield") {
     CreateShield(JSON.parse(object));
   }
+
+  if (mark.to === "item") {
+    CreateMapItems(JSON.parse(object))
+  }
 }
 
 function RemoveRadarObject(mark) {
@@ -63,16 +68,7 @@ function RemoveRadarObject(mark) {
   if (mark.to === "drone") {
     let drone = gameStore.drones[mark.id];
     if (drone) {
-
-      let equipSprite = GetSpriteEquip(drone.owner_id, drone.equip_slot.type_slot, drone.equip_slot.number_slot).sprite;
-      if (equipSprite) {
-        equipSprite.setVisible(true);
-        equipSprite.shadow.setVisible(true);
-      }
-
-      drone.sprite.shadow.destroy();
-      drone.sprite.destroy();
-      delete gameStore.drones[mark.id];
+      removeDrone(drone, mark.id)
     }
   }
 
@@ -95,17 +91,49 @@ function RemoveRadarObject(mark) {
   }
 
   if (mark.to === "shield") {
-    RemoveShield(mark);
+    RemoveShield(mark.uo);
   }
+
+  if (mark.to === "item") {
+    DestroyItem(Number(mark.id))
+  }
+}
+
+function removeDrone(drone, id) {
+
+  if (!drone) drone = gameStore.drones[id];
+
+  if (!drone) {
+    return
+  }
+
+  let equipSprite = GetSpriteEquip(drone.owner_id, drone.equip_slot.type_slot, drone.equip_slot.number_slot).sprite;
+  if (equipSprite) {
+    equipSprite.setVisible(true);
+    equipSprite.shadow.setVisible(true);
+  }
+
+  drone.sprite.shadow.destroy();
+  drone.sprite.destroy();
+  delete gameStore.drones[id];
 }
 
 function removeReservoir(reservoir) {
 
   RemoveSelectSpriteReservoir(reservoir.sprite);
 
-  if (reservoir.sprite.shadow) {
-    reservoir.sprite.shadow.destroy();
-  }
+  Scene.tweens.add({
+    targets: [reservoir.sprite, reservoir.sprite.shadow],
+    alpha: 0,
+    ease: 'Linear',
+    duration: 250,
+    onComplete: function () {
+      if (reservoir.sprite.shadow) {
+        reservoir.sprite.shadow.destroy();
+      }
+      reservoir.sprite.destroy();
+    }
+  });
 
   store.commit({
     type: 'toggleWindow',
@@ -115,12 +143,16 @@ function removeReservoir(reservoir) {
   });
 
   ClearBars('reservoir', reservoir.id, 'progress');
-  reservoir.sprite.destroy();
+  delete gameStore.reservoirs[reservoir.id];
 }
 
 function removeAllObj() {
   for (let id in gameStore.boxes) {
     DestroyBox(Number(id), false)
+  }
+
+  for (let id in gameStore.mapItems) {
+    DestroyItem(Number(id), false)
   }
 
   for (let i in gameStore.units) {
@@ -199,33 +231,45 @@ function removeDynamicObject(id) {
       forceClose: true,
     });
 
-    if (obj.objectSprite.weapon) obj.objectSprite.weapon.destroy();
-    if (obj.objectSprite.weaponShadow) obj.objectSprite.weaponShadow.destroy();
-    if (obj.objectSprite.weaponBox) obj.objectSprite.weaponBox.destroy();
-    if (obj.objectSprite.equip) obj.objectSprite.equip.destroy();
-    if (obj.objectSprite.equipShadow) obj.objectSprite.equipShadow.destroy();
-    if (obj.objectSprite.equipBox) obj.objectSprite.equipBox.destroy();
-    if (obj.objectSprite.top) obj.objectSprite.top.destroy();
-    if (obj.objectSprite.shadowTop) obj.objectSprite.shadowTop.destroy();
-    if (obj.objectSprite.shadow) obj.objectSprite.shadow.destroy();
-    if (obj.objectSprite.passBuildSelectSprite) obj.objectSprite.passBuildSelectSprite.destroy();
-    if (obj.objectSprite.noPassbuildSelectSprite) obj.objectSprite.noPassbuildSelectSprite.destroy();
+    Scene.tweens.add({
+      targets: [obj.objectSprite, obj.objectSprite.weapon, obj.objectSprite.top, obj.objectSprite.equip,
+        obj.objectSprite.weaponShadow, obj.objectSprite.weaponBox, obj.objectSprite.equip, obj.objectSprite.equipShadow,
+        obj.objectSprite.equipBox, obj.objectSprite.shadowTop, obj.objectSprite.shadow, obj.objectSprite.light],
+      alpha: 0,
+      ease: 'Linear',
+      duration: 150,
+      onComplete: function () {
 
-    if (obj.placeSprite) obj.placeSprite.destroy();
-    if (obj.objectSprite.lights) {
-      for (let i of obj.objectSprite.lights) {
-        i.green.destroy();
-        i.red.destroy();
+        obj.objectSprite.destroy();
+
+        if (obj.objectSprite.weapon) obj.objectSprite.weapon.destroy();
+        if (obj.objectSprite.weaponShadow) obj.objectSprite.weaponShadow.destroy();
+        if (obj.objectSprite.weaponBox) obj.objectSprite.weaponBox.destroy();
+        if (obj.objectSprite.equip) obj.objectSprite.equip.destroy();
+        if (obj.objectSprite.equipShadow) obj.objectSprite.equipShadow.destroy();
+        if (obj.objectSprite.equipBox) obj.objectSprite.equipBox.destroy();
+        if (obj.objectSprite.top) obj.objectSprite.top.destroy();
+        if (obj.objectSprite.shadowTop) obj.objectSprite.shadowTop.destroy();
+        if (obj.objectSprite.shadow) obj.objectSprite.shadow.destroy();
+        if (obj.objectSprite.passBuildSelectSprite) obj.objectSprite.passBuildSelectSprite.destroy();
+        if (obj.objectSprite.noPassbuildSelectSprite) obj.objectSprite.noPassbuildSelectSprite.destroy();
+        if (obj.objectSprite.light) obj.objectSprite.light.destroy();
+
+        if (obj.placeSprite) obj.placeSprite.destroy();
+        if (obj.objectSprite.lights) {
+          for (let i of obj.objectSprite.lights) {
+            i.green.destroy();
+            i.red.destroy();
+          }
+        }
       }
-    }
+    });
 
     ClearBars('object', obj.id, 'hp');
     ClearBars('object', obj.id, 'build');
     ClearBars('object', obj.id, 'energy');
     ClearBars('object', obj.id, 'shield');
     ClearBars('object', obj.id, 'progress');
-
-    obj.objectSprite.destroy();
 
     gameStore.objects[id] = null;
   }
@@ -239,4 +283,4 @@ function CreateDynamicObjects(dynamicObjects) {
   }
 }
 
-export {CreateRadarObject, RemoveRadarObject, removeAllObj, CreateDynamicObjects}
+export {CreateRadarObject, RemoveRadarObject, removeAllObj, CreateDynamicObjects, removeReservoir, removeDrone}

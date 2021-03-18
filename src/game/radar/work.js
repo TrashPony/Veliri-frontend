@@ -6,35 +6,33 @@ function RadarWork(events) {
   // если обьект создается то метка не нужна
   for (let event of events) {
 
-    setTimeout(function () {
-      if (event.am === "createRadarMark" && event.ao !== "createObj") {
-        CreateMark(event.rm.uuid, event.rm.type, event.x, event.y)
-      }
+    if (event.am === "createRadarMark" && event.ao !== "createObj") {
+      CreateMark(event.rm.uuid, event.rm.type, event.x, event.y)
+    }
 
-      if (event.am === "removeRadarMark") {
-        RemoveMark(event.rm.uuid)
-      }
+    if (event.am === "removeRadarMark") {
+      RemoveMark(event.rm.uuid)
+    }
 
-      if (event.am === "hideRadarMark") {
-        HideMark(event.rm.uuid)
-      }
+    if (event.am === "hideRadarMark") {
+      HideMark(event.rm.uuid)
+    }
 
-      if (event.am === "unhideRadarMark") {
-        UnhideMark(event.rm.uuid, event.rm.type, event.x, event.y)
-      }
+    if (event.am === "unhideRadarMark") {
+      UnhideMark(event.rm.uuid, event.rm.type, event.x, event.y)
+    }
 
-      if (event.ao === "createObj") {
-        CreateRadarObject(event.rm, event.o)
-      }
+    if (event.ao === "createObj") {
+      CreateRadarObject(event.rm, event.o)
+    }
 
-      if (event.ao === "updateObj") {
-        UpdateObject(event.rm, event.o)
-      }
+    if (event.ao === "updateObj") {
+      UpdateObject(event.rm, event.o)
+    }
 
-      if (event.ao === "removeObj") {
-        RemoveRadarObject(event.rm)
-      }
-    })
+    if (event.ao === "removeObj") {
+      RemoveRadarObject(event.rm)
+    }
   }
 }
 

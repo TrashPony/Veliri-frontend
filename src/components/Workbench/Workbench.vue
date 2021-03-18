@@ -64,7 +64,7 @@
       <div id="needItems">
         <template v-for="(items, section) in needItems">
 
-          <div class="nameSection">{{ section }}
+          <div class="nameSection">{{ handbook['categories'][language][section].name }}
             <div class="hideArrowSection"></div>
           </div>
 

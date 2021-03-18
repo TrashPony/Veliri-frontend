@@ -17,7 +17,11 @@ function PlayPositionSound(sounds, params, x, y) {
   if (!params) params = {};
   params.volume = percent / 100 * store.getters.getSettings.SFXVolume;
 
-  Scene.sound.add(sounds[getRandomInt(sounds.length)]).play(params);
+  let sound = Scene.sound.add(sounds[getRandomInt(sounds.length)]);
+  sound.on('complete', function () {
+    sound.destroy();
+  });
+  sound.play(params);
 }
 
 function getRandomInt(max) {

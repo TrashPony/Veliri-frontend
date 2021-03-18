@@ -24,7 +24,8 @@
           </div>
           <div style="float: left; width: 50px; margin: 0;">
             <input @input="changeVolume" type="range" min="0" max="1" step="0.01" v-model="volume" title="Музыка">
-            <input style="margin-top: 2px;" @input="changeSFXVolume" type="range" min="0" max="1" step="0.01" v-model="SFXVolume" title="Эффекты">
+            <input style="margin-top: 2px;" @input="changeSFXVolume" type="range" min="0" max="1" step="0.01"
+                   v-model="SFXVolume" title="Эффекты">
           </div>
           <div>
             <img src="https://img.icons8.com/plasticine/100/000000/high-volume.png"/>
@@ -208,12 +209,7 @@ export default {
 
 <style scoped>
 #audioPlayer {
-  height: 26px;
-  width: 130px;
-  position: absolute;
-  right: 250px;
-  top: 0;
-  border-radius: 0 0 5px 5px;
+  width: 140px;
   color: white;
   display: block;
   border: 1px solid #25a0e1;
@@ -221,6 +217,9 @@ export default {
   z-index: 11;
   padding: 0 1px 1px 1px;
   box-shadow: 0 0 2px black;
+  pointer-events: auto;
+  height: 100%;
+  border-radius: 5px;
 }
 
 #control {
@@ -229,16 +228,18 @@ export default {
   border: 0;
   display: block;
   background: rgb(101, 165, 195);
-  height: 16px;
+  height: 18px;
   color: rgba(255, 255, 255, 0.5);
   font-weight: 900;
   transition: 100ms;
   font-family: 'Comfortaa', cursive;
+  padding: 1px 0;
+  box-shadow: 0 0 2px black;
 }
 
 #buttons div, #volume div {
-  height: 12px;
-  width: 12px;
+  height: 14px;
+  width: 14px;
   background: rgb(203, 170, 95);
   float: left;
   margin: 2px;
@@ -280,29 +281,18 @@ export default {
 }
 
 #volume input[type=range] {
+  box-shadow: none;
   margin-top: 1px;
+  height: 7px;
 }
 
 #volume input[type=range]::-ms-thumb {
-  box-shadow: 0 0 2px black;
-  border: 0px solid rgba(0, 0, 0, 0);
+  border: 0 solid rgba(0, 0, 0, 0);
   width: 3px;
-  border-radius: 0px;
+  border-radius: 0;
   background: rgba(255, 143, 53, 0.7);
   cursor: pointer;
   height: 4px;
-}
-
-#volume input[type=range]::-webkit-slider-thumb {
-  box-shadow: 0 0 2px black;
-  border: 0px solid rgba(0, 0, 0, 0);
-  height: 4px;
-  width: 3px;
-  border-radius: 0px;
-  background: rgba(255, 143, 53, 0.7);
-  cursor: pointer;
-  -webkit-appearance: none;
-  margin-top: -0.1px;
 }
 
 #volume input[type=range]::-moz-range-thumb {
@@ -315,9 +305,30 @@ export default {
   box-shadow: 0 0 2px black;
 }
 
+#volume input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  border-radius: 1px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  background: rgba(246, 255, 252, 0.4);
+}
+
+#volume input[type=range]::-webkit-slider-thumb {
+  box-shadow: 0 0 2px black;
+  border: 0 solid rgba(0, 0, 0, 0);
+  height: 5px;
+  width: 3px;
+  border-radius: 0;
+  background: rgba(255, 143, 53, 0.7);
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -0.1px;
+}
+
 #volume input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
-  height: 6px;
+  height: 7px;
   cursor: pointer;
   border-radius: 1px;
   border: 1px solid rgba(0, 0, 0, 0.4);
@@ -325,7 +336,7 @@ export default {
 }
 
 #progress {
-  height: 10px;
+  height: 9px;
   width: 100%;
   line-height: 5px;
 }
@@ -333,6 +344,8 @@ export default {
 #progress input[type=range] {
   -webkit-appearance: none;
   width: 100%;
+  height: 8px;
+  box-shadow: none;
 }
 
 #progress input[type=range]:focus {
@@ -362,6 +375,26 @@ export default {
 
 #progress input[type=range]:focus::-webkit-slider-runnable-track {
   background: rgba(0, 130, 195, 0);
+}
+
+#progress input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  background: rgba(246, 255, 252, 0.4);
+}
+
+#progress input[type=range]::-moz-range-thumb {
+  box-shadow: 0 0 2px black;
+  border: 0 solid rgba(0, 0, 0, 0);
+  height: 4px;
+  width: 12px;
+  background: #ff8f35;
+  cursor: pointer;
+  -webkit-appearance: none;
+  border-radius: 1px;
 }
 
 </style>

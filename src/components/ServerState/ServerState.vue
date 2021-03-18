@@ -16,6 +16,9 @@
               <td>Игроков:</td>
               <td><span class="value">{{ serverState.count_players }}</span></td>
 
+              <td>Боевые группы:</td>
+              <td><span class="value">{{ serverState.count_battle_groups }}</span></td>
+
               <td>Пуль:</td>
               <td><span class="value">{{ serverState.count_bullets }}</span></td>
 
@@ -47,6 +50,16 @@
               <td><span class="value">{{ serverState.ai_move }}</span></td>
               <td>Meteorite wait end:</td>
               <td><span class="value">{{ serverState.meteorite_wait_end }}</span></td>
+            </tr>
+          </table>
+
+          <table class="func_table">
+            <tr>
+              <th colspan="6">Очереди сообщений:</th>
+            </tr>
+            <tr v-for="(count, server) in serverState.messages_count">
+              <td>{{ server }}:</td>
+              <td><span class="value">{{ count }}</span></td>
             </tr>
           </table>
 
@@ -190,7 +203,7 @@ export default {
     serverTick() {
       this.drawServerTick();
       return this.serverState.maps_ticks[this.map_id][this.serverState.maps_ticks[this.map_id].length - 1]
-    }
+    },
   },
   components: {
     AppControl: Control,
@@ -325,7 +338,7 @@ th {
 }
 
 .top_table td {
-  width: 50px;
+  min-width: 50px;
 }
 
 .map_state {

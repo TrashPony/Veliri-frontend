@@ -3,7 +3,7 @@
     <table v-if="type === 'resource' || type === 'recycle' || type === 'detail' || type === 'trash'">
       <tr>
         <td>Занимаемый объем</td>
-        <td>{{ item.size }} м^3</td>
+        <td>{{ (item.size/1000).toFixed(3) }} м^3</td>
       </tr>
     </table>
 
@@ -126,7 +126,7 @@
       </tr>
       <tr>
         <td>{{ language === 'RU' ? 'Занимаемый объем' : 'Occupied volume' }}</td>
-        <td>{{ item.size }} м^3</td>
+        <td>{{ (item.size/1000).toFixed(3) }} м^3</td>
       </tr>
 
       <tr v-if="item.chase_target">
@@ -184,7 +184,7 @@
           <td>{{ item.use_power }}</td>
         </tr>
         <tr>
-          <td>Время перезарядки</td>
+          <td>Время работы такта</td>
           <td>{{ item.reload / 1000 }} сек.</td>
         </tr>
       </template>
@@ -225,12 +225,12 @@
 
       <template v-if="item.applicable === 'ore'">
         <tr>
-          <td>Кол-во добываемой руды</td>
-          <td>{{ item.region }}</td>
+          <td>Объем добываемой руды</td>
+          <td>{{ item.region }} м^3</td>
         </tr>
         <tr>
-          <td>Кол-во тактов до добычи</td>
-          <td>{{ Math.round(100 / item.count) }}</td>
+          <td>Разработка руды за такт</td>
+          <td>{{ (item.count / 100).toFixed(1) }} %</td>
         </tr>
         <tr>
           <td>Дальность добычи</td>
@@ -267,7 +267,7 @@
 
       <template v-if="item.applicable === 'build'">
         <tr>
-          <td>Дальность строительства</td>
+          <td>Дальность</td>
           <td>{{ item.radius }}</td>
         </tr>
         <tr>
@@ -279,7 +279,7 @@
           <td>{{ item.use_power }}</td>
         </tr>
         <tr>
-          <td>Пополнение прочности за такт</td>
+          <td>Влияние на прочность</td>
           <td>{{ item.count }}</td>
         </tr>
       </template>
@@ -315,8 +315,13 @@
       </template>
 
       <tr>
+        <td>Необходимо энергии</td>
+        <td>{{ item.power }}</td>
+      </tr>
+
+      <tr>
         <td>Занимаемый объем</td>
-        <td>{{ item.size }} м^3</td>
+        <td>{{ (item.size/1000).toFixed(3) }} м^3</td>
       </tr>
     </table>
 
@@ -382,7 +387,7 @@
       </tr>
       <tr>
         <td>{{ language === 'RU' ? 'Занимаемый объем' : 'Occupied volume' }}</td>
-        <td>{{ item.size }} м^3</td>
+        <td>{{ (item.size/1000).toFixed(3) }} м^3</td>
       </tr>
 
       <tr v-if="item.artillery">

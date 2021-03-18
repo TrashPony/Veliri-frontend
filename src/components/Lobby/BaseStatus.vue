@@ -71,8 +71,8 @@ export default {
   height: 150px;
   width: 150px;
   position: absolute;
-  right: 15px;
-  top: 15px;
+  right: 5px;
+  top: 5px;
   border-radius: 5px;
   padding: 5px;
   border: 1px solid #25a0e1;

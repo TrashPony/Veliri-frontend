@@ -45,7 +45,7 @@ function EditLvlMap() {
       return;
     }
 
-    let ringDist = 350;
+    let ringDist = 200;
     resultGrid.clear();
     resultGrid.lineStyle(3, 0x000FFF, 0.8);
     resultGrid.strokeCircleShape({
